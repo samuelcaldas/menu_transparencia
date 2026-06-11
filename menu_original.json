@@ -1,520 +1,865 @@
 [
   {
-    "titulo": "Receitas",
+    "titulo": "Antigo Portal da Transparência",
+    "icon": "fa-magnifying-glass-chart",
+    "descricao": "Consulta aos dados do antigo Portal da Tansparência",
+    "submenus": [],
+    "link": "https://timoteoportaltransparencia.portalfacil.com.br/",
+    "blank": true
+  },
+  {
+    "titulo": "Receitas públicas",
     "icon": "fa-coins",
-    "descricao": "Informações sobre as receitas arrecadadas pelo município.",
+    "descricao": "Demonstra dados da arrecadação municipal\n",
     "submenus": [
       {
-        "titulo": "Receitas Orçamentárias",
+        "titulo": "Receita Orçamentária",
         "icon": "fa-coins",
-        "descricao": "Consulta receitas orçamentárias.",
-        "link": "#",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4NQ==",
+        "blank": "on"
+      },
+      {
+        "titulo": "Receitas Prevista e Realizada",
+        "icon": "fa-coins",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA2NA==",
         "blank": true
       },
       {
-        "titulo": "Receitas Extraorçamentárias",
+        "titulo": "Impostômetro",
         "icon": "fa-coins",
-        "descricao": "Consulta receitas extraorçamentárias.",
-        "link": "#"
-      },
-      {
-        "titulo": "Receitas por Categoria",
-        "icon": "fa-coins",
-        "descricao": "Consulta receitas por categoria.",
-        "link": "#"
-      },
-      {
-        "titulo": "Receitas por Fonte",
-        "icon": "fa-coins",
-        "descricao": "Consulta receitas por fonte.",
-        "link": "#"
-      },
-      {
-        "titulo": "Maiores Arrecadações",
-        "icon": "fa-coins",
-        "descricao": "Consulta maiores arrecadações por contribuinte.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://www.timoteo.mg.gov.br/ImpostoMetros/",
+        "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
   {
-    "titulo": "Despesas",
+    "titulo": "Incentivos Fiscais Concedidos",
+    "icon": "fa-coins",
+    "descricao": "Exibe as desonerações tributárias concedidas\n",
+    "submenus": [],
+    "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA2NQ==",
+    "blank": false
+  },
+  {
+    "titulo": "Despesas públicas",
     "icon": "fa-money-bill",
-    "descricao": "Detalhamento completo das despesas públicas.",
+    "descricao": "Demonstra as despesas municipais\n",
     "submenus": [
       {
-        "titulo": "Despesas Empenhadas",
+        "titulo": "Adiantamentos",
         "icon": "fa-money-bill",
-        "descricao": "Consulta despesas empenhadas.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA2Ng==",
+        "blank": true
       },
       {
-        "titulo": "Despesas Liquidadas",
+        "titulo": "Despesa Orçamentária",
         "icon": "fa-money-bill",
-        "descricao": "Consulta despesas liquidadas.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA2Nw==",
+        "blank": true
       },
       {
-        "titulo": "Despesas Pagas",
+        "titulo": "Despesas com Pessoal",
         "icon": "fa-money-bill",
-        "descricao": "Consulta despesas pagas.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA2OA==",
+        "blank": true
       },
       {
         "titulo": "Despesas por Credor",
         "icon": "fa-money-bill",
-        "descricao": "Consulta despesas por credor.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4Nw==",
+        "blank": true
       },
       {
-        "titulo": "Diárias",
+        "titulo": "Despesas por Programas e Ações",
         "icon": "fa-money-bill",
-        "descricao": "Consulta diárias concedidas.",
-        "link": "#"
-      }
-    ]
-  },
-
-  {
-    "titulo": "Patrimônio",
-    "icon": "fa-building",
-    "descricao": "Relação dos bens patrimoniais do município.",
-    "submenus": [
-      {
-        "titulo": "Bens Imóveis",
-        "icon": "fa-building",
-        "descricao": "Consulta bens imóveis do município.",
-        "link": "#"
-      },
-      {
-        "titulo": "Bens Móveis",
-        "icon": "fa-building",
-        "descricao": "Consulta bens móveis.",
-        "link": "#"
-      },
-      {
-        "titulo": "Veículos",
-        "icon": "fa-car",
-        "descricao": "Consulta veículos da frota municipal.",
-        "link": "#"
-      },
-      {
-        "titulo": "Máquinas e Equipamentos",
-        "icon": "fa-industry",
-        "descricao": "Consulta máquinas e equipamentos.",
-        "link": "#"
-      }
-    ]
-  },
-
-  {
-    "titulo": "Demonstrativos",
-    "icon": "fa-chart-bar",
-    "descricao": "Relatórios e demonstrativos contábeis.",
-    "submenus": [
-      {
-        "titulo": "RREO",
-        "icon": "fa-chart-bar",
-        "descricao": "Relatório Resumido da Execução Orçamentária.",
-        "link": "#"
-      },
-      {
-        "titulo": "RGF",
-        "icon": "fa-chart-bar",
-        "descricao": "Relatório de Gestão Fiscal.",
-        "link": "#",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA2OQ==",
         "blank": true
       },
       {
-        "titulo": "Balancetes",
-        "icon": "fa-chart-bar",
-        "descricao": "Consulta balancetes mensais.",
-        "link": "#"
+        "titulo": "Execução Detalhada de Despesas",
+        "icon": "fa-money-bill",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA3MA==",
+        "blank": true
       },
       {
-        "titulo": "Balanços",
-        "icon": "fa-chart-bar",
-        "descricao": "Consulta balanços anuais.",
-        "link": "#",
+        "titulo": "Ordem cronológica de empenhos a pagar",
+        "icon": "fa-money-bill",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA3MQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Ordem cronológica de empenhos pagos",
+        "icon": "fa-money-bill",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4Ng==",
         "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
   {
-    "titulo": "Licitações",
+    "titulo": "Convênios e Transferências",
+    "icon": "fa-handshake",
+    "descricao": "Demonstra as movimentações financeiras municipais\n",
+    "submenus": [
+      {
+        "titulo": "Convênios recebidos",
+        "icon": "fa-handshake",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA3Mg==",
+        "blank": true
+      },
+      {
+        "titulo": "Movimentação Bancária Mensal",
+        "icon": "fa-handshake",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA3Mw==",
+        "blank": true
+      },
+      {
+        "titulo": "Parcerias e Convênios Repassados",
+        "icon": "fa-handshake",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwNw==",
+        "blank": true
+      },
+      {
+        "titulo": "Transferências Financeiras Concedidas",
+        "icon": "fa-handshake",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA3NA==",
+        "blank": true
+      },
+      {
+        "titulo": "Transferências Financeiras Recebidas",
+        "icon": "fa-handshake",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/MzczNw==",
+        "blank": true
+      },
+      {
+        "titulo": "Transferências Voluntárias",
+        "icon": "fa-handshake",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA3NQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Transferências Federais",
+        "icon": "fa-handshake",
+        "descricao": "",
+        "link": "https://portaldatransparencia.gov.br/localidades/3168705-timoteo",
+        "blank": true
+      }
+    ],
+    "link": "",
+    "blank": false
+  },
+  {
+    "titulo": "Diárias",
+    "icon": "fa-bag-shopping",
+    "descricao": "Informações sobre diárias e viagens\n",
+    "submenus": [
+      {
+        "titulo": "Despesas de Diárias e Viagens ",
+        "icon": "fa-bag-shopping",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4OA==",
+        "blank": true
+      },
+      {
+        "titulo": "Tabela de Diárias",
+        "icon": "fa-bag-shopping",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA3Ng==",
+        "blank": true
+      }
+    ],
+    "link": "",
+    "blank": false
+  },
+  {
+    "titulo": "Execução Extraorçamentária",
+    "icon": "fa-chart-mixed-up-circle-dollar",
+    "descricao": "Gestão de receitas e despesas extraorçamentárias\n",
+    "submenus": [],
+    "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA3Nw==",
+    "blank": false
+  },
+  {
+    "titulo": "PCA",
+    "icon": "fa-handshake",
+    "descricao": "Plano de Contratações Anual\n",
+    "submenus": [],
+    "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA3OA==",
+    "blank": false
+  },
+  {
+    "titulo": "Processos Licitatórios",
     "icon": "fa-gavel",
-    "descricao": "Consulta de processos licitatórios.",
+    "descricao": "Demonstra os processos licitatórios do município\n",
     "submenus": [
       {
-        "titulo": "Licitações Abertas",
+        "titulo": "Atas de Adesão – SRP",
         "icon": "fa-gavel",
-        "descricao": "Consulta licitações abertas.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA3OQ==",
+        "blank": true
       },
-      {
-        "titulo": "Licitações Concluídas",
-        "icon": "fa-gavel",
-        "descricao": "Consulta licitações concluídas.",
-        "link": "#"
-      },
-      {
-        "titulo": "Editais",
-        "icon": "fa-file",
-        "descricao": "Consulta editais publicados.",
-        "link": "#"
-      },
-      {
-        "titulo": "Resultados",
-        "icon": "fa-file",
-        "descricao": "Consulta resultados das licitações.",
-        "link": "#"
-      }
-    ]
-  },
-
-  {
-    "titulo": "Compras",
-    "icon": "fa-shopping-cart",
-    "descricao": "Informações sobre compras públicas.",
-    "submenus": [
       {
         "titulo": "Compras Diretas",
         "icon": "fa-shopping-cart",
-        "descricao": "Consulta compras diretas.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5Mw==",
+        "blank": true
       },
       {
-        "titulo": "Dispensas",
-        "icon": "fa-shopping-cart",
-        "descricao": "Consulta dispensas de licitação.",
-        "link": "#"
+        "titulo": "Contratação Direta",
+        "icon": "fa-gavel",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA4MA==",
+        "blank": true
       },
       {
-        "titulo": "Inexigibilidades",
-        "icon": "fa-shopping-cart",
-        "descricao": "Consulta inexigibilidades.",
-        "link": "#"
+        "titulo": "Dispensa de Licitação",
+        "icon": "fa-gavel",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5NQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Inexigibilidade de Licitação",
+        "icon": "fa-gavel",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5NA==",
+        "blank": true
+      },
+      {
+        "titulo": "Processos Licitatórios",
+        "icon": "fa-gavel",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA4MQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Processos Licitatórios Abertos/Em andamento",
+        "icon": "fa-gavel",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5MQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Processos Licitatórios Finalizados",
+        "icon": "fa-gavel",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5Mg==",
+        "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
   {
     "titulo": "Contratos",
     "icon": "fa-file-contract",
-    "descricao": "Contratos firmados pela administração pública.",
+    "descricao": "Contratos firmados pelo município\n",
     "submenus": [
       {
-        "titulo": "Contratos Ativos",
+        "titulo": "Atas de Registro de Preço",
         "icon": "fa-file-contract",
-        "descricao": "Consulta contratos ativos.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwNg==",
+        "blank": true
       },
       {
-        "titulo": "Contratos Encerrados",
+        "titulo": "Contratos",
         "icon": "fa-file-contract",
-        "descricao": "Consulta contratos encerrados.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5Ng==",
+        "blank": "on"
       },
       {
-        "titulo": "Aditivos",
+        "titulo": "Fiscais de Contratos",
         "icon": "fa-file-contract",
-        "descricao": "Consulta aditivos contratuais.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA4Mg==",
+        "blank": true
+      },
+      {
+        "titulo": "Fornecedores Sancionados",
+        "icon": "fa-file-contract",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA4Mw==",
+        "blank": true
+      },
+      {
+        "titulo": "PNCP - Portal Nacional de Contratações Públicas",
+        "icon": "fa-file-contract",
+        "descricao": "",
+        "link": "https://pncp.gov.br/app/editais",
+        "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
   {
-    "titulo": "Pessoal",
+    "titulo": "Recursos Humanos",
     "icon": "fa-users",
-    "descricao": "Informações sobre servidores públicos.",
+    "descricao": "Demonstra consultas referentes a Recursos Humanos\n",
     "submenus": [
       {
-        "titulo": "Servidores",
+        "titulo": "Agentes Políticos",
         "icon": "fa-users",
-        "descricao": "Consulta servidores municipais.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA4NA==",
+        "blank": true
       },
       {
-        "titulo": "Folha de Pagamento",
+        "titulo": "Cargos e Vencimentos - Padrão Remuneratório",
         "icon": "fa-users",
-        "descricao": "Consulta folha de pagamento.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5OQ==",
+        "blank": true
       },
       {
-        "titulo": "Cargos",
+        "titulo": "Folha de pagamento do município",
         "icon": "fa-users",
-        "descricao": "Consulta cargos públicos.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5Nw==",
+        "blank": true
       },
       {
-        "titulo": "Estagiários",
+        "titulo": "Histórico de Servidores Recebidos/Cedidos",
         "icon": "fa-users",
-        "descricao": "Consulta estagiários.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA4NQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Servidores Aposentados e Pensionistas",
+        "icon": "fa-users",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA4Ng==",
+        "blank": true
+      },
+      {
+        "titulo": "Servidores Ativos",
+        "icon": "fa-users",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA4Nw==",
+        "blank": true
+      },
+      {
+        "titulo": "Servidores Contratados Temporários",
+        "icon": "fa-users",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA4OA==",
+        "blank": true
+      },
+      {
+        "titulo": "Servidores (estagiários)",
+        "icon": "fa-users",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMA==",
+        "blank": true
+      },
+      {
+        "titulo": "Servidores Públicos",
+        "icon": "fa-users",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5OA==",
+        "blank": true
+      },
+      {
+        "titulo": "Concursos públicos",
+        "icon": "fa-users",
+        "descricao": "",
+        "link": "https://www.timoteo.mg.gov.br/25/concurso-publico",
+        "blank": true
+      },
+      {
+        "titulo": "Processos seletivos",
+        "icon": "fa-users",
+        "descricao": "Processos seletivos Simplificados",
+        "link": "https://www.timoteo.mg.gov.br/235/processos-seletivos-simplificados",
+        "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
+  {
+    "titulo": "Emendas parlamentares",
+    "icon": "fa-people-line",
+    "descricao": "Demonstra as emendas parlamentares\n",
+    "submenus": [
+      {
+        "titulo": "Emendas Parlamentares­­",
+        "icon": "fa-people-line",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA4OQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Emendas Parlamentares - Consolidado",
+        "icon": "fa-people-line",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA5MA==",
+        "blank": true
+      },
+      {
+        "titulo": "Emendas Parlamentares Estaduais e Municipais",
+        "icon": "fa-people-line",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA5MQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Emendas Parlamentares - Execução Orçamentária e Financeira",
+        "icon": "fa-people-line",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA5Mg==",
+        "blank": true
+      },
+      {
+        "titulo": "Emendas Parlamentares Federais",
+        "icon": "fa-people-line",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA5Mw==",
+        "blank": true
+      }
+    ],
+    "link": "",
+    "blank": false
+  },
   {
     "titulo": "Obras",
-    "icon": "fa-hard-hat",
-    "descricao": "Acompanhamento de obras públicas.",
+    "icon": "fa-person-digging",
+    "descricao": "Demonstra dados sobre obras públicas\n",
     "submenus": [
       {
-        "titulo": "Obras em Andamento",
-        "icon": "fa-hard-hat",
-        "descricao": "Consulta obras em andamento.",
-        "link": "#"
+        "titulo": "Obras Públicas",
+        "icon": "fa-person-digging",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMQ==",
+        "blank": true
       },
       {
-        "titulo": "Obras Concluídas",
+        "titulo": "Obras Públicas Paralisadas",
         "icon": "fa-hard-hat",
-        "descricao": "Consulta obras concluídas.",
-        "link": "#"
-      },
-      {
-        "titulo": "Obras Paralisadas",
-        "icon": "fa-hard-hat",
-        "descricao": "Consulta obras paralisadas.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA5NA==",
+        "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
   {
-    "titulo": "Contas Públicas",
-    "icon": "fa-balance-scale",
-    "descricao": "Prestação de contas do município.",
+    "titulo": "Relação de Bens do Patrimônio",
+    "icon": "fa-building",
+    "descricao": "Relação de Bens do Patrimônio Público\n",
+    "submenus": [],
+    "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4OQ==",
+    "blank": "on"
+  },
+  {
+    "titulo": "Planejamento",
+    "icon": "fa-lightbulb-dollar",
+    "descricao": "Instrumentos de Planejamento Orçamentário\n",
     "submenus": [
       {
-        "titulo": "Prestação de Contas",
-        "icon": "fa-balance-scale",
-        "descricao": "Consulta prestação de contas.",
-        "link": "#"
+        "titulo": "Lei de Diretrizes Orçamentárias (LDO)",
+        "icon": "fa-lightbulb-dollar",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA5Ng==",
+        "blank": true
       },
       {
-        "titulo": "Parecer do Tribunal",
-        "icon": "fa-balance-scale",
-        "descricao": "Consulta parecer do tribunal.",
-        "link": "#"
+        "titulo": "Lei Orçamentária Anual (LOA)",
+        "icon": "fa-lightbulb-dollar",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA5Nw==",
+        "blank": true
+      },
+      {
+        "titulo": "Plano Plurianual (PPA)",
+        "icon": "fa-lightbulb-dollar",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA5OA==",
+        "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
+  {
+    "titulo": "Prestação de contas",
+    "icon": "fa-scale-balanced",
+    "descricao": "Relatórios referentes à prestação de contas\n",
+    "submenus": [
+      {
+        "titulo": "Relatórios da Lei 4.320/64",
+        "icon": "fa-scale-balanced",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA5OQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Relatórios da Lei de Responsabilidade Fiscal",
+        "icon": "fa-scale-balanced",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5MA==",
+        "blank": true
+      }
+    ],
+    "link": "",
+    "blank": false
+  },
+  {
+    "titulo": "Fiscalizando com o TCE",
+    "icon": "fa-landmark",
+    "descricao": "Portal do Fiscalizando com o TCE-MG\n",
+    "submenus": [],
+    "link": "https://fiscalizandocomtce.tce.mg.gov.br/",
+    "blank": true
+  },
+  {
+    "titulo": "Governo e Gestão",
+    "icon": "fa-user-gear",
+    "descricao": "Informações referentes ao governo e à gestão\n",
+    "submenus": [
+      {
+        "titulo": "Planejamento Estratégico Institucional",
+        "icon": "fa-user-gear",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTEwMA==",
+        "blank": true
+      },
+      {
+        "titulo": "Relatório de Gestão",
+        "icon": "fa-user-gear",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTEwMQ==",
+        "blank": true
+      }
+    ],
+    "link": "",
+    "blank": false
+  },
   {
     "titulo": "Educação",
-    "icon": "fa-school",
-    "descricao": "Informações da educação municipal.",
+    "icon": "fa-user-graduate",
+    "descricao": "Informações sobre a educação do município\n",
     "submenus": [
       {
-        "titulo": "Escolas",
+        "titulo": "Planos Municipais de Educação",
         "icon": "fa-school",
-        "descricao": "Consulta escolas municipais.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTEwMg==",
+        "blank": true
       },
       {
-        "titulo": "Professores",
+        "titulo": "Professores e Habilitações",
         "icon": "fa-school",
-        "descricao": "Consulta professores.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTEwMw==",
+        "blank": true
       },
       {
-        "titulo": "Transporte Escolar",
+        "titulo": "Portalda da Educação",
         "icon": "fa-school",
-        "descricao": "Consulta transporte escolar.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://educacao.timoteo.mg.gov.br/",
+        "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
   {
     "titulo": "Saúde",
     "icon": "fa-hospital",
-    "descricao": "Informações da saúde pública.",
+    "descricao": "Informações relacionadas à Saúde\n",
     "submenus": [
       {
-        "titulo": "Unidades de Saúde",
+        "titulo": "Estoque de medicamentos",
         "icon": "fa-hospital",
-        "descricao": "Consulta unidades de saúde.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMg==",
+        "blank": true
       },
       {
-        "titulo": "Medicamentos",
+        "titulo": "Medicamentos CEAF",
         "icon": "fa-hospital",
-        "descricao": "Consulta medicamentos disponíveis.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTEwNA==",
+        "blank": true
       },
       {
-        "titulo": "Fila de Espera",
+        "titulo": "Medicamentos do município",
         "icon": "fa-hospital",
-        "descricao": "Consulta fila de espera.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMw==",
+        "blank": true
+      },
+      {
+        "titulo": "Plano Municipal de Saúde",
+        "icon": "fa-hospital",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTEwNQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Programa Anual da Saúde",
+        "icon": "fa-hospital",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTEwNg==",
+        "blank": true
+      },
+      {
+        "titulo": "Relatório Anual de Gestão da Saúde",
+        "icon": "fa-hospital",
+        "descricao": "",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTEwNw==",
+        "blank": true
+      },
+      {
+        "titulo": "Assistência Farmacêutica",
+        "icon": "fa-truck-medical",
+        "descricao": "",
+        "link": "https://saude.timoteo.mg.gov.br/1314/assistencia-farmaceutica",
+        "blank": true
+      },
+      {
+        "titulo": "Portal da Saúde",
+        "icon": "fa-hospital",
+        "descricao": "",
+        "link": "https://saude.timoteo.mg.gov.br/",
+        "blank": true
+      },
+      {
+        "titulo": "Programa Remédio em Casa",
+        "icon": "fa-truck-medical",
+        "descricao": "",
+        "link": "https://docs.google.com/forms/d/e/1FAIpQLSeOO-ydXOoiRvxGhmUBMI4dmkzZRJXZ2ZtLRA45ubfh9Bra1Q/viewform",
+        "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
   {
-    "titulo": "Documentos Oficiais",
-    "icon": "fa-file-alt",
-    "descricao": "Documentos oficiais do município.",
+    "titulo": "Assistência Social",
+    "icon": "fa-hands-holding-heart",
+    "descricao": "Informações sobre a Assistência Social\n",
+    "submenus": [],
+    "link": "https://assistenciasocial.timoteo.mg.gov.br/",
+    "blank": true
+  },
+  {
+    "titulo": "Meio Ambiente",
+    "icon": "fa-seedling",
+    "descricao": "Informações do Meio Ambiente\n",
     "submenus": [
       {
-        "titulo": "Decretos",
-        "icon": "fa-file-alt",
-        "descricao": "Consulta decretos municipais.",
-        "link": "#"
+        "titulo": "Leis Ambientais",
+        "icon": "fa-seedling",
+        "descricao": "",
+        "link": "https://meioambiente.timoteo.mg.gov.br/1302/legislacao-ambiental",
+        "blank": true
       },
       {
-        "titulo": "Portarias",
-        "icon": "fa-file-alt",
-        "descricao": "Consulta portarias.",
-        "link": "#"
-      },
-      {
-        "titulo": "Atas",
-        "icon": "fa-file-alt",
-        "descricao": "Consulta atas.",
-        "link": "#"
+        "titulo": "Portal do Meio Ambiente",
+        "icon": "fa-seedling",
+        "descricao": "",
+        "link": "https://meioambiente.timoteo.mg.gov.br/",
+        "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
   {
-    "titulo": "Convênios",
-    "icon": "fa-handshake",
-    "descricao": "Convênios firmados pelo município.",
-    "submenus": [
-      {
-        "titulo": "Convênios Ativos",
-        "icon": "fa-handshake",
-        "descricao": "Consulta convênios ativos.",
-        "link": "#"
-      },
-      {
-        "titulo": "Convênios Encerrados",
-        "icon": "fa-handshake",
-        "descricao": "Consulta convênios encerrados.",
-        "link": "#"
-      }
-    ]
+    "titulo": "Conselhos municipais",
+    "icon": "fa-people-roof",
+    "descricao": "Demonstra os conselhos municipais\n",
+    "submenus": [],
+    "link": "https://www.timoteo.mg.gov.br/148/conselhos-municipais-de-timoteo",
+    "blank": true
   },
-
   {
-    "titulo": "Legislação",
-    "icon": "fa-book",
-    "descricao": "Leis e normas municipais.",
-    "submenus": [
-      {
-        "titulo": "Leis Municipais",
-        "icon": "fa-book",
-        "descricao": "Consulta leis municipais.",
-        "link": "#"
-      },
-      {
-        "titulo": "Decretos",
-        "icon": "fa-book",
-        "descricao": "Consulta decretos.",
-        "link": "#"
-      },
-      {
-        "titulo": "Portarias",
-        "icon": "fa-book",
-        "descricao": "Consulta portarias.",
-        "link": "#"
-      }
-    ]
-  },
-
-  {
-    "titulo": "Carta de Serviços",
+    "titulo": "Carta de serviços",
     "icon": "fa-id-card",
-    "descricao": "Carta de serviços ao cidadão.",
+    "descricao": "Carta de serviços ao cidadão\n",
     "submenus": [
       {
-        "titulo": "Serviços Municipais",
+        "titulo": "Consulta de Processos",
         "icon": "fa-id-card",
-        "descricao": "Consulta serviços municipais.",
-        "link": "#"
-      }
-    ]
-  },
-
-  {
-    "titulo": "Institucional",
-    "icon": "fa-sitemap",
-    "descricao": "Informações institucionais.",
-    "submenus": [
-      {
-        "titulo": "Estrutura Organizacional",
-        "icon": "fa-sitemap",
-        "descricao": "Consulta estrutura organizacional.",
-        "link": "#"
+        "descricao": "",
+        "link": "https://e-gov.betha.com.br/protocolo/01038-245/con_nroprocesso.faces",
+        "blank": true
       },
       {
-        "titulo": "Secretarias",
-        "icon": "fa-sitemap",
-        "descricao": "Consulta secretarias municipais.",
-        "link": "#"
+        "titulo": "IPTU/2° VIA",
+        "icon": "fa-id-card",
+        "descricao": "",
+        "link": "https://e-gov.betha.com.br/cdweb/resource.faces?params=r64ZPK9oUnkpLttM7aoOLw==",
+        "blank": true
+      },
+      {
+        "titulo": "Serviços de Receita - Cidadão Web",
+        "icon": "fa-id-card",
+        "descricao": "",
+        "link": "https://e-gov.betha.com.br/cdweb/03114-484/contribuinte/main.faces",
+        "blank": true
+      },
+      {
+        "titulo": "Validação de documentos",
+        "icon": "fa-id-card",
+        "descricao": "",
+        "link": "https://e-gov.betha.com.br/cdweb/03114-484/contribuinte/con_validacaodocumentos.faces",
+        "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
   {
-    "titulo": "Veículos",
-    "icon": "fa-car",
-    "descricao": "Frota de veículos do município.",
+    "titulo": "Diário oficial",
+    "icon": "fa-pen-nib",
+    "descricao": "Textos normativos do município\n",
+    "submenus": [],
+    "link": "https://www.timoteo.mg.gov.br/diariooficial",
+    "blank": true
+  },
+  {
+    "titulo": "Portal da Prefeitura",
+    "icon": "fa-desktop",
+    "descricao": "Site oficial da entidade\n",
+    "submenus": [],
+    "link": "https://www.timoteo.mg.gov.br/",
+    "blank": true
+  },
+  {
+    "titulo": "Ouvidoria",
+    "icon": "fa-headset",
+    "descricao": "Ouvidoria digital\n",
     "submenus": [
       {
-        "titulo": "Frota Municipal",
-        "icon": "fa-car",
-        "descricao": "Consulta frota municipal.",
-        "link": "#"
+        "titulo": "AppStore",
+        "icon": "fa-file-alt",
+        "descricao": "Aplicativo da Ouvidoria na AppStore",
+        "link": "https://apps.apple.com/br/app/fala-tim%C3%B3teo/id1528783953",
+        "blank": true
+      },
+      {
+        "titulo": "Google Play",
+        "icon": "fa-file-alt",
+        "descricao": "Aplicativo da Ouvidoria na Google Play",
+        "link": "https://play.google.com/store/apps/details?id=br.inf.telecom.timoteomunicipe&hl=pt&gl=br",
+        "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
   {
-    "titulo": "Dados Abertos",
+    "titulo": " Acesso à informação",
+    "icon": "fa-comment-dots",
+    "descricao": "Sobre a LAI:\n\n\nLei nº 12.527, sancionada pelo Presidente da República em 18 de novembro de 2011, tem o propósito de regulamentar o direito constitucional de acesso dos cidadãos às informações públicas e seus dispositivos são aplicáveis aos três Poderes da União, Estados, Distrito Federal e Municípios.\n\nA publicação da Lei de Acesso à informação significa um importante passo para a consolidação democrática do Brasil e torna possível uma maior participação popular e controle social das ações governamentais.\n\nAcesse aqui o texto da lei na íntegra.\n\nEste espaço foi disponibilizado para permitir a pesquisa das informações publicadas e a solicitação de informações que não estejam disponíveis.\n\nO prazo para o fornecimento da informação é de 20 dias, prorrogável por mais 10 dias.\n\nEm caso de indeferimento do pedido via LAI, o cidadão poderá interpor recurso em até 10 dias, a partir da ciência, ao órgão, que terá 5 dias para se manifestar, a contar do recebimento do recurso.\n\n\n\nPara saber mais sobre a lei e seus direitos, acesse o site www.acessoainformacao.gov.br.",
+    "submenus": [
+      {
+        "titulo": "Solicitar informação",
+        "icon": "fa-comment-dots",
+        "descricao": "Solicitação de acesso à informação",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/acesso-informacao/solicitacao-acesso-informacao",
+        "blank": true
+      },
+      {
+        "titulo": "Consultar solicitação",
+        "icon": "fa-comment-dots",
+        "descricao": "Consulta de solicitação feita",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/consulta-acesso-informacao",
+        "blank": true
+      },
+      {
+        "titulo": "www.acessoainformacao.gov.br",
+        "icon": "fa-comment-dots",
+        "descricao": "",
+        "link": "https://www.acessoainformacao.gov.br",
+        "blank": true
+      }
+    ],
+    "link": "",
+    "blank": false
+  },
+  {
+    "titulo": "Dados abertos",
     "icon": "fa-database",
-    "descricao": "Base de dados abertos.",
-    "submenus": [
-      {
-        "titulo": "Base de Dados",
-        "icon": "fa-database",
-        "descricao": "Consulta dados abertos.",
-        "link": "#"
-      }
-    ]
+    "descricao": "Dados estruturados e legíveis por máquinas possibilitando a criação de novas consultas ou aplicações. Os dados aqui obtidos tem base nas recomendações da INDA. ",
+    "submenus": [],
+    "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/dados-abertos?esconderCabecalho=S&esconderMenu=S&esconderRodape=S&",
+    "blank": false
   },
-
   {
-    "titulo": "Coleta de Lixo",
-    "icon": "fa-trash",
-    "descricao": "Informações sobre coleta de resíduos.",
+    "titulo": " LGPD E GOVERNO DIGITAL ",
+    "icon": "fa-shield-halved",
+    "descricao": " Acesse informações sobre a LGPD - Lei Geral de Proteção aos Dados, que garante transparência e privacidade na coleta e uso de dados pessoais. ",
     "submenus": [
       {
-        "titulo": "Roteiro de Coleta",
-        "icon": "fa-trash",
-        "descricao": "Consulta roteiro de coleta.",
-        "link": "#"
+        "titulo": "LGPD",
+        "icon": "fa-file-alt",
+        "descricao": "A Lei Geral de Proteção de Dados Lei nº 13.709/2018 dispõe sobre o tratamento de dados pessoais tanto em meio físico quanto digital, com o objetivo de proteger os direitos fundamentais de liberdade e de privacidade e o livre desenvolvimento da personalidade da pessoa natural, a partir da sua vigência, foram definidas e delimitadas as hipóteses de utilização dos dados pessoais, além de estabelecer mecanismos de proteção dos titulares contra o uso inadequado dos dados.",
+        "link": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm",
+        "blank": true
+      },
+      {
+        "titulo": "GOVERNO DIGITAL",
+        "icon": "fa-desktop",
+        "descricao": "A Lei do Governo Digital nº 14.129/2021 dispõe sobre a ampliação de oferta de serviços digitais, proporcionando mais transparência, rapidez e segurança aos cidadãos. O objetivo é a utilização da tecnologia para aumentar a eficiência, acessibilidade e qualidade dos serviços públicos, tornando o governo mais transparente, responsivo e orientado para as necessidades da população.",
+        "link": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14129.htm",
+        "blank": true
+      },
+      {
+        "titulo": "ENCARREGADO PROTEÇÃO DE DADOS ",
+        "icon": "fa-envelope",
+        "descricao": "NOME: Samuel Oliveira Caldas\n\nCARGO: Subgerente de Transparência\n\nSETOR: Subsecretaria de Tecnologia\n\nENDEREÇO: Avenida Acesita, 3230, São José - Timóteo\n\nTELEFONE: (31) 3847-4742\n\nE-MAIL: samuel.caldas@gmail.com",
+        "link": "",
+        "blank": true
       }
-    ]
+    ],
+    "link": "",
+    "blank": false
   },
-
   {
-    "titulo": "Privacidade e Proteção de Dados",
-    "icon": "fa-shield-alt",
-    "descricao": "Política de privacidade e proteção de dados.",
-    "submenus": [
-      {
-        "titulo": "Política de Privacidade",
-        "icon": "fa-shield-alt",
-        "descricao": "Consulta política de privacidade.",
-        "link": "#"
-      }
-    ]
+    "titulo": "Estrutura organizacional",
+    "icon": "fa-sitemap",
+    "descricao": "Aqui você poderá consultar informações sobre a estrutura organizacional do órgão público, além das informações institucionais de cada setor/unidade. ",
+    "submenus": [],
+    "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/estrutura-organizacional",
+    "blank": false
+  },
+  {
+    "titulo": "Mapa de Obras",
+    "icon": "fa-map-marker-alt",
+    "descricao": "",
+    "submenus": [],
+    "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NTA5NQ==",
+    "blank": "on"
   }
 ]

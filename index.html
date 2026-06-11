@@ -848,6 +848,44 @@
         transition-duration: 0.01ms !important;
       }
     }
+
+    .icon-picker-dialog {
+      border: none;
+      border-radius: var(--radius-lg);
+      padding: 0;
+      max-width: 560px;
+      width: 90vw;
+      max-height: 80vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    }
+    .icon-picker-dialog::backdrop {
+      background: rgba(20, 33, 61, 0.45);
+    }
+    .icon-picker-header {
+      display: flex;
+      gap: 8px;
+      padding: 14px 14px 8px;
+      background: var(--ledger-paper);
+    }
+    .icon-picker-grid {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 14px 14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+      gap: 6px;
+      background: var(--ledger-paper);
+    }
+    .icon-picker-empty {
+      padding: 24px;
+      text-align: center;
+      color: var(--ledger-ink-soft);
+      margin: 0;
+      background: var(--ledger-paper);
+    }
   </style>
 </head>
 <body>
@@ -1297,6 +1335,15 @@
 ]
   </script>
 
+  <dialog id="iconPickerDialog" class="icon-picker-dialog">
+    <div class="icon-picker-header">
+      <input id="iconPickerSearch" class="form-control" type="search" placeholder="Buscar ícone… ex: building" autocomplete="off" />
+      <button id="iconPickerClose" class="btn-ledger" type="button" aria-label="Fechar">✕</button>
+    </div>
+    <div id="iconPickerGrid" class="icon-picker-grid"></div>
+    <p id="iconPickerEmpty" class="icon-picker-empty" hidden>Nenhum ícone encontrado.</p>
+  </dialog>
+
   <script>
     (() => {
       'use strict';
@@ -1326,6 +1373,8 @@
         'fa-scale-balanced', 'fa-landmark', 'fa-magnifying-glass-chart', 'fa-file-invoice-dollar',
         'fa-seedling', 'fa-shield-halved', 'fa-person-digging', 'fa-briefcase', 'fa-calendar-days'
       ];
+
+      let faFreeSolid = null;
 
       const elements = {
         root: document.getElementById('applicationRoot'),
@@ -1598,6 +1647,19 @@
         elements.dropZone.addEventListener('dragover', handleDragOver);
         elements.dropZone.addEventListener('dragleave', handleDragLeave);
         elements.dropZone.addEventListener('drop', handleFileDrop);
+
+        const iconDialog = document.getElementById('iconPickerDialog');
+        const iconSearch = document.getElementById('iconPickerSearch');
+        document.getElementById('iconPickerClose').addEventListener('click', () => iconDialog.close());
+        iconDialog.addEventListener('click', e => {
+          if (e.target === iconDialog) { iconDialog.close(); return; }
+          const btn = e.target.closest('[data-picker-icon]');
+          if (btn) {
+            updateSelectedField('icon', btn.dataset.pickerIcon);
+            iconDialog.close();
+          }
+        });
+        iconSearch.addEventListener('input', () => renderIconPickerGrid(iconSearch.value));
       }
 
       /**
@@ -1878,6 +1940,9 @@
           <div class="mb-4">
             <div class="field-label">Biblioteca rápida <span class="field-help">CDN Font Awesome</span></div>
             <div class="icon-grid">${ICON_LIBRARY.map(iconPickMarkup).join('')}</div>
+            <button class="btn-ledger mt-2" type="button" data-editor-action="open-icon-picker">
+              <i class="bi bi-search me-1" aria-hidden="true"></i> Pesquisar todos…
+            </button>
           </div>
 
           ${selection.kind === 'submenu' ? submenuFieldsMarkup(item) : (Array.isArray(item.submenus) && item.submenus.length ? '' : standaloneLinkFieldsMarkup(item))}
@@ -2988,6 +3053,10 @@
           updateSelectedField('icon', actionTarget.dataset.icon);
           return;
         }
+        if (action === 'open-icon-picker') {
+          openIconPicker();
+          return;
+        }
         if (action === 'duplicate') {
           duplicateSelection();
           return;
@@ -3473,8 +3542,59 @@
         window.setTimeout(() => toast.remove(), 4200);
       }
 
+      async function loadFaIcons() {
+        if (faFreeSolid !== null) {
+          return faFreeSolid;
+        }
+        try {
+          const res = await fetch('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/metadata/icons.json');
+          const data = await res.json();
+          faFreeSolid = Object.entries(data)
+            .filter(([, v]) => Array.isArray(v.styles) && v.styles.includes('solid'))
+            .map(([name]) => 'fa-' + name)
+            .sort();
+        } catch {
+          faFreeSolid = [...ICON_LIBRARY];
+          showToast('Não foi possível carregar ícones — usando lista reduzida.', 'error');
+        }
+        return faFreeSolid;
+      }
+
+      async function openIconPicker() {
+        const dialog = document.getElementById('iconPickerDialog');
+        const grid = document.getElementById('iconPickerGrid');
+        document.getElementById('iconPickerSearch').value = '';
+        grid.innerHTML = '<p style="padding:24px;text-align:center;grid-column:1/-1">Carregando ícones…</p>';
+        document.getElementById('iconPickerEmpty').hidden = true;
+        dialog.showModal();
+        await loadFaIcons();
+        renderIconPickerGrid('');
+      }
+
+      function renderIconPickerGrid(filter) {
+        const q = filter.trim().toLowerCase();
+        const source = faFreeSolid ?? ICON_LIBRARY;
+        const matches = q ? source.filter(n => n.slice(3).includes(q)) : source;
+        const grid = document.getElementById('iconPickerGrid');
+        const empty = document.getElementById('iconPickerEmpty');
+        const currentIcon = selectedItem()?.item.icon;
+        const visible = matches.slice(0, 300);
+        grid.innerHTML = visible.map(icon => `
+          <button class="icon-pick ${currentIcon === icon ? 'active' : ''}"
+                  type="button" title="${escapeHtml(icon)}"
+                  data-picker-icon="${escapeHtml(icon)}">
+            <i class="fa-solid ${escapeHtml(icon)} fa-fw" aria-hidden="true"></i>
+          </button>`).join('');
+        if (matches.length > 300) {
+          grid.insertAdjacentHTML('beforeend',
+            `<p class="icon-picker-empty" style="grid-column:1/-1">Mostrando 300 de ${matches.length}. Refine a busca.</p>`);
+        }
+        empty.hidden = matches.length > 0;
+      }
+
       initializeApplication();
     })();
   </script>
+
 </body>
 </html>
