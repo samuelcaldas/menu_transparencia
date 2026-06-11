@@ -1438,6 +1438,8 @@
           titulo: String(safeCategory.titulo ?? `Categoria ${index + 1}`),
           icon: String(safeCategory.icon ?? FALLBACK_ICON),
           descricao: String(safeCategory.descricao ?? ''),
+          link: String(safeCategory.link ?? ''),
+          blank: Boolean(safeCategory.blank),
           submenus: submenus.map(normalizeSubmenu)
         };
       }
@@ -1472,6 +1474,19 @@
        */
       function isPlainObject(value) {
         return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+      }
+
+      /**
+       * Purpose: Check whether category is direct-link branch without submenus.
+       * Parameters: category {Object} menu category.
+       * Returns: {boolean} true when category has no submenus.
+       * Throws: none.
+       */
+      function isStandaloneLinkCategory(category) {
+        return isPlainObject(category)
+          && Array.isArray(category.submenus)
+          && category.submenus.length === 0
+          && Boolean(String(category.link ?? '').trim());
       }
 
       /**
@@ -1631,7 +1646,8 @@
         renderEditor();
         renderInspector();
         elements.fileNameBadge.textContent = state.sourceName;
-        elements.addSubmenuButton.disabled = !categoryExists(activeCategoryIndex());
+        const activeCategory = categoryExists(activeCategoryIndex()) ? state.menu[activeCategoryIndex()] : null;
+        elements.addSubmenuButton.disabled = !activeCategory || isStandaloneLinkCategory(activeCategory);
         elements.moveUpButton.disabled = !state.selected;
         elements.moveDownButton.disabled = !state.selected;
       }
@@ -1667,7 +1683,11 @@
        * Throws: none.
        */
       function countExternalSubmenus() {
-        return state.menu.reduce((total, category) => total + category.submenus.filter(submenu => submenu.blank).length, 0);
+        return state.menu.reduce((total, category) => {
+          const categoryCount = category.link && category.blank ? 1 : 0;
+          const submenuCount = category.submenus.filter(submenu => submenu.blank).length;
+          return total + categoryCount + submenuCount;
+        }, 0);
       }
 
       /**
@@ -1711,15 +1731,18 @@
        */
       function categoryTreeMarkup(categoryIndex) {
         const category = state.menu[categoryIndex];
-        const isOpen = state.openCategories.has(categoryIndex) || state.searchTerm;
-        const isActive = state.selected?.categoryIndex === categoryIndex && state.selected?.submenuIndex === undefined;
+        const hasSubmenus = category.submenus.length > 0;
+        const isOpen = hasSubmenus && (state.openCategories.has(categoryIndex) || state.searchTerm);
+        const isSelectedCategory = state.selected?.categoryIndex === categoryIndex && state.selected?.submenuIndex === undefined;
+        const isActive = isSelectedCategory || (isStandaloneLinkCategory(category) && state.selected?.categoryIndex === categoryIndex);
         const submenuMarkup = isOpen ? category.submenus.map((submenu, submenuIndex) => submenuTreeMarkup(categoryIndex, submenuIndex)).join('') : '';
+        const linkBadge = isStandaloneLinkCategory(category) ? '↗' : category.submenus.length;
         return `
           <button class="tree-row ${isActive ? 'active' : ''}" type="button" data-action="select-category" data-category-index="${categoryIndex}" role="treeitem" aria-expanded="${Boolean(isOpen)}">
-            <i class="bi ${isOpen ? 'bi-chevron-down' : 'bi-chevron-right'}" aria-hidden="true"></i>
+            <i class="bi ${hasSubmenus ? (isOpen ? 'bi-chevron-down' : 'bi-chevron-right') : 'bi-box-arrow-up-right'}" aria-hidden="true"></i>
             <i class="fa-solid ${escapeHtml(category.icon)} fa-fw" aria-hidden="true"></i>
             <span class="tree-row-label">${escapeHtml(category.titulo)}</span>
-            <span class="tree-count">${category.submenus.length}</span>
+            <span class="tree-count">${linkBadge}</span>
           </button>
           ${submenuMarkup}
         `;
@@ -1765,7 +1788,7 @@
        * Throws: none.
        */
       function categoryMatchesSearch(category) {
-        if (textMatches(category.titulo) || textMatches(category.descricao) || textMatches(category.icon)) {
+        if (textMatches(category.titulo) || textMatches(category.descricao) || textMatches(category.icon) || textMatches(category.link)) {
           return true;
         }
         return category.submenus.some(submenu => textMatches(submenu.titulo) || textMatches(submenu.descricao) || textMatches(submenu.link) || textMatches(submenu.icon));
@@ -1822,6 +1845,7 @@
        */
       function selectedEditorMarkup(selection) {
         const item = selection.item;
+        const hasSubmenus = Array.isArray(item.submenus);
         return `
           <div class="selection-stamp">
             <div class="stamp-icon"><i class="fa-solid ${escapeHtml(item.icon || FALLBACK_ICON)} fa-fw" aria-hidden="true"></i></div>
@@ -1852,12 +1876,31 @@
             <div class="icon-grid">${ICON_LIBRARY.map(iconPickMarkup).join('')}</div>
           </div>
 
-          ${selection.kind === 'submenu' ? submenuFieldsMarkup(item) : ''}
+          ${selection.kind === 'submenu' ? submenuFieldsMarkup(item) : (Array.isArray(item.submenus) && item.submenus.length ? '' : standaloneLinkFieldsMarkup(item))}
 
           <div class="editor-actions">
             <button class="btn-ledger" type="button" data-editor-action="duplicate"><i class="bi bi-copy me-1" aria-hidden="true"></i> Duplicar</button>
-            <button class="btn-ledger" type="button" data-editor-action="add-child"><i class="bi bi-node-plus me-1" aria-hidden="true"></i> Novo submenu</button>
+            ${hasSubmenus ? '<button class="btn-ledger" type="button" data-editor-action="add-child"><i class="bi bi-node-plus me-1" aria-hidden="true"></i> Novo submenu</button>' : ''}
             <button class="btn-ledger btn-ledger-danger" type="button" data-editor-action="delete"><i class="bi bi-trash3 me-1" aria-hidden="true"></i> Remover</button>
+          </div>
+        `;
+      }
+
+      /**
+       * Purpose: Build category link-only field markup.
+       * Parameters: item {Object} category object.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function standaloneLinkFieldsMarkup(item) {
+        return `
+          <div class="mb-3">
+            <label class="field-label" for="categoryLinkInput">Link da categoria <span class="field-help">Usado quando categoria não tem submenu</span></label>
+            <input class="form-control font-monospace" id="categoryLinkInput" data-field="link" value="${escapeHtml(item.link)}" placeholder="https://" autocomplete="off" />
+          </div>
+          <div class="form-check form-switch mb-4">
+            <input class="form-check-input" type="checkbox" role="switch" id="categoryBlankInput" data-field="blank" ${item.blank ? 'checked' : ''} />
+            <label class="form-check-label" for="categoryBlankInput">Abrir em nova aba</label>
           </div>
         `;
       }
@@ -1908,7 +1951,7 @@
         }
         const category = state.menu[state.selected.categoryIndex];
         if (state.selected.submenuIndex === undefined) {
-          return { kind: 'category', item: category, path: 'Categoria' };
+          return { kind: 'category', item: category, path: category.link ? 'Categoria / Link direto' : 'Categoria' };
         }
         if (!submenuExists(state.selected.categoryIndex, state.selected.submenuIndex)) {
           return null;
@@ -1997,6 +2040,8 @@
        * Throws: none.
        */
       function previewCategoryMarkup(category) {
+        const hasLink = Boolean(category.link);
+        const hasSubmenus = category.submenus.length > 0;
         return `
           <article class="preview-card">
             <header class="preview-card-header">
@@ -2006,8 +2051,27 @@
                 <p class="preview-card-copy">${escapeHtml(category.descricao)}</p>
               </div>
             </header>
-            <ul class="preview-list">${category.submenus.map(previewSubmenuMarkup).join('')}</ul>
+            ${hasLink ? previewCategoryLinkMarkup(category) : ''}
+            ${hasSubmenus ? `<ul class="preview-list">${category.submenus.map(previewSubmenuMarkup).join('')}</ul>` : '<div class="p-3 small text-muted">Sem submenu. Link direto na categoria.</div>'}
           </article>
+        `;
+      }
+
+      /**
+       * Purpose: Build preview row for direct-link category.
+       * Parameters: category {Object} category object.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function previewCategoryLinkMarkup(category) {
+        const safeUrl = escapeHtml(category.link || '#');
+        return `
+          <div class="p-3 border-top border-bottom bg-body-tertiary">
+            <a class="d-flex align-items-center gap-2 text-decoration-none fw-semibold" href="${safeUrl}" target="${category.blank ? '_blank' : '_self'}" rel="noopener noreferrer">
+              <i class="bi ${category.blank ? 'bi-box-arrow-up-right' : 'bi-arrow-right'}" aria-hidden="true"></i>
+              <span>${escapeHtml(category.linkLabel || 'Ir para categoria')}</span>
+            </a>
+          </div>
         `;
       }
 
@@ -2583,6 +2647,11 @@
           errors.push(`${label} precisa conter submenus como array.`);
           return;
         }
+        if (!category.submenus.length) {
+          if (!category.link.trim()) errors.push(`${label} sem link direto.`);
+          if (category.link.trim() && !isProbablyValidUrl(category.link)) errors.push(`${label} com link direto possivelmente inválido.`);
+          return;
+        }
         category.submenus.forEach((submenu, submenuIndex) => validateSubmenu(submenu, categoryIndex, submenuIndex, errors));
       }
 
@@ -2969,8 +3038,17 @@
           showToast('Selecione uma categoria antes de criar submenu.', 'error');
           return;
         }
-        const submenuIndex = state.menu[categoryIndex].submenus.length;
-        state.menu[categoryIndex].submenus.push({ titulo: 'Novo submenu', icon: 'fa-file-alt', descricao: '', link: '', blank: true });
+        const category = state.menu[categoryIndex];
+        if (isStandaloneLinkCategory(category) && category.link) {
+          showToast('Categoria com link direto não aceita submenu.', 'error');
+          return;
+        }
+        const submenuIndex = category.submenus.length;
+        category.submenus.push({ titulo: 'Novo submenu', icon: 'fa-file-alt', descricao: '', link: '', blank: true });
+        if (category.link) {
+          delete category.link;
+          delete category.blank;
+        }
         state.selected = { categoryIndex, submenuIndex };
         state.openCategories.add(categoryIndex);
         markDirty('Submenu criado.');
@@ -3018,7 +3096,7 @@
         duplicatedCategory.titulo = `${duplicatedCategory.titulo} (cópia)`;
         state.menu.splice(categoryIndex + 1, 0, duplicatedCategory);
         state.selected = { categoryIndex: categoryIndex + 1 };
-        state.openCategories.add(categoryIndex + 1);
+        if (duplicatedCategory.submenus.length) state.openCategories.add(categoryIndex + 1);
         markDirty('Categoria duplicada.');
       }
 
