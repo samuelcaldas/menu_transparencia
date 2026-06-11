@@ -1,0 +1,2589 @@
+<!--
+/**
+ * @file menu_json_editor_app.html
+ * @purpose Single-page application to load, visualize, validate, edit, and export portal menu JSON.
+ * @author OpenAI
+ * @date 2026-06-11
+ * @version 1.0.0
+ */
+-->
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Editor de menu JSON · Portal da Transparência</title>
+  <meta name="description" content="Aplicação local para carregar, visualizar, editar e exportar menu.json do Portal da Transparência." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9Oer+Rbk3yEog8qfzjux8K1Q5fC5m5tF5a2JdIW3" crossorigin="anonymous" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" referrerpolicy="no-referrer" />
+  <style>
+    :root {
+      --ledger-ink: #14213d;
+      --ledger-ink-soft: #32435f;
+      --ledger-paper: #f6f4ed;
+      --ledger-paper-deep: #ebe6d6;
+      --ledger-card: #fffdf7;
+      --ledger-line: #d8cfb6;
+      --ledger-blue: #1d4ed8;
+      --ledger-blue-soft: #dbeafe;
+      --ledger-green: #0f766e;
+      --ledger-red: #b42318;
+      --ledger-gold: #c78b19;
+      --ledger-shadow: 0 24px 60px rgba(20, 33, 61, 0.14);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --font-display: "Archivo", system-ui, sans-serif;
+      --font-body: "Inter", system-ui, sans-serif;
+      --font-mono: "IBM Plex Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background:
+        linear-gradient(90deg, rgba(216, 207, 182, 0.32) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(216, 207, 182, 0.26) 1px, transparent 1px),
+        radial-gradient(circle at top left, rgba(29, 78, 216, 0.11), transparent 34rem),
+        var(--ledger-paper);
+      background-size: 32px 32px, 32px 32px, auto, auto;
+      color: var(--ledger-ink);
+      font-family: var(--font-body);
+    }
+
+    button, input, textarea, select { font: inherit; }
+
+    .app-shell {
+      width: min(1520px, calc(100vw - 32px));
+      margin: 24px auto;
+    }
+
+    .ledger-hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-card,
+    .stats-card,
+    .panel {
+      border: 1px solid rgba(216, 207, 182, 0.95);
+      background: rgba(255, 253, 247, 0.9);
+      box-shadow: var(--ledger-shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-card {
+      min-height: 178px;
+      padding: 28px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 8px;
+      background: repeating-linear-gradient(90deg, var(--ledger-blue) 0 28px, var(--ledger-gold) 28px 44px, transparent 44px 54px);
+    }
+
+    .hero-eyebrow {
+      color: var(--ledger-green);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      max-width: 720px;
+      margin: 8px 0 10px;
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 5vw, 4.8rem);
+      font-weight: 800;
+      letter-spacing: -0.065em;
+      line-height: 0.88;
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      margin: 0;
+      color: var(--ledger-ink-soft);
+      font-size: 0.98rem;
+    }
+
+    .stats-card {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 18px;
+      border-radius: var(--radius-xl);
+    }
+
+    .metric {
+      min-height: 76px;
+      padding: 14px;
+      border: 1px solid rgba(216, 207, 182, 0.84);
+      border-radius: var(--radius-md);
+      background: linear-gradient(180deg, rgba(255,255,255,0.66), rgba(246,244,237,0.72));
+    }
+
+    .metric-value {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .metric-label {
+      display: block;
+      margin-top: 6px;
+      color: var(--ledger-ink-soft);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding: 12px;
+      border: 1px solid rgba(216, 207, 182, 0.95);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 253, 247, 0.82);
+    }
+
+    .toolbar-actions,
+    .toolbar-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-ledger {
+      border: 1px solid rgba(20, 33, 61, 0.16);
+      border-radius: 999px;
+      background: var(--ledger-card);
+      color: var(--ledger-ink);
+      padding: 0.62rem 0.88rem;
+      font-size: 0.86rem;
+      font-weight: 700;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .btn-ledger:hover,
+    .btn-ledger:focus-visible {
+      background: #ffffff;
+      box-shadow: 0 10px 24px rgba(20, 33, 61, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .btn-ledger-primary {
+      border-color: transparent;
+      background: var(--ledger-blue);
+      color: #ffffff;
+    }
+
+    .btn-ledger-primary:hover,
+    .btn-ledger-primary:focus-visible {
+      background: #173ea8;
+      color: #ffffff;
+    }
+
+    .btn-ledger-danger { color: var(--ledger-red); }
+
+    .hidden-input {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 330px minmax(420px, 1fr) minmax(360px, 0.95fr);
+      gap: 18px;
+      min-height: 720px;
+    }
+
+    .panel {
+      min-width: 0;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 68px;
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(216, 207, 182, 0.86);
+      background: rgba(255, 253, 247, 0.76);
+    }
+
+    .panel-kicker {
+      color: var(--ledger-green);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .panel-title {
+      margin: 2px 0 0;
+      font-family: var(--font-display);
+      font-size: 1.12rem;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+    }
+
+    .tree-panel { display: flex; flex-direction: column; }
+
+    .search-box {
+      padding: 14px 14px 0;
+    }
+
+    .form-control,
+    .form-select {
+      border: 1px solid rgba(20, 33, 61, 0.16);
+      border-radius: var(--radius-sm);
+      background-color: rgba(255, 253, 247, 0.82);
+      color: var(--ledger-ink);
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--ledger-blue);
+      box-shadow: 0 0 0 0.22rem rgba(29, 78, 216, 0.14);
+    }
+
+    .tree {
+      flex: 1;
+      overflow: auto;
+      padding: 12px;
+    }
+
+    .tree-row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 24px 26px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 6px;
+      padding: 9px 10px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: var(--ledger-ink);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .tree-row:hover {
+      border-color: rgba(216, 207, 182, 0.92);
+      background: rgba(255, 253, 247, 0.74);
+    }
+
+    .tree-row.active {
+      border-color: rgba(29, 78, 216, 0.34);
+      background: var(--ledger-blue-soft);
+    }
+
+    .tree-row.submenu {
+      grid-template-columns: 26px minmax(0, 1fr) auto;
+      margin-left: 26px;
+      width: calc(100% - 26px);
+      padding-block: 8px;
+      color: var(--ledger-ink-soft);
+    }
+
+    .tree-row-label {
+      overflow: hidden;
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tree-row.submenu .tree-row-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .tree-count {
+      min-width: 26px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(20, 33, 61, 0.08);
+      color: var(--ledger-ink-soft);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .tree-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      padding: 0 14px 14px;
+    }
+
+    .icon-button {
+      display: inline-grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(20, 33, 61, 0.14);
+      border-radius: 999px;
+      background: rgba(255, 253, 247, 0.86);
+      color: var(--ledger-ink-soft);
+    }
+
+    .icon-button:hover,
+    .icon-button:focus-visible {
+      border-color: rgba(29, 78, 216, 0.34);
+      color: var(--ledger-blue);
+    }
+
+    .icon-button-danger:hover,
+    .icon-button-danger:focus-visible {
+      border-color: rgba(180, 35, 24, 0.36);
+      color: var(--ledger-red);
+    }
+
+    .editor-body {
+      overflow: auto;
+      max-height: 760px;
+      padding: 18px;
+    }
+
+    .selection-stamp {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 14px;
+      border: 1px dashed rgba(15, 118, 110, 0.38);
+      border-radius: var(--radius-lg);
+      background: rgba(240, 253, 250, 0.58);
+    }
+
+    .stamp-icon {
+      display: grid;
+      place-items: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      background: var(--ledger-ink);
+      color: #ffffff;
+      font-size: 1.55rem;
+      transform: rotate(-3deg);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.16), 0 14px 30px rgba(20,33,61,0.22);
+    }
+
+    .stamp-path {
+      color: var(--ledger-green);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .stamp-title {
+      margin: 2px 0;
+      overflow: hidden;
+      font-family: var(--font-display);
+      font-size: 1.38rem;
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .stamp-description {
+      margin: 0;
+      color: var(--ledger-ink-soft);
+      font-size: 0.86rem;
+    }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+      color: var(--ledger-ink-soft);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .field-help {
+      color: rgba(50, 67, 95, 0.78);
+      font-size: 0.76rem;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+      gap: 8px;
+    }
+
+    .icon-pick {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 1;
+      border: 1px solid rgba(20, 33, 61, 0.12);
+      border-radius: 12px;
+      background: rgba(255, 253, 247, 0.82);
+      color: var(--ledger-ink-soft);
+    }
+
+    .icon-pick:hover,
+    .icon-pick:focus-visible,
+    .icon-pick.active {
+      border-color: rgba(29, 78, 216, 0.42);
+      background: var(--ledger-blue-soft);
+      color: var(--ledger-blue);
+    }
+
+    .editor-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(216, 207, 182, 0.78);
+    }
+
+    .inspector-body {
+      display: flex;
+      flex-direction: column;
+      min-height: 760px;
+    }
+
+    .tab-strip {
+      display: flex;
+      gap: 6px;
+      padding: 12px 14px 0;
+    }
+
+    .tab-button {
+      border: 1px solid rgba(20, 33, 61, 0.12);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--ledger-ink-soft);
+      padding: 0.48rem 0.8rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .tab-button.active {
+      border-color: rgba(29, 78, 216, 0.3);
+      background: var(--ledger-blue-soft);
+      color: var(--ledger-blue);
+    }
+
+    .tab-panel {
+      display: none;
+      flex: 1;
+      overflow: hidden;
+      padding: 14px;
+    }
+
+    .tab-panel.active { display: block; }
+
+    .preview-grid {
+      display: grid;
+      gap: 12px;
+      max-height: 690px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .preview-card {
+      border: 1px solid rgba(216, 207, 182, 0.88);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 253, 247, 0.84);
+      overflow: hidden;
+    }
+
+    .preview-card-header {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid rgba(216, 207, 182, 0.66);
+    }
+
+    .preview-card-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--ledger-ink);
+      color: #ffffff;
+    }
+
+    .preview-card-title {
+      margin: 0;
+      overflow: hidden;
+      font-size: 0.96rem;
+      font-weight: 800;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .preview-card-copy {
+      margin: 2px 0 0;
+      color: var(--ledger-ink-soft);
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+
+    .preview-list {
+      display: grid;
+      gap: 1px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      background: rgba(216, 207, 182, 0.46);
+    }
+
+    .preview-list a {
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 12px;
+      background: rgba(255, 253, 247, 0.86);
+      color: var(--ledger-ink);
+      font-size: 0.82rem;
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .preview-list a:hover,
+    .preview-list a:focus-visible {
+      color: var(--ledger-blue);
+      background: #ffffff;
+    }
+
+    .json-textarea {
+      width: 100%;
+      min-height: 562px;
+      resize: vertical;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.58;
+    }
+
+    .validation-list {
+      display: grid;
+      gap: 8px;
+      max-height: 640px;
+      overflow: auto;
+    }
+
+    .validation-item {
+      display: grid;
+      grid-template-columns: 26px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid rgba(216, 207, 182, 0.88);
+      border-radius: var(--radius-md);
+      background: rgba(255, 253, 247, 0.82);
+      color: var(--ledger-ink-soft);
+      font-size: 0.84rem;
+    }
+
+    .validation-item.error {
+      border-color: rgba(180, 35, 24, 0.28);
+      background: rgba(254, 242, 242, 0.88);
+      color: var(--ledger-red);
+    }
+
+    .validation-item.success {
+      border-color: rgba(15, 118, 110, 0.28);
+      background: rgba(240, 253, 250, 0.88);
+      color: var(--ledger-green);
+    }
+
+    .drop-target {
+      border: 2px dashed rgba(29, 78, 216, 0.36) !important;
+      background: rgba(219, 234, 254, 0.68) !important;
+    }
+
+    .toast-stack {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 1100;
+      display: grid;
+      gap: 8px;
+      width: min(420px, calc(100vw - 36px));
+    }
+
+    .app-toast {
+      display: grid;
+      grid-template-columns: 26px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 12px 14px;
+      border: 1px solid rgba(216, 207, 182, 0.95);
+      border-radius: var(--radius-md);
+      background: rgba(255, 253, 247, 0.96);
+      box-shadow: 0 16px 36px rgba(20, 33, 61, 0.16);
+      color: var(--ledger-ink);
+      font-size: 0.86rem;
+    }
+
+    .empty-state {
+      display: grid;
+      place-items: center;
+      min-height: 460px;
+      padding: 32px;
+      text-align: center;
+      color: var(--ledger-ink-soft);
+    }
+
+    .empty-state i {
+      color: var(--ledger-line);
+      font-size: 3rem;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 1280px) {
+      .workspace { grid-template-columns: 300px minmax(0, 1fr); }
+      .inspector-panel { grid-column: 1 / -1; }
+      .inspector-body { min-height: 520px; }
+    }
+
+    @media (max-width: 860px) {
+      .app-shell { width: min(100vw - 18px, 760px); margin-block: 10px; }
+      .ledger-hero, .workspace { grid-template-columns: 1fr; }
+      .hero-card { padding: 22px; }
+      .stats-card { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .editor-body { max-height: none; }
+      .tree-panel { min-height: 520px; }
+      .stamp-title { white-space: normal; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <noscript>Ative JavaScript para editar e exportar o menu JSON.</noscript>
+  <div class="app-shell" id="applicationRoot">
+    <header class="ledger-hero" aria-labelledby="appTitle">
+      <section class="hero-card position-relative">
+        <div class="hero-eyebrow">Portal da Transparência · menu.json</div>
+        <h1 class="hero-title" id="appTitle">Editor de menu cívico</h1>
+        <p class="hero-copy">Carregue um arquivo <strong>menu.json</strong>, navegue pela árvore, edite categorias e submenus, valide a estrutura e baixe uma nova versão pronta para publicar.</p>
+      </section>
+      <aside class="stats-card" aria-label="Resumo do menu">
+        <div class="metric"><span class="metric-value" id="categoryCountMetric">0</span><span class="metric-label">Categorias</span></div>
+        <div class="metric"><span class="metric-value" id="submenuCountMetric">0</span><span class="metric-label">Submenus</span></div>
+        <div class="metric"><span class="metric-value" id="externalCountMetric">0</span><span class="metric-label">Nova aba</span></div>
+        <div class="metric"><span class="metric-value" id="validationCountMetric">0</span><span class="metric-label">Alertas</span></div>
+      </aside>
+    </header>
+
+    <nav class="toolbar" aria-label="Ações do arquivo JSON">
+      <div class="toolbar-actions">
+        <label class="btn-ledger btn-ledger-primary" for="jsonFileInput"><i class="bi bi-folder2-open me-1" aria-hidden="true"></i> Carregar menu.json</label>
+        <input id="jsonFileInput" class="hidden-input" type="file" accept=".json,application/json" />
+        <button class="btn-ledger" type="button" id="downloadJsonButton"><i class="bi bi-download me-1" aria-hidden="true"></i> Baixar JSON</button>
+        <button class="btn-ledger" type="button" id="copyJsonButton"><i class="bi bi-clipboard me-1" aria-hidden="true"></i> Copiar JSON</button>
+        <button class="btn-ledger" type="button" id="resetJsonButton"><i class="bi bi-arrow-counterclockwise me-1" aria-hidden="true"></i> Restaurar base</button>
+      </div>
+      <div class="toolbar-meta">
+        <span class="badge rounded-pill text-bg-light border" id="fileNameBadge">Base embutida</span>
+        <span class="badge rounded-pill text-bg-light border" id="saveStateBadge">Autosave ativo</span>
+      </div>
+    </nav>
+
+    <main class="workspace" id="dropZone">
+      <section class="panel tree-panel" aria-labelledby="treeTitle">
+        <div class="panel-header">
+          <div>
+            <div class="panel-kicker">Navegação</div>
+            <h2 class="panel-title" id="treeTitle">Árvore do menu</h2>
+          </div>
+          <button class="icon-button" type="button" id="expandAllButton" title="Expandir tudo" aria-label="Expandir tudo"><i class="bi bi-arrows-expand" aria-hidden="true"></i></button>
+        </div>
+        <div class="search-box">
+          <label class="sr-only" for="searchInput">Filtrar categorias e submenus</label>
+          <input class="form-control" id="searchInput" type="search" placeholder="Filtrar por título, descrição ou link" autocomplete="off" />
+        </div>
+        <div class="tree" id="treeContainer" role="tree" aria-label="Categorias e submenus"></div>
+        <div class="tree-actions">
+          <button class="btn-ledger" type="button" id="addCategoryButton"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i> Categoria</button>
+          <button class="btn-ledger" type="button" id="addSubmenuButton"><i class="bi bi-node-plus me-1" aria-hidden="true"></i> Submenu</button>
+        </div>
+      </section>
+
+      <section class="panel editor-panel" aria-labelledby="editorTitle">
+        <div class="panel-header">
+          <div>
+            <div class="panel-kicker">Edição</div>
+            <h2 class="panel-title" id="editorTitle">Item selecionado</h2>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="icon-button" type="button" id="moveUpButton" title="Mover para cima" aria-label="Mover para cima"><i class="bi bi-arrow-up" aria-hidden="true"></i></button>
+            <button class="icon-button" type="button" id="moveDownButton" title="Mover para baixo" aria-label="Mover para baixo"><i class="bi bi-arrow-down" aria-hidden="true"></i></button>
+          </div>
+        </div>
+        <div class="editor-body" id="editorContainer"></div>
+      </section>
+
+      <section class="panel inspector-panel" aria-labelledby="inspectorTitle">
+        <div class="panel-header">
+          <div>
+            <div class="panel-kicker">Conferência</div>
+            <h2 class="panel-title" id="inspectorTitle">Preview e JSON</h2>
+          </div>
+          <span class="badge rounded-pill text-bg-light border" id="activeTabBadge">Preview</span>
+        </div>
+        <div class="inspector-body">
+          <div class="tab-strip" role="tablist" aria-label="Painéis de conferência">
+            <button class="tab-button active" type="button" data-tab="preview" role="tab">Preview</button>
+            <button class="tab-button" type="button" data-tab="json" role="tab">JSON bruto</button>
+            <button class="tab-button" type="button" data-tab="validate" role="tab">Validação</button>
+          </div>
+          <div class="tab-panel active" id="previewPanel" role="tabpanel"></div>
+          <div class="tab-panel" id="jsonPanel" role="tabpanel"></div>
+          <div class="tab-panel" id="validatePanel" role="tabpanel"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="application/json" id="embeddedMenuJson">
+[
+  {
+    "titulo": "Receitas",
+    "icon": "fa-coins",
+    "descricao": "Informações sobre as receitas arrecadadas pelo município.",
+    "submenus": [
+      {
+        "titulo": "Receitas Orçamentárias",
+        "icon": "fa-coins",
+        "descricao": "Consulta receitas orçamentárias.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4NQ==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Despesas",
+    "icon": "fa-money-bill",
+    "descricao": "Detalhamento completo das despesas públicas.",
+    "submenus": [
+      {
+        "titulo": "Despesas Empenhadas",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas empenhadas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4Ng==",
+        "blank": true
+      },
+      {
+        "titulo": "Despesas Pagas",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas pagas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4Ng==",
+        "blank": true
+      },
+      {
+        "titulo": "Despesas por Credor",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas por credor.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4Nw==",
+        "blank": true
+      },
+      {
+        "titulo": "Diárias",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta diárias concedidas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4OA==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Patrimônio",
+    "icon": "fa-building",
+    "descricao": "Relação dos bens patrimoniais do município.",
+    "submenus": [
+      {
+        "titulo": "Bens Imóveis",
+        "icon": "fa-building",
+        "descricao": "Consulta bens imóveis do município.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4OQ=="
+      },
+      {
+        "titulo": "Bens Móveis",
+        "icon": "fa-building",
+        "descricao": "Consulta bens móveis.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4OQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Máquinas e Equipamentos",
+        "icon": "fa-industry",
+        "descricao": "Consulta máquinas e equipamentos.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4OQ==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Demonstrativos",
+    "icon": "fa-chart-bar",
+    "descricao": "Relatórios e demonstrativos contábeis.",
+    "submenus": [
+      {
+        "titulo": "RGF",
+        "icon": "fa-chart-bar",
+        "descricao": "Relatório de Gestão Fiscal.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5MA==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Licitações",
+    "icon": "fa-gavel",
+    "descricao": "Consulta de processos licitatórios.",
+    "submenus": [
+      {
+        "titulo": "Licitações Abertas",
+        "icon": "fa-gavel",
+        "descricao": "Consulta licitações abertas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5MQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Licitações Concluídas",
+        "icon": "fa-gavel",
+        "descricao": "Consulta licitações concluídas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5Mg==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Compras",
+    "icon": "fa-shopping-cart",
+    "descricao": "Informações sobre compras públicas.",
+    "submenus": [
+      {
+        "titulo": "Compras Diretas",
+        "icon": "fa-shopping-cart",
+        "descricao": "Consulta compras diretas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5Mw==",
+        "blank": true
+      },
+      {
+        "titulo": "Dispensas",
+        "icon": "fa-shopping-cart",
+        "descricao": "Consulta dispensas de licitação.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5NQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Inexigibilidades",
+        "icon": "fa-shopping-cart",
+        "descricao": "Consulta inexigibilidades.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5NA==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Contratos",
+    "icon": "fa-file-contract",
+    "descricao": "Contratos firmados pela administração pública.",
+    "submenus": [
+      {
+        "titulo": "Contratos Ativos",
+        "icon": "fa-file-contract",
+        "descricao": "Consulta contratos ativos.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5Ng==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Pessoal",
+    "icon": "fa-users",
+    "descricao": "Informações sobre servidores públicos.",
+    "submenus": [
+      {
+        "titulo": "Servidores",
+        "icon": "fa-users",
+        "descricao": "Consulta servidores municipais.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5OA==",
+        "blank": true
+      },
+      {
+        "titulo": "Folha de Pagamento",
+        "icon": "fa-users",
+        "descricao": "Consulta folha de pagamento.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5Nw==",
+        "blank": true
+      },
+      {
+        "titulo": "Cargos",
+        "icon": "fa-users",
+        "descricao": "Consulta cargos públicos.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5OQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Estagiários",
+        "icon": "fa-users",
+        "descricao": "Consulta estagiários.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMA==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Obras",
+    "icon": "fa-hard-hat",
+    "descricao": "Acompanhamento de obras públicas.",
+    "submenus": [
+      {
+        "titulo": "Obras em Andamento",
+        "icon": "fa-hard-hat",
+        "descricao": "Consulta obras em andamento.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Obras Concluídas",
+        "icon": "fa-hard-hat",
+        "descricao": "Consulta obras concluídas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Obras Paralisadas",
+        "icon": "fa-hard-hat",
+        "descricao": "Consulta obras paralisadas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMQ==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Saúde",
+    "icon": "fa-hospital",
+    "descricao": "Informações da saúde pública.",
+    "submenus": [
+      {
+        "titulo": "Unidades de Saúde",
+        "icon": "fa-hospital",
+        "descricao": "Consulta unidades de saúde.",
+        "link": "https://saude.timoteo.mg.gov.br/listar/unidadessaude",
+        "blank": false
+      },
+      {
+        "titulo": "Medicamentos",
+        "icon": "fa-hospital",
+        "descricao": "Consulta medicamentos disponíveis.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMg==",
+        "blank": true
+      },
+      {
+        "titulo": "Fila de Espera",
+        "icon": "fa-hospital",
+        "descricao": "Consulta fila de espera.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwNA==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Documentos Oficiais",
+    "icon": "fa-file-alt",
+    "descricao": "Documentos oficiais do município.",
+    "submenus": [
+      {
+        "titulo": "Decretos",
+        "icon": "fa-file-alt",
+        "descricao": "Consulta decretos municipais.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/MTcyNw==",
+        "blank": true
+      },
+      {
+        "titulo": "Portarias",
+        "icon": "fa-file-alt",
+        "descricao": "Consulta portarias.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwNQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Atas",
+        "icon": "fa-file-alt",
+        "descricao": "Consulta atas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwNg==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Convênios",
+    "icon": "fa-handshake",
+    "descricao": "Convênios firmados pelo município.",
+    "submenus": [
+      {
+        "titulo": "Convênios Ativos",
+        "icon": "fa-handshake",
+        "descricao": "Consulta convênios ativos.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwNw==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Legislação",
+    "icon": "fa-book",
+    "descricao": "Leis e normas municipais.",
+    "submenus": [
+      {
+        "titulo": "Leis Municipais",
+        "icon": "fa-book",
+        "descricao": "Consulta leis municipais.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwOA==",
+        "blank": true
+      },
+      {
+        "titulo": "Decretos",
+        "icon": "fa-book",
+        "descricao": "Consulta decretos.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/MTcyNw==",
+        "blank": true
+      },
+      {
+        "titulo": "Portarias",
+        "icon": "fa-book",
+        "descricao": "Consulta portarias.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwNQ==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Carta de Serviços",
+    "icon": "fa-id-card",
+    "descricao": "Carta de serviços ao cidadão.",
+    "submenus": [
+      {
+        "titulo": "Consulta de Processos",
+        "icon": "fa-id-card",
+        "descricao": "Consulta de Processos.",
+        "link": "https://e-gov.betha.com.br/protocolo/01038-247/con_nroprocesso.faces",
+        "blank": true
+      },
+      {
+        "titulo": "IPTU/2° VIA",
+        "icon": "fa-id-card",
+        "descricao": "IPTU/2° VIA.",
+        "link": "https://e-gov.betha.com.br/cdweb/03114-554/contribuinte/rel_guiaiptu.faces",
+        "blank": true
+      },
+      {
+        "titulo": "Serviços de Receita - Cidadão Web",
+        "icon": "fa-id-card",
+        "descricao": "Serviços de Receita - Cidadão Web.",
+        "link": "https://e-gov.betha.com.br/cdweb/03114-554/contribuinte/main.faces",
+        "blank": true
+      },
+      {
+        "titulo": "Validação de documentos",
+        "icon": "fa-id-card",
+        "descricao": "Validação de documentos.",
+        "link": "https://e-gov.betha.com.br/cdweb/03114-554/contribuinte/con_validacaodocumentos.faces",
+        "blank": true
+      }
+    ]
+  }
+]
+  </script>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const STORAGE_KEY = 'menu-json-editor-state-v1';
+      const FALLBACK_ICON = 'fa-circle-dot';
+      const ICON_LIBRARY = [
+        'fa-coins', 'fa-money-bill', 'fa-building', 'fa-chart-bar', 'fa-gavel',
+        'fa-shopping-cart', 'fa-file-contract', 'fa-users', 'fa-hard-hat', 'fa-hospital',
+        'fa-file-alt', 'fa-handshake', 'fa-book', 'fa-id-card', 'fa-industry',
+        'fa-cog', 'fa-house-chimney', 'fa-envelope', 'fa-phone', 'fa-car',
+        'fa-school', 'fa-warehouse', 'fa-city', 'fa-flag', 'fa-map-marker-alt',
+        'fa-scale-balanced', 'fa-landmark', 'fa-magnifying-glass-chart', 'fa-file-invoice-dollar',
+        'fa-seedling', 'fa-shield-halved', 'fa-person-digging', 'fa-briefcase', 'fa-calendar-days'
+      ];
+
+      const elements = {
+        root: document.getElementById('applicationRoot'),
+        categoryMetric: document.getElementById('categoryCountMetric'),
+        submenuMetric: document.getElementById('submenuCountMetric'),
+        externalMetric: document.getElementById('externalCountMetric'),
+        validationMetric: document.getElementById('validationCountMetric'),
+        fileNameBadge: document.getElementById('fileNameBadge'),
+        saveStateBadge: document.getElementById('saveStateBadge'),
+        fileInput: document.getElementById('jsonFileInput'),
+        downloadButton: document.getElementById('downloadJsonButton'),
+        copyButton: document.getElementById('copyJsonButton'),
+        resetButton: document.getElementById('resetJsonButton'),
+        expandButton: document.getElementById('expandAllButton'),
+        searchInput: document.getElementById('searchInput'),
+        tree: document.getElementById('treeContainer'),
+        addCategoryButton: document.getElementById('addCategoryButton'),
+        addSubmenuButton: document.getElementById('addSubmenuButton'),
+        editor: document.getElementById('editorContainer'),
+        moveUpButton: document.getElementById('moveUpButton'),
+        moveDownButton: document.getElementById('moveDownButton'),
+        activeTabBadge: document.getElementById('activeTabBadge'),
+        previewPanel: document.getElementById('previewPanel'),
+        jsonPanel: document.getElementById('jsonPanel'),
+        validatePanel: document.getElementById('validatePanel'),
+        toastStack: document.getElementById('toastStack'),
+        dropZone: document.getElementById('dropZone')
+      };
+
+      const state = {
+        menu: [],
+        initialMenu: [],
+        selected: null,
+        openCategories: new Set(),
+        searchTerm: '',
+        activeTab: 'preview',
+        sourceName: 'Base embutida',
+        dirty: false
+      };
+
+      /**
+       * Purpose: Escape user-controlled content before inserting HTML.
+       * Parameters: value {unknown} raw value to display.
+       * Returns: {string} escaped HTML-safe string.
+       * Throws: none.
+       */
+      function escapeHtml(value) {
+        return String(value ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      }
+
+      /**
+       * Purpose: Create a deep clone that is safe for JSON-like menu objects.
+       * Parameters: value {unknown} JSON-compatible value.
+       * Returns: {unknown} cloned value.
+       * Throws: SyntaxError when value cannot be serialized.
+       */
+      function cloneJson(value) {
+        return JSON.parse(JSON.stringify(value));
+      }
+
+      /**
+       * Purpose: Read embedded base menu from JSON script tag.
+       * Parameters: none.
+       * Returns: {Array} menu category collection.
+       * Throws: SyntaxError when embedded JSON is invalid.
+       */
+      function readEmbeddedMenu() {
+        const rawJson = document.getElementById('embeddedMenuJson').textContent;
+        return JSON.parse(rawJson);
+      }
+
+      /**
+       * Purpose: Normalize loaded data into editable menu shape.
+       * Parameters: input {unknown} parsed JSON data.
+       * Returns: {Array} normalized categories.
+       * Throws: Error when root is not an array.
+       */
+      function normalizeMenu(input) {
+        if (!Array.isArray(input)) {
+          throw new Error('Arquivo precisa conter um array de categorias.');
+        }
+        return input.map(normalizeCategory);
+      }
+
+      /**
+       * Purpose: Normalize category object.
+       * Parameters: category {unknown} category candidate; index {number} position.
+       * Returns: {Object} normalized category.
+       * Throws: none.
+       */
+      function normalizeCategory(category, index) {
+        const safeCategory = isPlainObject(category) ? category : {};
+        const submenus = Array.isArray(safeCategory.submenus) ? safeCategory.submenus : [];
+        return {
+          titulo: String(safeCategory.titulo ?? `Categoria ${index + 1}`),
+          icon: String(safeCategory.icon ?? FALLBACK_ICON),
+          descricao: String(safeCategory.descricao ?? ''),
+          submenus: submenus.map(normalizeSubmenu)
+        };
+      }
+
+      /**
+       * Purpose: Normalize submenu object.
+       * Parameters: submenu {unknown} submenu candidate; index {number} position.
+       * Returns: {Object} normalized submenu.
+       * Throws: none.
+       */
+      function normalizeSubmenu(submenu, index) {
+        const safeSubmenu = isPlainObject(submenu) ? submenu : {};
+        return {
+          titulo: String(safeSubmenu.titulo ?? `Item ${index + 1}`),
+          icon: String(safeSubmenu.icon ?? FALLBACK_ICON),
+          descricao: String(safeSubmenu.descricao ?? ''),
+          link: String(safeSubmenu.link ?? ''),
+          blank: Boolean(safeSubmenu.blank)
+        };
+      }
+
+      /**
+       * Purpose: Identify plain object values.
+       * Parameters: value {unknown} inspected value.
+       * Returns: {boolean} true for non-null object not array.
+       * Throws: none.
+       */
+      function isPlainObject(value) {
+        return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+      }
+
+      /**
+       * Purpose: Serialize current menu with stable formatting.
+       * Parameters: none.
+       * Returns: {string} formatted JSON.
+       * Throws: TypeError if state cannot be serialized.
+       */
+      function currentJson() {
+        return JSON.stringify(state.menu, null, 2);
+      }
+
+      /**
+       * Purpose: Persist current state to localStorage.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function persistState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({ menu: state.menu, sourceName: state.sourceName }));
+          elements.saveStateBadge.textContent = 'Autosave salvo';
+        } catch (storageError) {
+          elements.saveStateBadge.textContent = 'Autosave indisponível';
+        }
+      }
+
+      /**
+       * Purpose: Load previously saved local state.
+       * Parameters: none.
+       * Returns: {boolean} true when a valid stored state was restored.
+       * Throws: none.
+       */
+      function restoreState() {
+        try {
+          const storedState = localStorage.getItem(STORAGE_KEY);
+          if (!storedState) {
+            return false;
+          }
+          const parsedState = JSON.parse(storedState);
+          state.menu = normalizeMenu(parsedState.menu);
+          state.sourceName = parsedState.sourceName || 'Autosave local';
+          return true;
+        } catch (restoreError) {
+          localStorage.removeItem(STORAGE_KEY);
+          return false;
+        }
+      }
+
+      /**
+       * Purpose: Initialize menu state and bind UI events.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function initializeApplication() {
+        try {
+          state.initialMenu = normalizeMenu(readEmbeddedMenu());
+          if (!restoreState()) {
+            state.menu = cloneJson(state.initialMenu);
+          }
+          ensureDefaultSelection();
+          bindEvents();
+          renderApplication();
+        } catch (initializationError) {
+          renderFatalError(initializationError);
+        }
+      }
+
+      /**
+       * Purpose: Render fatal error when application cannot start.
+       * Parameters: error {Error} initialization failure.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function renderFatalError(error) {
+        elements.root.innerHTML = `
+          <section class="panel p-4">
+            <h1 class="h4">Editor indisponível</h1>
+            <p class="mb-0 text-danger">${escapeHtml(error.message)}</p>
+          </section>
+        `;
+      }
+
+      /**
+       * Purpose: Attach browser event handlers.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function bindEvents() {
+        elements.fileInput.addEventListener('change', handleFileInputChange);
+        elements.downloadButton.addEventListener('click', downloadJsonFile);
+        elements.copyButton.addEventListener('click', copyJsonToClipboard);
+        elements.resetButton.addEventListener('click', resetToEmbeddedMenu);
+        elements.expandButton.addEventListener('click', toggleAllCategories);
+        elements.searchInput.addEventListener('input', handleSearchInput);
+        elements.addCategoryButton.addEventListener('click', addCategory);
+        elements.addSubmenuButton.addEventListener('click', addSubmenuToSelection);
+        elements.moveUpButton.addEventListener('click', () => moveSelection(-1));
+        elements.moveDownButton.addEventListener('click', () => moveSelection(1));
+        elements.tree.addEventListener('click', handleTreeClick);
+        elements.editor.addEventListener('input', handleEditorInput);
+        elements.editor.addEventListener('change', handleEditorChange);
+        document.querySelectorAll('.tab-button').forEach(button => button.addEventListener('click', handleTabClick));
+        elements.dropZone.addEventListener('dragover', handleDragOver);
+        elements.dropZone.addEventListener('dragleave', handleDragLeave);
+        elements.dropZone.addEventListener('drop', handleFileDrop);
+      }
+
+      /**
+       * Purpose: Ensure one selectable item exists when menu has categories.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function ensureDefaultSelection() {
+        if (state.selected && categoryExists(state.selected.categoryIndex)) {
+          return;
+        }
+        state.selected = state.menu.length ? { categoryIndex: 0 } : null;
+        if (state.selected) {
+          state.openCategories.add(0);
+        }
+      }
+
+      /**
+       * Purpose: Check category index existence.
+       * Parameters: categoryIndex {number} category position.
+       * Returns: {boolean} true when index exists.
+       * Throws: none.
+       */
+      function categoryExists(categoryIndex) {
+        return Number.isInteger(categoryIndex) && categoryIndex >= 0 && categoryIndex < state.menu.length;
+      }
+
+      /**
+       * Purpose: Check submenu index existence.
+       * Parameters: categoryIndex {number} category position; submenuIndex {number} submenu position.
+       * Returns: {boolean} true when submenu exists.
+       * Throws: none.
+       */
+      function submenuExists(categoryIndex, submenuIndex) {
+        return categoryExists(categoryIndex) && Number.isInteger(submenuIndex) && submenuIndex >= 0 && submenuIndex < state.menu[categoryIndex].submenus.length;
+      }
+
+      /**
+       * Purpose: Render all application regions.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function renderApplication() {
+        renderMetrics();
+        renderTree();
+        renderEditor();
+        renderInspector();
+        elements.fileNameBadge.textContent = state.sourceName;
+        elements.addSubmenuButton.disabled = !categoryExists(activeCategoryIndex());
+        elements.moveUpButton.disabled = !state.selected;
+        elements.moveDownButton.disabled = !state.selected;
+      }
+
+      /**
+       * Purpose: Render numeric menu summary.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function renderMetrics() {
+        const validation = validateMenu(state.menu);
+        elements.categoryMetric.textContent = String(state.menu.length);
+        elements.submenuMetric.textContent = String(countSubmenus());
+        elements.externalMetric.textContent = String(countExternalSubmenus());
+        elements.validationMetric.textContent = String(validation.errors.length);
+      }
+
+      /**
+       * Purpose: Count all submenu entries.
+       * Parameters: none.
+       * Returns: {number} submenu count.
+       * Throws: none.
+       */
+      function countSubmenus() {
+        return state.menu.reduce((total, category) => total + category.submenus.length, 0);
+      }
+
+      /**
+       * Purpose: Count submenus configured to open in a new tab.
+       * Parameters: none.
+       * Returns: {number} external target count.
+       * Throws: none.
+       */
+      function countExternalSubmenus() {
+        return state.menu.reduce((total, category) => total + category.submenus.filter(submenu => submenu.blank).length, 0);
+      }
+
+      /**
+       * Purpose: Render category and submenu tree.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function renderTree() {
+        const filteredIndexes = filteredCategoryIndexes();
+        if (!filteredIndexes.length) {
+          elements.tree.innerHTML = emptyTreeMarkup();
+          return;
+        }
+        elements.tree.innerHTML = filteredIndexes.map(categoryIndex => categoryTreeMarkup(categoryIndex)).join('');
+      }
+
+      /**
+       * Purpose: Build empty tree state markup.
+       * Parameters: none.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function emptyTreeMarkup() {
+        return `
+          <div class="empty-state">
+            <div>
+              <i class="bi bi-search" aria-hidden="true"></i>
+              <p class="mt-3 mb-1 fw-bold">Nada encontrado</p>
+              <p class="mb-0">Ajuste o filtro ou carregue outro JSON.</p>
+            </div>
+          </div>
+        `;
+      }
+
+      /**
+       * Purpose: Build category tree branch markup.
+       * Parameters: categoryIndex {number} category position.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function categoryTreeMarkup(categoryIndex) {
+        const category = state.menu[categoryIndex];
+        const isOpen = state.openCategories.has(categoryIndex) || state.searchTerm;
+        const isActive = state.selected?.categoryIndex === categoryIndex && state.selected?.submenuIndex === undefined;
+        const submenuMarkup = isOpen ? category.submenus.map((submenu, submenuIndex) => submenuTreeMarkup(categoryIndex, submenuIndex)).join('') : '';
+        return `
+          <button class="tree-row ${isActive ? 'active' : ''}" type="button" data-action="select-category" data-category-index="${categoryIndex}" role="treeitem" aria-expanded="${Boolean(isOpen)}">
+            <i class="bi ${isOpen ? 'bi-chevron-down' : 'bi-chevron-right'}" aria-hidden="true"></i>
+            <i class="fa-solid ${escapeHtml(category.icon)} fa-fw" aria-hidden="true"></i>
+            <span class="tree-row-label">${escapeHtml(category.titulo)}</span>
+            <span class="tree-count">${category.submenus.length}</span>
+          </button>
+          ${submenuMarkup}
+        `;
+      }
+
+      /**
+       * Purpose: Build submenu row markup.
+       * Parameters: categoryIndex {number} category position; submenuIndex {number} submenu position.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function submenuTreeMarkup(categoryIndex, submenuIndex) {
+        const submenu = state.menu[categoryIndex].submenus[submenuIndex];
+        const isActive = state.selected?.categoryIndex === categoryIndex && state.selected?.submenuIndex === submenuIndex;
+        return `
+          <button class="tree-row submenu ${isActive ? 'active' : ''}" type="button" data-action="select-submenu" data-category-index="${categoryIndex}" data-submenu-index="${submenuIndex}" role="treeitem">
+            <i class="fa-solid ${escapeHtml(submenu.icon)} fa-fw" aria-hidden="true"></i>
+            <span class="tree-row-label">${escapeHtml(submenu.titulo)}</span>
+            <span class="tree-count">${submenu.blank ? '↗' : '→'}</span>
+          </button>
+        `;
+      }
+
+      /**
+       * Purpose: Compute indexes matching search term.
+       * Parameters: none.
+       * Returns: {Array<number>} visible category indexes.
+       * Throws: none.
+       */
+      function filteredCategoryIndexes() {
+        if (!state.searchTerm) {
+          return state.menu.map((category, index) => index);
+        }
+        return state.menu
+          .map((category, index) => categoryMatchesSearch(category) ? index : null)
+          .filter(index => index !== null);
+      }
+
+      /**
+       * Purpose: Determine if category branch matches current search.
+       * Parameters: category {Object} category object.
+       * Returns: {boolean} true when category or submenu matches.
+       * Throws: none.
+       */
+      function categoryMatchesSearch(category) {
+        if (textMatches(category.titulo) || textMatches(category.descricao) || textMatches(category.icon)) {
+          return true;
+        }
+        return category.submenus.some(submenu => textMatches(submenu.titulo) || textMatches(submenu.descricao) || textMatches(submenu.link) || textMatches(submenu.icon));
+      }
+
+      /**
+       * Purpose: Compare text against search term.
+       * Parameters: value {unknown} inspected text.
+       * Returns: {boolean} true when normalized text contains search term.
+       * Throws: none.
+       */
+      function textMatches(value) {
+        return String(value ?? '').toLocaleLowerCase('pt-BR').includes(state.searchTerm);
+      }
+
+      /**
+       * Purpose: Render selected item editor.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function renderEditor() {
+        const selection = selectedItem();
+        if (!selection) {
+          elements.editor.innerHTML = emptyEditorMarkup();
+          return;
+        }
+        elements.editor.innerHTML = selectedEditorMarkup(selection);
+      }
+
+      /**
+       * Purpose: Build empty editor markup.
+       * Parameters: none.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function emptyEditorMarkup() {
+        return `
+          <div class="empty-state">
+            <div>
+              <i class="bi bi-diagram-3" aria-hidden="true"></i>
+              <p class="mt-3 mb-1 fw-bold">Nenhum item selecionado</p>
+              <p class="mb-0">Crie categoria ou carregue arquivo JSON.</p>
+            </div>
+          </div>
+        `;
+      }
+
+      /**
+       * Purpose: Build selected item editor markup.
+       * Parameters: selection {Object} selected item descriptor.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function selectedEditorMarkup(selection) {
+        const item = selection.item;
+        return `
+          <div class="selection-stamp">
+            <div class="stamp-icon"><i class="fa-solid ${escapeHtml(item.icon || FALLBACK_ICON)} fa-fw" aria-hidden="true"></i></div>
+            <div class="min-w-0">
+              <div class="stamp-path">${escapeHtml(selection.path)}</div>
+              <h3 class="stamp-title">${escapeHtml(item.titulo || 'Sem título')}</h3>
+              <p class="stamp-description">${escapeHtml(item.descricao || 'Sem descrição')}</p>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="field-label" for="titleInput">Título <span class="field-help">Obrigatório</span></label>
+            <input class="form-control" id="titleInput" data-field="titulo" value="${escapeHtml(item.titulo)}" autocomplete="off" />
+          </div>
+
+          <div class="mb-3">
+            <label class="field-label" for="descriptionInput">Descrição <span class="field-help">Texto curto exibido no portal</span></label>
+            <textarea class="form-control" id="descriptionInput" data-field="descricao" rows="4">${escapeHtml(item.descricao)}</textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="field-label" for="iconInput">Ícone Font Awesome <span class="field-help">Ex.: fa-coins</span></label>
+            <input class="form-control font-monospace" id="iconInput" data-field="icon" value="${escapeHtml(item.icon)}" autocomplete="off" />
+          </div>
+
+          <div class="mb-4">
+            <div class="field-label">Biblioteca rápida <span class="field-help">CDN Font Awesome</span></div>
+            <div class="icon-grid">${ICON_LIBRARY.map(iconPickMarkup).join('')}</div>
+          </div>
+
+          ${selection.kind === 'submenu' ? submenuFieldsMarkup(item) : ''}
+
+          <div class="editor-actions">
+            <button class="btn-ledger" type="button" data-editor-action="duplicate"><i class="bi bi-copy me-1" aria-hidden="true"></i> Duplicar</button>
+            <button class="btn-ledger" type="button" data-editor-action="add-child"><i class="bi bi-node-plus me-1" aria-hidden="true"></i> Novo submenu</button>
+            <button class="btn-ledger btn-ledger-danger" type="button" data-editor-action="delete"><i class="bi bi-trash3 me-1" aria-hidden="true"></i> Remover</button>
+          </div>
+        `;
+      }
+
+      /**
+       * Purpose: Build submenu-only field markup.
+       * Parameters: item {Object} submenu object.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function submenuFieldsMarkup(item) {
+        return `
+          <div class="mb-3">
+            <label class="field-label" for="linkInput">Link <span class="field-help">URL de destino</span></label>
+            <input class="form-control font-monospace" id="linkInput" data-field="link" value="${escapeHtml(item.link)}" placeholder="https://" autocomplete="off" />
+          </div>
+          <div class="form-check form-switch mb-4">
+            <input class="form-check-input" type="checkbox" role="switch" id="blankInput" data-field="blank" ${item.blank ? 'checked' : ''} />
+            <label class="form-check-label" for="blankInput">Abrir em nova aba</label>
+          </div>
+        `;
+      }
+
+      /**
+       * Purpose: Build icon picker button markup.
+       * Parameters: icon {string} Font Awesome class.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function iconPickMarkup(icon) {
+        const currentIcon = selectedItem()?.item.icon;
+        return `
+          <button class="icon-pick ${currentIcon === icon ? 'active' : ''}" type="button" title="${escapeHtml(icon)}" data-editor-action="pick-icon" data-icon="${escapeHtml(icon)}">
+            <i class="fa-solid ${escapeHtml(icon)} fa-fw" aria-hidden="true"></i>
+          </button>
+        `;
+      }
+
+      /**
+       * Purpose: Get selected item descriptor.
+       * Parameters: none.
+       * Returns: {Object|null} selected descriptor or null.
+       * Throws: none.
+       */
+      function selectedItem() {
+        if (!state.selected || !categoryExists(state.selected.categoryIndex)) {
+          return null;
+        }
+        const category = state.menu[state.selected.categoryIndex];
+        if (state.selected.submenuIndex === undefined) {
+          return { kind: 'category', item: category, path: 'Categoria' };
+        }
+        if (!submenuExists(state.selected.categoryIndex, state.selected.submenuIndex)) {
+          return null;
+        }
+        return {
+          kind: 'submenu',
+          item: category.submenus[state.selected.submenuIndex],
+          path: `${category.titulo} / Submenu`
+        };
+      }
+
+      /**
+       * Purpose: Render inspector selected tab.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function renderInspector() {
+        renderTabState();
+        renderPreviewPanel();
+        renderJsonPanel();
+        renderValidationPanel();
+      }
+
+      /**
+       * Purpose: Render visible tab button and panel state.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function renderTabState() {
+        document.querySelectorAll('.tab-button').forEach(button => button.classList.toggle('active', button.dataset.tab === state.activeTab));
+        document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+        document.getElementById(`${state.activeTab}Panel`).classList.add('active');
+        elements.activeTabBadge.textContent = tabLabel(state.activeTab);
+      }
+
+      /**
+       * Purpose: Convert tab identifier to label.
+       * Parameters: tab {string} tab identifier.
+       * Returns: {string} human label.
+       * Throws: none.
+       */
+      function tabLabel(tab) {
+        const labels = { preview: 'Preview', json: 'JSON bruto', validate: 'Validação' };
+        return labels[tab] || 'Preview';
+      }
+
+      /**
+       * Purpose: Render portal preview panel.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function renderPreviewPanel() {
+        if (!state.menu.length) {
+          elements.previewPanel.innerHTML = emptyPreviewMarkup();
+          return;
+        }
+        elements.previewPanel.innerHTML = `<div class="preview-grid">${state.menu.map(previewCategoryMarkup).join('')}</div>`;
+      }
+
+      /**
+       * Purpose: Build empty preview markup.
+       * Parameters: none.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function emptyPreviewMarkup() {
+        return `
+          <div class="empty-state">
+            <div>
+              <i class="bi bi-window-sidebar" aria-hidden="true"></i>
+              <p class="mt-3 mb-1 fw-bold">Preview vazio</p>
+              <p class="mb-0">Adicione categorias para visualizar o portal.</p>
+            </div>
+          </div>
+        `;
+      }
+
+      /**
+       * Purpose: Build preview card markup for category.
+       * Parameters: category {Object} category object.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function previewCategoryMarkup(category) {
+        return `
+          <article class="preview-card">
+            <header class="preview-card-header">
+              <span class="preview-card-icon"><i class="fa-solid ${escapeHtml(category.icon)} fa-fw" aria-hidden="true"></i></span>
+              <div class="min-w-0">
+                <h3 class="preview-card-title">${escapeHtml(category.titulo)}</h3>
+                <p class="preview-card-copy">${escapeHtml(category.descricao)}</p>
+              </div>
+            </header>
+            <ul class="preview-list">${category.submenus.map(previewSubmenuMarkup).join('')}</ul>
+          </article>
+        `;
+      }
+
+      /**
+       * Purpose: Build preview row markup for submenu.
+       * Parameters: submenu {Object} submenu object.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function previewSubmenuMarkup(submenu) {
+        const safeUrl = escapeHtml(submenu.link || '#');
+        return `
+          <li>
+            <a href="${safeUrl}" target="${submenu.blank ? '_blank' : '_self'}" rel="noopener noreferrer">
+              <i class="fa-solid ${escapeHtml(submenu.icon)} fa-fw" aria-hidden="true"></i>
+              <span class="text-truncate">${escapeHtml(submenu.titulo)}</span>
+              <i class="bi ${submenu.blank ? 'bi-box-arrow-up-right' : 'bi-arrow-right'}" aria-hidden="true"></i>
+            </a>
+          </li>
+        `;
+      }
+
+      /**
+       * Purpose: Render raw JSON editor panel.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function renderJsonPanel() {
+        elements.jsonPanel.innerHTML = `
+          <div class="d-flex gap-2 flex-wrap mb-3">
+            <button class="btn-ledger btn-ledger-primary" type="button" id="applyJsonButton"><i class="bi bi-check2-circle me-1" aria-hidden="true"></i> Aplicar JSON</button>
+            <button class="btn-ledger" type="button" id="formatJsonButton"><i class="bi bi-braces me-1" aria-hidden="true"></i> Formatar</button>
+          </div>
+          <label class="sr-only" for="rawJsonTextarea">JSON bruto editável</label>
+          <textarea class="form-control json-textarea" id="rawJsonTextarea" spellcheck="false">${escapeHtml(currentJson())}</textarea>
+        `;
+        document.getElementById('applyJsonButton').addEventListener('click', applyRawJson);
+        document.getElementById('formatJsonButton').addEventListener('click', formatRawJson);
+      }
+
+      /**
+       * Purpose: Render schema validation panel.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function renderValidationPanel() {
+        const validation = validateMenu(state.menu);
+        if (!validation.errors.length) {
+          elements.validatePanel.innerHTML = `
+            <div class="validation-list">
+              <div class="validation-item success"><i class="bi bi-check-circle" aria-hidden="true"></i><span>Estrutura válida: categorias, submenus e campos obrigatórios estão coerentes.</span></div>
+            </div>
+          `;
+          return;
+        }
+        elements.validatePanel.innerHTML = `<div class="validation-list">${validation.errors.map(validationErrorMarkup).join('')}</div>`;
+      }
+
+      /**
+       * Purpose: Build validation error markup.
+       * Parameters: message {string} error message.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function validationErrorMarkup(message) {
+        return `<div class="validation-item error"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i><span>${escapeHtml(message)}</span></div>`;
+      }
+
+      /**
+       * Purpose: Validate menu shape and required business fields.
+       * Parameters: menu {unknown} menu candidate.
+       * Returns: {Object} validation result.
+       * Throws: none.
+       */
+      function validateMenu(menu) {
+        const errors = [];
+        if (!Array.isArray(menu)) {
+          return { errors: ['Raiz do JSON precisa ser um array.'] };
+        }
+        menu.forEach((category, categoryIndex) => validateCategory(category, categoryIndex, errors));
+        return { errors };
+      }
+
+      /**
+       * Purpose: Validate category item.
+       * Parameters: category {Object} category; categoryIndex {number} position; errors {Array<string>} mutable error list.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function validateCategory(category, categoryIndex, errors) {
+        const label = `Categoria ${categoryIndex + 1}`;
+        if (!category.titulo.trim()) errors.push(`${label} sem título.`);
+        if (!category.icon.trim()) errors.push(`${label} sem ícone.`);
+        if (!category.descricao.trim()) errors.push(`${label} sem descrição.`);
+        if (!Array.isArray(category.submenus)) {
+          errors.push(`${label} precisa conter submenus como array.`);
+          return;
+        }
+        category.submenus.forEach((submenu, submenuIndex) => validateSubmenu(submenu, categoryIndex, submenuIndex, errors));
+      }
+
+      /**
+       * Purpose: Validate submenu item.
+       * Parameters: submenu {Object} submenu; categoryIndex {number} category position; submenuIndex {number} submenu position; errors {Array<string>} mutable error list.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function validateSubmenu(submenu, categoryIndex, submenuIndex, errors) {
+        const label = `Categoria ${categoryIndex + 1}, submenu ${submenuIndex + 1}`;
+        if (!submenu.titulo.trim()) errors.push(`${label} sem título.`);
+        if (!submenu.icon.trim()) errors.push(`${label} sem ícone.`);
+        if (!submenu.descricao.trim()) errors.push(`${label} sem descrição.`);
+        if (!submenu.link.trim()) errors.push(`${label} sem link.`);
+        if (submenu.link.trim() && !isProbablyValidUrl(submenu.link)) errors.push(`${label} com link possivelmente inválido.`);
+      }
+
+      /**
+       * Purpose: Validate URL syntax conservatively for portal links.
+       * Parameters: value {string} URL string.
+       * Returns: {boolean} true when URL is likely valid.
+       * Throws: none.
+       */
+      function isProbablyValidUrl(value) {
+        try {
+          const parsedUrl = new URL(value);
+          return ['http:', 'https:', 'mailto:', 'tel:'].includes(parsedUrl.protocol);
+        } catch (urlError) {
+          return false;
+        }
+      }
+
+      /**
+       * Purpose: Handle file input change.
+       * Parameters: event {Event} file input event.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function handleFileInputChange(event) {
+        const file = event.target.files?.[0];
+        if (!file) {
+          return;
+        }
+        readJsonFile(file);
+        event.target.value = '';
+      }
+
+      /**
+       * Purpose: Read and apply JSON file from File API.
+       * Parameters: file {File} selected file.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function readJsonFile(file) {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => applyLoadedJson(String(reader.result ?? ''), file.name));
+        reader.addEventListener('error', () => showToast('Não foi possível ler o arquivo selecionado.', 'error'));
+        reader.readAsText(file, 'utf-8');
+      }
+
+      /**
+       * Purpose: Parse and apply loaded JSON string.
+       * Parameters: rawJson {string} file content; sourceName {string} filename label.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function applyLoadedJson(rawJson, sourceName) {
+        try {
+          const parsedJson = JSON.parse(rawJson);
+          state.menu = normalizeMenu(parsedJson);
+          state.sourceName = sourceName;
+          state.selected = state.menu.length ? { categoryIndex: 0 } : null;
+          state.openCategories = new Set(state.menu.length ? [0] : []);
+          markDirty('Arquivo carregado.');
+        } catch (parseError) {
+          showToast(`JSON inválido: ${parseError.message}`, 'error');
+        }
+      }
+
+      /**
+       * Purpose: Handle tree row selection.
+       * Parameters: event {MouseEvent} delegated click event.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function handleTreeClick(event) {
+        const target = event.target.closest('[data-action]');
+        if (!target) {
+          return;
+        }
+        const categoryIndex = Number(target.dataset.categoryIndex);
+        if (target.dataset.action === 'select-category') {
+          selectCategory(categoryIndex);
+          return;
+        }
+        selectSubmenu(categoryIndex, Number(target.dataset.submenuIndex));
+      }
+
+      /**
+       * Purpose: Select category and toggle branch.
+       * Parameters: categoryIndex {number} category position.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function selectCategory(categoryIndex) {
+        if (!categoryExists(categoryIndex)) {
+          return;
+        }
+        state.selected = { categoryIndex };
+        toggleCategoryOpen(categoryIndex);
+        renderApplication();
+      }
+
+      /**
+       * Purpose: Select submenu item.
+       * Parameters: categoryIndex {number} category position; submenuIndex {number} submenu position.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function selectSubmenu(categoryIndex, submenuIndex) {
+        if (!submenuExists(categoryIndex, submenuIndex)) {
+          return;
+        }
+        state.selected = { categoryIndex, submenuIndex };
+        state.openCategories.add(categoryIndex);
+        renderApplication();
+      }
+
+      /**
+       * Purpose: Toggle category visibility.
+       * Parameters: categoryIndex {number} category position.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function toggleCategoryOpen(categoryIndex) {
+        if (state.openCategories.has(categoryIndex)) {
+          state.openCategories.delete(categoryIndex);
+          return;
+        }
+        state.openCategories.add(categoryIndex);
+      }
+
+      /**
+       * Purpose: Handle form text input changes.
+       * Parameters: event {InputEvent} delegated input event.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function handleEditorInput(event) {
+        const target = event.target;
+        if (!target.matches('[data-field]')) {
+          return;
+        }
+        updateSelectedField(target.dataset.field, target.value);
+      }
+
+      /**
+       * Purpose: Handle checkbox and action changes.
+       * Parameters: event {Event} delegated change event.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function handleEditorChange(event) {
+        const target = event.target;
+        if (target.dataset.field === 'blank') {
+          updateSelectedField('blank', target.checked);
+          return;
+        }
+        const actionTarget = event.target.closest('[data-editor-action]');
+        if (actionTarget) {
+          runEditorAction(actionTarget);
+        }
+      }
+
+      /**
+       * Purpose: Delegate editor button actions.
+       * Parameters: event {MouseEvent} delegated event.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      elements.editor.addEventListener('click', event => {
+        const actionTarget = event.target.closest('[data-editor-action]');
+        if (!actionTarget) {
+          return;
+        }
+        runEditorAction(actionTarget);
+      });
+
+      /**
+       * Purpose: Execute editor action from button.
+       * Parameters: actionTarget {HTMLElement} clicked action button.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function runEditorAction(actionTarget) {
+        const action = actionTarget.dataset.editorAction;
+        if (action === 'pick-icon') {
+          updateSelectedField('icon', actionTarget.dataset.icon);
+          return;
+        }
+        if (action === 'duplicate') {
+          duplicateSelection();
+          return;
+        }
+        if (action === 'add-child') {
+          addSubmenuToSelection();
+          return;
+        }
+        if (action === 'delete') {
+          deleteSelection();
+        }
+      }
+
+      /**
+       * Purpose: Update selected item field.
+       * Parameters: field {string} editable field name; value {unknown} new value.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function updateSelectedField(field, value) {
+        const selection = selectedItem();
+        if (!selection) {
+          return;
+        }
+        selection.item[field] = value;
+        markDirty();
+      }
+
+      /**
+       * Purpose: Add new category.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function addCategory() {
+        const categoryIndex = state.menu.length;
+        state.menu.push({ titulo: 'Nova categoria', icon: 'fa-landmark', descricao: '', submenus: [] });
+        state.selected = { categoryIndex };
+        state.openCategories.add(categoryIndex);
+        markDirty('Categoria criada.');
+      }
+
+      /**
+       * Purpose: Add submenu under selected or active category.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function addSubmenuToSelection() {
+        const categoryIndex = activeCategoryIndex();
+        if (!categoryExists(categoryIndex)) {
+          showToast('Selecione uma categoria antes de criar submenu.', 'error');
+          return;
+        }
+        const submenuIndex = state.menu[categoryIndex].submenus.length;
+        state.menu[categoryIndex].submenus.push({ titulo: 'Novo submenu', icon: 'fa-file-alt', descricao: '', link: '', blank: true });
+        state.selected = { categoryIndex, submenuIndex };
+        state.openCategories.add(categoryIndex);
+        markDirty('Submenu criado.');
+      }
+
+      /**
+       * Purpose: Resolve active category index for actions.
+       * Parameters: none.
+       * Returns: {number|null} category index or null.
+       * Throws: none.
+       */
+      function activeCategoryIndex() {
+        if (state.selected && categoryExists(state.selected.categoryIndex)) {
+          return state.selected.categoryIndex;
+        }
+        return state.menu.length ? 0 : null;
+      }
+
+      /**
+       * Purpose: Duplicate current selected item.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function duplicateSelection() {
+        if (!state.selected) {
+          return;
+        }
+        if (state.selected.submenuIndex === undefined) {
+          duplicateCategory();
+          return;
+        }
+        duplicateSubmenu();
+      }
+
+      /**
+       * Purpose: Duplicate selected category.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function duplicateCategory() {
+        const categoryIndex = state.selected.categoryIndex;
+        const duplicatedCategory = cloneJson(state.menu[categoryIndex]);
+        duplicatedCategory.titulo = `${duplicatedCategory.titulo} (cópia)`;
+        state.menu.splice(categoryIndex + 1, 0, duplicatedCategory);
+        state.selected = { categoryIndex: categoryIndex + 1 };
+        state.openCategories.add(categoryIndex + 1);
+        markDirty('Categoria duplicada.');
+      }
+
+      /**
+       * Purpose: Duplicate selected submenu.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function duplicateSubmenu() {
+        const categoryIndex = state.selected.categoryIndex;
+        const submenuIndex = state.selected.submenuIndex;
+        const duplicatedSubmenu = cloneJson(state.menu[categoryIndex].submenus[submenuIndex]);
+        duplicatedSubmenu.titulo = `${duplicatedSubmenu.titulo} (cópia)`;
+        state.menu[categoryIndex].submenus.splice(submenuIndex + 1, 0, duplicatedSubmenu);
+        state.selected = { categoryIndex, submenuIndex: submenuIndex + 1 };
+        markDirty('Submenu duplicado.');
+      }
+
+      /**
+       * Purpose: Delete selected item.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function deleteSelection() {
+        if (!state.selected) {
+          return;
+        }
+        if (state.selected.submenuIndex === undefined) {
+          deleteCategory();
+          return;
+        }
+        deleteSubmenu();
+      }
+
+      /**
+       * Purpose: Delete selected category.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function deleteCategory() {
+        const categoryIndex = state.selected.categoryIndex;
+        state.menu.splice(categoryIndex, 1);
+        state.openCategories.delete(categoryIndex);
+        state.selected = state.menu.length ? { categoryIndex: Math.max(0, categoryIndex - 1) } : null;
+        markDirty('Categoria removida.');
+      }
+
+      /**
+       * Purpose: Delete selected submenu.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function deleteSubmenu() {
+        const categoryIndex = state.selected.categoryIndex;
+        const submenuIndex = state.selected.submenuIndex;
+        state.menu[categoryIndex].submenus.splice(submenuIndex, 1);
+        state.selected = { categoryIndex };
+        markDirty('Submenu removido.');
+      }
+
+      /**
+       * Purpose: Move selected item up or down.
+       * Parameters: direction {number} -1 up or 1 down.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function moveSelection(direction) {
+        if (!state.selected) {
+          return;
+        }
+        if (state.selected.submenuIndex === undefined) {
+          moveCategory(direction);
+          return;
+        }
+        moveSubmenu(direction);
+      }
+
+      /**
+       * Purpose: Move selected category.
+       * Parameters: direction {number} -1 up or 1 down.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function moveCategory(direction) {
+        const currentIndex = state.selected.categoryIndex;
+        const targetIndex = currentIndex + direction;
+        if (!categoryExists(targetIndex)) {
+          return;
+        }
+        swapItems(state.menu, currentIndex, targetIndex);
+        state.selected = { categoryIndex: targetIndex };
+        rebuildOpenCategoriesAfterMove(currentIndex, targetIndex);
+        markDirty('Categoria movida.');
+      }
+
+      /**
+       * Purpose: Move selected submenu.
+       * Parameters: direction {number} -1 up or 1 down.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function moveSubmenu(direction) {
+        const categoryIndex = state.selected.categoryIndex;
+        const currentIndex = state.selected.submenuIndex;
+        const targetIndex = currentIndex + direction;
+        if (!submenuExists(categoryIndex, targetIndex)) {
+          return;
+        }
+        swapItems(state.menu[categoryIndex].submenus, currentIndex, targetIndex);
+        state.selected = { categoryIndex, submenuIndex: targetIndex };
+        markDirty('Submenu movido.');
+      }
+
+      /**
+       * Purpose: Swap array items by index.
+       * Parameters: collection {Array} target collection; firstIndex {number} first position; secondIndex {number} second position.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function swapItems(collection, firstIndex, secondIndex) {
+        [collection[firstIndex], collection[secondIndex]] = [collection[secondIndex], collection[firstIndex]];
+      }
+
+      /**
+       * Purpose: Keep expanded branches aligned after category reorder.
+       * Parameters: firstIndex {number} original position; secondIndex {number} new position.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function rebuildOpenCategoriesAfterMove(firstIndex, secondIndex) {
+        const nextOpenCategories = new Set();
+        state.openCategories.forEach(index => {
+          if (index === firstIndex) nextOpenCategories.add(secondIndex);
+          if (index === secondIndex) nextOpenCategories.add(firstIndex);
+          if (index !== firstIndex && index !== secondIndex) nextOpenCategories.add(index);
+        });
+        state.openCategories = nextOpenCategories;
+      }
+
+      /**
+       * Purpose: Mark state as modified and refresh UI.
+       * Parameters: message {string|undefined} optional toast message.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function markDirty(message) {
+        state.dirty = true;
+        persistState();
+        renderApplication();
+        if (message) {
+          showToast(message, 'success');
+        }
+      }
+
+      /**
+       * Purpose: Handle search field changes.
+       * Parameters: event {InputEvent} search input event.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function handleSearchInput(event) {
+        state.searchTerm = event.target.value.trim().toLocaleLowerCase('pt-BR');
+        renderTree();
+      }
+
+      /**
+       * Purpose: Toggle all category branches open or closed.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function toggleAllCategories() {
+        if (state.openCategories.size === state.menu.length) {
+          state.openCategories = new Set();
+          renderTree();
+          return;
+        }
+        state.openCategories = new Set(state.menu.map((category, index) => index));
+        renderTree();
+      }
+
+      /**
+       * Purpose: Handle inspector tab clicks.
+       * Parameters: event {MouseEvent} tab click event.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function handleTabClick(event) {
+        state.activeTab = event.currentTarget.dataset.tab;
+        renderInspector();
+      }
+
+      /**
+       * Purpose: Apply raw JSON textarea content.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function applyRawJson() {
+        const textarea = document.getElementById('rawJsonTextarea');
+        try {
+          state.menu = normalizeMenu(JSON.parse(textarea.value));
+          state.selected = state.menu.length ? { categoryIndex: 0 } : null;
+          state.openCategories = new Set(state.menu.length ? [0] : []);
+          markDirty('JSON aplicado.');
+        } catch (parseError) {
+          showToast(`JSON inválido: ${parseError.message}`, 'error');
+        }
+      }
+
+      /**
+       * Purpose: Format raw JSON textarea content.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function formatRawJson() {
+        const textarea = document.getElementById('rawJsonTextarea');
+        try {
+          textarea.value = JSON.stringify(JSON.parse(textarea.value), null, 2);
+          showToast('JSON formatado.', 'success');
+        } catch (parseError) {
+          showToast(`JSON inválido: ${parseError.message}`, 'error');
+        }
+      }
+
+      /**
+       * Purpose: Download current JSON as menu.json.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function downloadJsonFile() {
+        const blob = new Blob([currentJson()], { type: 'application/json;charset=utf-8' });
+        const objectUrl = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = objectUrl;
+        anchor.download = 'menu.json';
+        anchor.click();
+        URL.revokeObjectURL(objectUrl);
+        showToast('Download de menu.json iniciado.', 'success');
+      }
+
+      /**
+       * Purpose: Copy current JSON to clipboard.
+       * Parameters: none.
+       * Returns: {Promise<void>} clipboard operation.
+       * Throws: none.
+       */
+      async function copyJsonToClipboard() {
+        try {
+          await navigator.clipboard.writeText(currentJson());
+          showToast('JSON copiado para área de transferência.', 'success');
+        } catch (clipboardError) {
+          showToast('Não foi possível copiar. Use aba JSON bruto.', 'error');
+        }
+      }
+
+      /**
+       * Purpose: Reset editor to embedded base JSON.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function resetToEmbeddedMenu() {
+        state.menu = cloneJson(state.initialMenu);
+        state.sourceName = 'Base embutida';
+        state.selected = state.menu.length ? { categoryIndex: 0 } : null;
+        state.openCategories = new Set(state.menu.length ? [0] : []);
+        localStorage.removeItem(STORAGE_KEY);
+        markDirty('Base restaurada.');
+      }
+
+      /**
+       * Purpose: Highlight drop target while file is dragged.
+       * Parameters: event {DragEvent} drag event.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function handleDragOver(event) {
+        event.preventDefault();
+        elements.dropZone.classList.add('drop-target');
+      }
+
+      /**
+       * Purpose: Remove drop target highlight.
+       * Parameters: event {DragEvent} drag event.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function handleDragLeave(event) {
+        if (!elements.dropZone.contains(event.relatedTarget)) {
+          elements.dropZone.classList.remove('drop-target');
+        }
+      }
+
+      /**
+       * Purpose: Load dropped JSON file.
+       * Parameters: event {DragEvent} drop event.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function handleFileDrop(event) {
+        event.preventDefault();
+        elements.dropZone.classList.remove('drop-target');
+        const file = event.dataTransfer.files?.[0];
+        if (!file) {
+          return;
+        }
+        readJsonFile(file);
+      }
+
+      /**
+       * Purpose: Show transient toast message.
+       * Parameters: message {string} message text; tone {string} success or error.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function showToast(message, tone = 'success') {
+        const toast = document.createElement('div');
+        const icon = tone === 'error' ? 'bi-exclamation-triangle text-danger' : 'bi-check-circle text-success';
+        toast.className = 'app-toast';
+        toast.innerHTML = `<i class="bi ${icon}" aria-hidden="true"></i><span>${escapeHtml(message)}</span>`;
+        elements.toastStack.appendChild(toast);
+        window.setTimeout(() => toast.remove(), 4200);
+      }
+
+      initializeApplication();
+    })();
+  </script>
+</body>
+</html>
