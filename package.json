@@ -1,0 +1,19 @@
+{
+  "name": "menu-json-editor",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "verify": "npm run test:unit && npm run build && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "vite": "^5.4.14",
+    "vitest": "^2.1.8"
+  }
+}

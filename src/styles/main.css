@@ -1,0 +1,11 @@
+/* Purpose: Root stylesheet for the menu JSON editor.
+   Dependencies: all sibling CSS modules.
+   Usage: Imported by src/main.js and bundled by Vite. */
+@import url('./tokens.css');
+@import url('./base.css');
+@import url('./layout.css');
+@import url('./controls-tree.css');
+@import url('./editor-inspector.css');
+@import url('./gaps-feedback.css');
+@import url('./icon-picker.css');
+@import url('./responsive.css');

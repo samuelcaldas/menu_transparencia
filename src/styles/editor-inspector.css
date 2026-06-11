@@ -1,0 +1,268 @@
+/* Purpose: Editor, selected-item stamp, inspector tabs, preview, JSON, and validation styles.
+   Dependencies: tokens.css, Bootstrap utility classes, and render templates.
+   Usage: Imported after controls-tree.css. */
+    .editor-body {
+      overflow: auto;
+      max-height: 760px;
+      padding: 18px;
+    }
+
+    .selection-stamp {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 14px;
+      border: 1px dashed rgba(15, 118, 110, 0.38);
+      border-radius: var(--radius-lg);
+      background: rgba(240, 253, 250, 0.58);
+    }
+
+    .stamp-icon {
+      display: grid;
+      place-items: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      background: var(--ledger-ink);
+      color: #ffffff;
+      font-size: 1.55rem;
+      transform: rotate(-3deg);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.16), 0 14px 30px rgba(20,33,61,0.22);
+    }
+
+    .stamp-path {
+      color: var(--ledger-green);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .stamp-title {
+      margin: 2px 0;
+      overflow: hidden;
+      font-family: var(--font-display);
+      font-size: 1.38rem;
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .stamp-description {
+      margin: 0;
+      color: var(--ledger-ink-soft);
+      font-size: 0.86rem;
+    }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+      color: var(--ledger-ink-soft);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .field-help {
+      color: rgba(50, 67, 95, 0.78);
+      font-size: 0.76rem;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+      gap: 8px;
+    }
+
+    .icon-pick {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 1;
+      border: 1px solid rgba(20, 33, 61, 0.12);
+      border-radius: 12px;
+      background: rgba(255, 253, 247, 0.82);
+      color: var(--ledger-ink-soft);
+    }
+
+    .icon-pick:hover,
+    .icon-pick:focus-visible,
+    .icon-pick.active {
+      border-color: rgba(29, 78, 216, 0.42);
+      background: var(--ledger-blue-soft);
+      color: var(--ledger-blue);
+    }
+
+    .editor-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(216, 207, 182, 0.78);
+    }
+
+    .inspector-body {
+      display: flex;
+      flex-direction: column;
+      min-height: 760px;
+    }
+
+    .tab-strip {
+      display: flex;
+      gap: 6px;
+      padding: 12px 14px 0;
+    }
+
+    .tab-button {
+      border: 1px solid rgba(20, 33, 61, 0.12);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--ledger-ink-soft);
+      padding: 0.48rem 0.8rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .tab-button.active {
+      border-color: rgba(29, 78, 216, 0.3);
+      background: var(--ledger-blue-soft);
+      color: var(--ledger-blue);
+    }
+
+    .tab-panel {
+      display: none;
+      flex: 1;
+      overflow: hidden;
+      padding: 14px;
+    }
+
+    .tab-panel.active { display: block; }
+
+    .preview-grid {
+      display: grid;
+      gap: 12px;
+      max-height: 690px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .preview-card {
+      border: 1px solid rgba(216, 207, 182, 0.88);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 253, 247, 0.84);
+      overflow: hidden;
+    }
+
+    .preview-card-header {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid rgba(216, 207, 182, 0.66);
+    }
+
+    .preview-card-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--ledger-ink);
+      color: #ffffff;
+    }
+
+    .preview-card-title {
+      margin: 0;
+      overflow: hidden;
+      font-size: 0.96rem;
+      font-weight: 800;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .preview-card-copy {
+      margin: 2px 0 0;
+      color: var(--ledger-ink-soft);
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+
+    .preview-list {
+      display: grid;
+      gap: 1px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      background: rgba(216, 207, 182, 0.46);
+    }
+
+    .preview-list a {
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 12px;
+      background: rgba(255, 253, 247, 0.86);
+      color: var(--ledger-ink);
+      font-size: 0.82rem;
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .preview-list a:hover,
+    .preview-list a:focus-visible {
+      color: var(--ledger-blue);
+      background: #ffffff;
+    }
+
+    .json-textarea {
+      width: 100%;
+      min-height: 562px;
+      resize: vertical;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.58;
+    }
+
+    .validation-list {
+      display: grid;
+      gap: 8px;
+      max-height: 640px;
+      overflow: auto;
+    }
+
+    .validation-item {
+      display: grid;
+      grid-template-columns: 26px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid rgba(216, 207, 182, 0.88);
+      border-radius: var(--radius-md);
+      background: rgba(255, 253, 247, 0.82);
+      color: var(--ledger-ink-soft);
+      font-size: 0.84rem;
+    }
+
+    .validation-item.error {
+      border-color: rgba(180, 35, 24, 0.28);
+      background: rgba(254, 242, 242, 0.88);
+      color: var(--ledger-red);
+    }
+
+    .validation-item.success {
+      border-color: rgba(15, 118, 110, 0.28);
+      background: rgba(240, 253, 250, 0.88);
+      color: var(--ledger-green);
+    }

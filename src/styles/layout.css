@@ -1,0 +1,186 @@
+/* Purpose: App shell, hero, toolbar, metric, workspace, and panel layout styles.
+   Dependencies: tokens.css and Bootstrap utility classes in markup.
+   Usage: Imported before feature/component styles. */
+    .app-shell {
+      width: min(1520px, calc(100vw - 32px));
+      margin: 24px auto;
+    }
+
+    .ledger-hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-card,
+    .stats-card,
+    .panel {
+      border: 1px solid rgba(216, 207, 182, 0.95);
+      background: rgba(255, 253, 247, 0.9);
+      box-shadow: var(--ledger-shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-card {
+      min-height: 178px;
+      padding: 28px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 8px;
+      background: repeating-linear-gradient(90deg, var(--ledger-blue) 0 28px, var(--ledger-gold) 28px 44px, transparent 44px 54px);
+    }
+
+    .hero-eyebrow {
+      color: var(--ledger-green);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      max-width: 720px;
+      margin: 8px 0 10px;
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 5vw, 4.8rem);
+      font-weight: 800;
+      letter-spacing: -0.065em;
+      line-height: 0.88;
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      margin: 0;
+      color: var(--ledger-ink-soft);
+      font-size: 0.98rem;
+    }
+
+    .stats-card {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 18px;
+      border-radius: var(--radius-xl);
+    }
+
+    .metric {
+      min-height: 76px;
+      padding: 14px;
+      border: 1px solid rgba(216, 207, 182, 0.84);
+      border-radius: var(--radius-md);
+      background: linear-gradient(180deg, rgba(255,255,255,0.66), rgba(246,244,237,0.72));
+    }
+
+    .metric-value {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .metric-label {
+      display: block;
+      margin-top: 6px;
+      color: var(--ledger-ink-soft);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding: 12px;
+      border: 1px solid rgba(216, 207, 182, 0.95);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 253, 247, 0.82);
+    }
+
+    .toolbar-actions,
+    .toolbar-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-ledger {
+      border: 1px solid rgba(20, 33, 61, 0.16);
+      border-radius: 999px;
+      background: var(--ledger-card);
+      color: var(--ledger-ink);
+      padding: 0.62rem 0.88rem;
+      font-size: 0.86rem;
+      font-weight: 700;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .btn-ledger:hover,
+    .btn-ledger:focus-visible {
+      background: #ffffff;
+      box-shadow: 0 10px 24px rgba(20, 33, 61, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .btn-ledger-primary {
+      border-color: transparent;
+      background: var(--ledger-blue);
+      color: #ffffff;
+    }
+
+    .btn-ledger-primary:hover,
+    .btn-ledger-primary:focus-visible {
+      background: #173ea8;
+      color: #ffffff;
+    }
+
+    .btn-ledger-danger { color: var(--ledger-red); }
+
+    .hidden-input {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 330px minmax(420px, 1fr) minmax(360px, 0.95fr);
+      gap: 18px;
+      min-height: 720px;
+    }
+
+    .panel {
+      min-width: 0;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 68px;
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(216, 207, 182, 0.86);
+      background: rgba(255, 253, 247, 0.76);
+    }

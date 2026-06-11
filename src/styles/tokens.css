@@ -1,0 +1,24 @@
+/* Purpose: Design tokens for colors, typography, spacing, shadows, and radius values.
+   Dependencies: Google Fonts loaded by index.html.
+   Usage: Imported first by main.css so every module can use custom properties. */
+    :root {
+      --ledger-ink: #14213d;
+      --ledger-ink-soft: #32435f;
+      --ledger-paper: #f6f4ed;
+      --ledger-paper-deep: #ebe6d6;
+      --ledger-card: #fffdf7;
+      --ledger-line: #d8cfb6;
+      --ledger-blue: #1d4ed8;
+      --ledger-blue-soft: #dbeafe;
+      --ledger-green: #0f766e;
+      --ledger-red: #b42318;
+      --ledger-gold: #c78b19;
+      --ledger-shadow: 0 24px 60px rgba(20, 33, 61, 0.14);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --font-display: "Archivo", system-ui, sans-serif;
+      --font-body: "Inter", system-ui, sans-serif;
+      --font-mono: "IBM Plex Mono", monospace;
+    }

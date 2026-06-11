@@ -1,0 +1,136 @@
+/* Purpose: Form controls, tree navigation, search box, and tree action styles.
+   Dependencies: tokens.css and Bootstrap form utilities.
+   Usage: Imported after layout.css. */
+    .panel-kicker {
+      color: var(--ledger-green);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .panel-title {
+      margin: 2px 0 0;
+      font-family: var(--font-display);
+      font-size: 1.12rem;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+    }
+
+    .tree-panel { display: flex; flex-direction: column; }
+
+    .search-box {
+      padding: 14px 14px 0;
+    }
+
+    .form-control,
+    .form-select {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid rgba(20, 33, 61, 0.16);
+      border-radius: var(--radius-sm);
+      background-color: rgba(255, 253, 247, 0.82);
+      color: var(--ledger-ink);
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--ledger-blue);
+      box-shadow: 0 0 0 0.22rem rgba(29, 78, 216, 0.14);
+    }
+
+    .tree {
+      flex: 1;
+      overflow: auto;
+      padding: 12px;
+    }
+
+    .tree-row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 24px 26px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 6px;
+      padding: 9px 10px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: var(--ledger-ink);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .tree-row:hover {
+      border-color: rgba(216, 207, 182, 0.92);
+      background: rgba(255, 253, 247, 0.74);
+    }
+
+    .tree-row.active {
+      border-color: rgba(29, 78, 216, 0.34);
+      background: var(--ledger-blue-soft);
+    }
+
+    .tree-row.submenu {
+      grid-template-columns: 26px minmax(0, 1fr) auto;
+      margin-left: 26px;
+      width: calc(100% - 26px);
+      padding-block: 8px;
+      color: var(--ledger-ink-soft);
+    }
+
+    .tree-row-label {
+      overflow: hidden;
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tree-row.submenu .tree-row-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .tree-count {
+      min-width: 26px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(20, 33, 61, 0.08);
+      color: var(--ledger-ink-soft);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .tree-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      padding: 0 14px 14px;
+    }
+
+    .icon-button {
+      display: inline-grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(20, 33, 61, 0.14);
+      border-radius: 999px;
+      background: rgba(255, 253, 247, 0.86);
+      color: var(--ledger-ink-soft);
+    }
+
+    .icon-button:hover,
+    .icon-button:focus-visible {
+      border-color: rgba(29, 78, 216, 0.34);
+      color: var(--ledger-blue);
+    }
+
+    .icon-button-danger:hover,
+    .icon-button-danger:focus-visible {
+      border-color: rgba(180, 35, 24, 0.36);
+      color: var(--ledger-red);
+    }

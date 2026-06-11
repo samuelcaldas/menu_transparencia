@@ -1,0 +1,28 @@
+/* Purpose: Responsive and reduced-motion overrides.
+   Dependencies: all component CSS loaded before this file.
+   Usage: Imported last (before icon picker is acceptable only if selectors do not overlap) so media rules win cascade. */
+    @media (max-width: 1280px) {
+      .workspace { grid-template-columns: 300px minmax(0, 1fr); }
+      .inspector-panel { grid-column: 1 / -1; }
+      .inspector-body { min-height: 520px; }
+    }
+
+    @media (max-width: 860px) {
+      .app-shell { width: min(100vw - 18px, 760px); margin-block: 10px; }
+      .ledger-hero, .workspace { grid-template-columns: 1fr; }
+      .hero-card { padding: 22px; }
+      .stats-card { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .gap-toolbar { grid-template-columns: 1fr; }
+      .editor-body { max-height: none; }
+      .tree-panel { min-height: 520px; }
+      .stamp-title { white-space: normal; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
