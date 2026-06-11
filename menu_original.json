@@ -1,0 +1,520 @@
+[
+  {
+    "titulo": "Receitas",
+    "icon": "fa-coins",
+    "descricao": "Informações sobre as receitas arrecadadas pelo município.",
+    "submenus": [
+      {
+        "titulo": "Receitas Orçamentárias",
+        "icon": "fa-coins",
+        "descricao": "Consulta receitas orçamentárias.",
+        "link": "#",
+        "blank": true
+      },
+      {
+        "titulo": "Receitas Extraorçamentárias",
+        "icon": "fa-coins",
+        "descricao": "Consulta receitas extraorçamentárias.",
+        "link": "#"
+      },
+      {
+        "titulo": "Receitas por Categoria",
+        "icon": "fa-coins",
+        "descricao": "Consulta receitas por categoria.",
+        "link": "#"
+      },
+      {
+        "titulo": "Receitas por Fonte",
+        "icon": "fa-coins",
+        "descricao": "Consulta receitas por fonte.",
+        "link": "#"
+      },
+      {
+        "titulo": "Maiores Arrecadações",
+        "icon": "fa-coins",
+        "descricao": "Consulta maiores arrecadações por contribuinte.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Despesas",
+    "icon": "fa-money-bill",
+    "descricao": "Detalhamento completo das despesas públicas.",
+    "submenus": [
+      {
+        "titulo": "Despesas Empenhadas",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas empenhadas.",
+        "link": "#"
+      },
+      {
+        "titulo": "Despesas Liquidadas",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas liquidadas.",
+        "link": "#"
+      },
+      {
+        "titulo": "Despesas Pagas",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas pagas.",
+        "link": "#"
+      },
+      {
+        "titulo": "Despesas por Credor",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas por credor.",
+        "link": "#"
+      },
+      {
+        "titulo": "Diárias",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta diárias concedidas.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Patrimônio",
+    "icon": "fa-building",
+    "descricao": "Relação dos bens patrimoniais do município.",
+    "submenus": [
+      {
+        "titulo": "Bens Imóveis",
+        "icon": "fa-building",
+        "descricao": "Consulta bens imóveis do município.",
+        "link": "#"
+      },
+      {
+        "titulo": "Bens Móveis",
+        "icon": "fa-building",
+        "descricao": "Consulta bens móveis.",
+        "link": "#"
+      },
+      {
+        "titulo": "Veículos",
+        "icon": "fa-car",
+        "descricao": "Consulta veículos da frota municipal.",
+        "link": "#"
+      },
+      {
+        "titulo": "Máquinas e Equipamentos",
+        "icon": "fa-industry",
+        "descricao": "Consulta máquinas e equipamentos.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Demonstrativos",
+    "icon": "fa-chart-bar",
+    "descricao": "Relatórios e demonstrativos contábeis.",
+    "submenus": [
+      {
+        "titulo": "RREO",
+        "icon": "fa-chart-bar",
+        "descricao": "Relatório Resumido da Execução Orçamentária.",
+        "link": "#"
+      },
+      {
+        "titulo": "RGF",
+        "icon": "fa-chart-bar",
+        "descricao": "Relatório de Gestão Fiscal.",
+        "link": "#",
+        "blank": true
+      },
+      {
+        "titulo": "Balancetes",
+        "icon": "fa-chart-bar",
+        "descricao": "Consulta balancetes mensais.",
+        "link": "#"
+      },
+      {
+        "titulo": "Balanços",
+        "icon": "fa-chart-bar",
+        "descricao": "Consulta balanços anuais.",
+        "link": "#",
+        "blank": true
+      }
+    ]
+  },
+
+  {
+    "titulo": "Licitações",
+    "icon": "fa-gavel",
+    "descricao": "Consulta de processos licitatórios.",
+    "submenus": [
+      {
+        "titulo": "Licitações Abertas",
+        "icon": "fa-gavel",
+        "descricao": "Consulta licitações abertas.",
+        "link": "#"
+      },
+      {
+        "titulo": "Licitações Concluídas",
+        "icon": "fa-gavel",
+        "descricao": "Consulta licitações concluídas.",
+        "link": "#"
+      },
+      {
+        "titulo": "Editais",
+        "icon": "fa-file",
+        "descricao": "Consulta editais publicados.",
+        "link": "#"
+      },
+      {
+        "titulo": "Resultados",
+        "icon": "fa-file",
+        "descricao": "Consulta resultados das licitações.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Compras",
+    "icon": "fa-shopping-cart",
+    "descricao": "Informações sobre compras públicas.",
+    "submenus": [
+      {
+        "titulo": "Compras Diretas",
+        "icon": "fa-shopping-cart",
+        "descricao": "Consulta compras diretas.",
+        "link": "#"
+      },
+      {
+        "titulo": "Dispensas",
+        "icon": "fa-shopping-cart",
+        "descricao": "Consulta dispensas de licitação.",
+        "link": "#"
+      },
+      {
+        "titulo": "Inexigibilidades",
+        "icon": "fa-shopping-cart",
+        "descricao": "Consulta inexigibilidades.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Contratos",
+    "icon": "fa-file-contract",
+    "descricao": "Contratos firmados pela administração pública.",
+    "submenus": [
+      {
+        "titulo": "Contratos Ativos",
+        "icon": "fa-file-contract",
+        "descricao": "Consulta contratos ativos.",
+        "link": "#"
+      },
+      {
+        "titulo": "Contratos Encerrados",
+        "icon": "fa-file-contract",
+        "descricao": "Consulta contratos encerrados.",
+        "link": "#"
+      },
+      {
+        "titulo": "Aditivos",
+        "icon": "fa-file-contract",
+        "descricao": "Consulta aditivos contratuais.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Pessoal",
+    "icon": "fa-users",
+    "descricao": "Informações sobre servidores públicos.",
+    "submenus": [
+      {
+        "titulo": "Servidores",
+        "icon": "fa-users",
+        "descricao": "Consulta servidores municipais.",
+        "link": "#"
+      },
+      {
+        "titulo": "Folha de Pagamento",
+        "icon": "fa-users",
+        "descricao": "Consulta folha de pagamento.",
+        "link": "#"
+      },
+      {
+        "titulo": "Cargos",
+        "icon": "fa-users",
+        "descricao": "Consulta cargos públicos.",
+        "link": "#"
+      },
+      {
+        "titulo": "Estagiários",
+        "icon": "fa-users",
+        "descricao": "Consulta estagiários.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Obras",
+    "icon": "fa-hard-hat",
+    "descricao": "Acompanhamento de obras públicas.",
+    "submenus": [
+      {
+        "titulo": "Obras em Andamento",
+        "icon": "fa-hard-hat",
+        "descricao": "Consulta obras em andamento.",
+        "link": "#"
+      },
+      {
+        "titulo": "Obras Concluídas",
+        "icon": "fa-hard-hat",
+        "descricao": "Consulta obras concluídas.",
+        "link": "#"
+      },
+      {
+        "titulo": "Obras Paralisadas",
+        "icon": "fa-hard-hat",
+        "descricao": "Consulta obras paralisadas.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Contas Públicas",
+    "icon": "fa-balance-scale",
+    "descricao": "Prestação de contas do município.",
+    "submenus": [
+      {
+        "titulo": "Prestação de Contas",
+        "icon": "fa-balance-scale",
+        "descricao": "Consulta prestação de contas.",
+        "link": "#"
+      },
+      {
+        "titulo": "Parecer do Tribunal",
+        "icon": "fa-balance-scale",
+        "descricao": "Consulta parecer do tribunal.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Educação",
+    "icon": "fa-school",
+    "descricao": "Informações da educação municipal.",
+    "submenus": [
+      {
+        "titulo": "Escolas",
+        "icon": "fa-school",
+        "descricao": "Consulta escolas municipais.",
+        "link": "#"
+      },
+      {
+        "titulo": "Professores",
+        "icon": "fa-school",
+        "descricao": "Consulta professores.",
+        "link": "#"
+      },
+      {
+        "titulo": "Transporte Escolar",
+        "icon": "fa-school",
+        "descricao": "Consulta transporte escolar.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Saúde",
+    "icon": "fa-hospital",
+    "descricao": "Informações da saúde pública.",
+    "submenus": [
+      {
+        "titulo": "Unidades de Saúde",
+        "icon": "fa-hospital",
+        "descricao": "Consulta unidades de saúde.",
+        "link": "#"
+      },
+      {
+        "titulo": "Medicamentos",
+        "icon": "fa-hospital",
+        "descricao": "Consulta medicamentos disponíveis.",
+        "link": "#"
+      },
+      {
+        "titulo": "Fila de Espera",
+        "icon": "fa-hospital",
+        "descricao": "Consulta fila de espera.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Documentos Oficiais",
+    "icon": "fa-file-alt",
+    "descricao": "Documentos oficiais do município.",
+    "submenus": [
+      {
+        "titulo": "Decretos",
+        "icon": "fa-file-alt",
+        "descricao": "Consulta decretos municipais.",
+        "link": "#"
+      },
+      {
+        "titulo": "Portarias",
+        "icon": "fa-file-alt",
+        "descricao": "Consulta portarias.",
+        "link": "#"
+      },
+      {
+        "titulo": "Atas",
+        "icon": "fa-file-alt",
+        "descricao": "Consulta atas.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Convênios",
+    "icon": "fa-handshake",
+    "descricao": "Convênios firmados pelo município.",
+    "submenus": [
+      {
+        "titulo": "Convênios Ativos",
+        "icon": "fa-handshake",
+        "descricao": "Consulta convênios ativos.",
+        "link": "#"
+      },
+      {
+        "titulo": "Convênios Encerrados",
+        "icon": "fa-handshake",
+        "descricao": "Consulta convênios encerrados.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Legislação",
+    "icon": "fa-book",
+    "descricao": "Leis e normas municipais.",
+    "submenus": [
+      {
+        "titulo": "Leis Municipais",
+        "icon": "fa-book",
+        "descricao": "Consulta leis municipais.",
+        "link": "#"
+      },
+      {
+        "titulo": "Decretos",
+        "icon": "fa-book",
+        "descricao": "Consulta decretos.",
+        "link": "#"
+      },
+      {
+        "titulo": "Portarias",
+        "icon": "fa-book",
+        "descricao": "Consulta portarias.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Carta de Serviços",
+    "icon": "fa-id-card",
+    "descricao": "Carta de serviços ao cidadão.",
+    "submenus": [
+      {
+        "titulo": "Serviços Municipais",
+        "icon": "fa-id-card",
+        "descricao": "Consulta serviços municipais.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Institucional",
+    "icon": "fa-sitemap",
+    "descricao": "Informações institucionais.",
+    "submenus": [
+      {
+        "titulo": "Estrutura Organizacional",
+        "icon": "fa-sitemap",
+        "descricao": "Consulta estrutura organizacional.",
+        "link": "#"
+      },
+      {
+        "titulo": "Secretarias",
+        "icon": "fa-sitemap",
+        "descricao": "Consulta secretarias municipais.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Veículos",
+    "icon": "fa-car",
+    "descricao": "Frota de veículos do município.",
+    "submenus": [
+      {
+        "titulo": "Frota Municipal",
+        "icon": "fa-car",
+        "descricao": "Consulta frota municipal.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Dados Abertos",
+    "icon": "fa-database",
+    "descricao": "Base de dados abertos.",
+    "submenus": [
+      {
+        "titulo": "Base de Dados",
+        "icon": "fa-database",
+        "descricao": "Consulta dados abertos.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Coleta de Lixo",
+    "icon": "fa-trash",
+    "descricao": "Informações sobre coleta de resíduos.",
+    "submenus": [
+      {
+        "titulo": "Roteiro de Coleta",
+        "icon": "fa-trash",
+        "descricao": "Consulta roteiro de coleta.",
+        "link": "#"
+      }
+    ]
+  },
+
+  {
+    "titulo": "Privacidade e Proteção de Dados",
+    "icon": "fa-shield-alt",
+    "descricao": "Política de privacidade e proteção de dados.",
+    "submenus": [
+      {
+        "titulo": "Política de Privacidade",
+        "icon": "fa-shield-alt",
+        "descricao": "Consulta política de privacidade.",
+        "link": "#"
+      }
+    ]
+  }
+]

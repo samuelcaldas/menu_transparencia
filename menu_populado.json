@@ -1,0 +1,351 @@
+[
+  {
+    "titulo": "Receitas",
+    "icon": "fa-coins",
+    "descricao": "Informações sobre as receitas arrecadadas pelo município.",
+    "submenus": [
+      {
+        "titulo": "Receitas Orçamentárias",
+        "icon": "fa-coins",
+        "descricao": "Consulta receitas orçamentárias.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4NQ==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Despesas",
+    "icon": "fa-money-bill",
+    "descricao": "Detalhamento completo das despesas públicas.",
+    "submenus": [
+      {
+        "titulo": "Despesas Empenhadas",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas empenhadas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4Ng==",
+        "blank": true
+      },
+      {
+        "titulo": "Despesas Pagas",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas pagas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4Ng==",
+        "blank": true
+      },
+      {
+        "titulo": "Despesas por Credor",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas por credor.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4Nw==",
+        "blank": true
+      },
+      {
+        "titulo": "Diárias",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta diárias concedidas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4OA==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Patrimônio",
+    "icon": "fa-building",
+    "descricao": "Relação dos bens patrimoniais do município.",
+    "submenus": [
+      {
+        "titulo": "Bens Imóveis",
+        "icon": "fa-building",
+        "descricao": "Consulta bens imóveis do município.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4OQ=="
+      },
+      {
+        "titulo": "Bens Móveis",
+        "icon": "fa-building",
+        "descricao": "Consulta bens móveis.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4OQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Máquinas e Equipamentos",
+        "icon": "fa-industry",
+        "descricao": "Consulta máquinas e equipamentos.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU4OQ==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Demonstrativos",
+    "icon": "fa-chart-bar",
+    "descricao": "Relatórios e demonstrativos contábeis.",
+    "submenus": [
+      {
+        "titulo": "RGF",
+        "icon": "fa-chart-bar",
+        "descricao": "Relatório de Gestão Fiscal.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5MA==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Licitações",
+    "icon": "fa-gavel",
+    "descricao": "Consulta de processos licitatórios.",
+    "submenus": [
+      {
+        "titulo": "Licitações Abertas",
+        "icon": "fa-gavel",
+        "descricao": "Consulta licitações abertas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5MQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Licitações Concluídas",
+        "icon": "fa-gavel",
+        "descricao": "Consulta licitações concluídas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5Mg==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Compras",
+    "icon": "fa-shopping-cart",
+    "descricao": "Informações sobre compras públicas.",
+    "submenus": [
+      {
+        "titulo": "Compras Diretas",
+        "icon": "fa-shopping-cart",
+        "descricao": "Consulta compras diretas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5Mw==",
+        "blank": true
+      },
+      {
+        "titulo": "Dispensas",
+        "icon": "fa-shopping-cart",
+        "descricao": "Consulta dispensas de licitação.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5NQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Inexigibilidades",
+        "icon": "fa-shopping-cart",
+        "descricao": "Consulta inexigibilidades.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5NA==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Contratos",
+    "icon": "fa-file-contract",
+    "descricao": "Contratos firmados pela administração pública.",
+    "submenus": [
+      {
+        "titulo": "Contratos Ativos",
+        "icon": "fa-file-contract",
+        "descricao": "Consulta contratos ativos.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5Ng==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Pessoal",
+    "icon": "fa-users",
+    "descricao": "Informações sobre servidores públicos.",
+    "submenus": [
+      {
+        "titulo": "Servidores",
+        "icon": "fa-users",
+        "descricao": "Consulta servidores municipais.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5OA==",
+        "blank": true
+      },
+      {
+        "titulo": "Folha de Pagamento",
+        "icon": "fa-users",
+        "descricao": "Consulta folha de pagamento.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5Nw==",
+        "blank": true
+      },
+      {
+        "titulo": "Cargos",
+        "icon": "fa-users",
+        "descricao": "Consulta cargos públicos.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDU5OQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Estagiários",
+        "icon": "fa-users",
+        "descricao": "Consulta estagiários.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMA==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Obras",
+    "icon": "fa-hard-hat",
+    "descricao": "Acompanhamento de obras públicas.",
+    "submenus": [
+      {
+        "titulo": "Obras em Andamento",
+        "icon": "fa-hard-hat",
+        "descricao": "Consulta obras em andamento.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Obras Concluídas",
+        "icon": "fa-hard-hat",
+        "descricao": "Consulta obras concluídas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Obras Paralisadas",
+        "icon": "fa-hard-hat",
+        "descricao": "Consulta obras paralisadas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMQ==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Saúde",
+    "icon": "fa-hospital",
+    "descricao": "Informações da saúde pública.",
+    "submenus": [
+      {
+        "titulo": "Unidades de Saúde",
+        "icon": "fa-hospital",
+        "descricao": "Consulta unidades de saúde.",
+        "link": "https://saude.timoteo.mg.gov.br/listar/unidadessaude",
+        "blank": false
+      },
+      {
+        "titulo": "Medicamentos",
+        "icon": "fa-hospital",
+        "descricao": "Consulta medicamentos disponíveis.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwMg==",
+        "blank": true
+      },
+      {
+        "titulo": "Fila de Espera",
+        "icon": "fa-hospital",
+        "descricao": "Consulta fila de espera.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwNA==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Documentos Oficiais",
+    "icon": "fa-file-alt",
+    "descricao": "Documentos oficiais do município.",
+    "submenus": [
+      {
+        "titulo": "Decretos",
+        "icon": "fa-file-alt",
+        "descricao": "Consulta decretos municipais.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/MTcyNw==",
+        "blank": true
+      },
+      {
+        "titulo": "Portarias",
+        "icon": "fa-file-alt",
+        "descricao": "Consulta portarias.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwNQ==",
+        "blank": true
+      },
+      {
+        "titulo": "Atas",
+        "icon": "fa-file-alt",
+        "descricao": "Consulta atas.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwNg==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Convênios",
+    "icon": "fa-handshake",
+    "descricao": "Convênios firmados pelo município.",
+    "submenus": [
+      {
+        "titulo": "Convênios Ativos",
+        "icon": "fa-handshake",
+        "descricao": "Consulta convênios ativos.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwNw==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Legislação",
+    "icon": "fa-book",
+    "descricao": "Leis e normas municipais.",
+    "submenus": [
+      {
+        "titulo": "Leis Municipais",
+        "icon": "fa-book",
+        "descricao": "Consulta leis municipais.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwOA==",
+        "blank": true
+      },
+      {
+        "titulo": "Decretos",
+        "icon": "fa-book",
+        "descricao": "Consulta decretos.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/MTcyNw==",
+        "blank": true
+      },
+      {
+        "titulo": "Portarias",
+        "icon": "fa-book",
+        "descricao": "Consulta portarias.",
+        "link": "https://transparencia.betha.cloud/#/6m9_x1sRV0e9uiLPuMmC1Q==/incorporacao/NDYwNQ==",
+        "blank": true
+      }
+    ]
+  },
+  {
+    "titulo": "Carta de Serviços",
+    "icon": "fa-id-card",
+    "descricao": "Carta de serviços ao cidadão.",
+    "submenus": [
+      {
+        "titulo": "Consulta de Processos",
+        "icon": "fa-id-card",
+        "descricao": "Consulta de Processos.",
+        "link": "https://e-gov.betha.com.br/protocolo/01038-247/con_nroprocesso.faces",
+        "blank": true
+      },
+      {
+        "titulo": "IPTU/2° VIA",
+        "icon": "fa-id-card",
+        "descricao": "IPTU/2° VIA.",
+        "link": "https://e-gov.betha.com.br/cdweb/03114-554/contribuinte/rel_guiaiptu.faces",
+        "blank": true
+      },
+      {
+        "titulo": "Serviços de Receita - Cidadão Web",
+        "icon": "fa-id-card",
+        "descricao": "Serviços de Receita - Cidadão Web.",
+        "link": "https://e-gov.betha.com.br/cdweb/03114-554/contribuinte/main.faces",
+        "blank": true
+      },
+      {
+        "titulo": "Validação de documentos",
+        "icon": "fa-id-card",
+        "descricao": "Validação de documentos.",
+        "link": "https://e-gov.betha.com.br/cdweb/03114-554/contribuinte/con_validacaodocumentos.faces",
+        "blank":  true
+      }
+    ]
+  }
+]

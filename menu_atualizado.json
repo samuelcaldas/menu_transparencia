@@ -1,0 +1,1960 @@
+[
+  {
+    "titulo": "Receitas",
+    "icon": "fa-coins",
+    "descricao": "Informações sobre as receitas arrecadadas pelo município.",
+    "submenus": [
+      {
+        "titulo": "Receitas Orçamentárias",
+        "icon": "fa-coins",
+        "descricao": "Consulta receitas orçamentárias.",
+        "link": "#",
+        "blank": true,
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Receitas Extraorçamentárias",
+        "icon": "fa-coins",
+        "descricao": "Consulta receitas extraorçamentárias.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Receitas por Categoria",
+        "icon": "fa-coins",
+        "descricao": "Consulta receitas por categoria.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Receitas por Fonte",
+        "icon": "fa-coins",
+        "descricao": "Consulta receitas por fonte.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Maiores Arrecadações",
+        "icon": "fa-coins",
+        "descricao": "Consulta maiores arrecadações por contribuinte.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Previsão e Realização das Receitas",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta as receitas previstas e arrecadadas do município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Essencial",
+        "comentario_criterio": "Nível da matriz: Essencial",
+        "criterio_matriz": "COMUM (EXCETO ESTATAIS INDEPENDENTES) | Receita | 3.1",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Receita por Natureza",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta as receitas conforme sua classificação orçamentária.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Essencial",
+        "comentario_criterio": "Nível da matriz: Essencial",
+        "criterio_matriz": "COMUM (EXCETO ESTATAIS INDEPENDENTES) | Despesa | 4.2",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Dívida Ativa",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta aos inscritos em dívida ativa e aos valores pendentes.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "EXECUTIVO | Receita | 3.3",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Renúncias de Receitas",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta aos benefícios fiscais concedidos e às bases legais que os autorizam.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "EXECUTIVO | Renúncias de Receitas | 16.1",
+        "origem_sincronizacao": "ia",
+        "submenus": [
+          {
+            "titulo": "Valores das Renúncias",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os valores previstos e realizados dos benefícios fiscais concedidos, organizados por tipo de incentivo.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "EXECUTIVO | Renúncias de Receitas | 16.2",
+            "origem_sincronizacao": "ia"
+          }
+        ]
+      }
+    ],
+    "nivel_obrigatoriedade": "Recomendada",
+    "comentario_criterio": "Nível da matriz: Recomendada",
+    "criterio_matriz": "DEFENSORIA PÚBLICA | Atividades Finalísticas | 24.3"
+  },
+  {
+    "titulo": "Despesas",
+    "icon": "fa-money-bill",
+    "descricao": "Detalhamento completo das despesas públicas.",
+    "submenus": [
+      {
+        "titulo": "Despesas Empenhadas",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas empenhadas.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Despesas Liquidadas",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas liquidadas.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Despesas Pagas",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas pagas.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Ordem Cronológica de Pagamentos",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta a sequência dos pagamentos realizados pelo município e as informações sobre mudanças nessa ordem, quando houver.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM (EXCETO ESTATAIS) | Contratos | 9.4",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Despesas por Credor",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta despesas por credor.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Diárias",
+        "icon": "fa-money-bill",
+        "descricao": "Consulta diárias concedidas.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Detalhamento das Diárias",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta diárias com identificação do beneficiário, função, valores, período, motivo e destino do afastamento.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Diárias | 7.1",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Valores das Diárias",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os valores das diárias conforme o local do deslocamento e a regulamentação vigente.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Diárias | 7.2",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Resumo da Execução da Despesa",
+        "icon": "fa-circle-info",
+        "descricao": "Visão consolidada dos valores de despesas empenhadas, liquidadas e pagas.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Essencial",
+        "comentario_criterio": "Nível da matriz: Essencial",
+        "criterio_matriz": "COMUM (EXCETO ESTATAIS INDEPENDENTES) | Despesa | 4.1",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Empenhos",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta empenhos com dados do credor, valores, itens fornecidos e vínculo com a licitação.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Essencial",
+        "comentario_criterio": "Nível da matriz: Essencial",
+        "criterio_matriz": "COMUM (EXCETO ESTATAIS INDEPENDENTES) | Despesa | 4.3",
+        "origem_sincronizacao": "ia"
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Patrimônio",
+    "icon": "fa-building",
+    "descricao": "Relação dos bens patrimoniais do município.",
+    "submenus": [
+      {
+        "titulo": "Bens Imóveis",
+        "icon": "fa-building",
+        "descricao": "Consulta bens imóveis do município.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Bens Móveis",
+        "icon": "fa-building",
+        "descricao": "Consulta bens móveis.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Veículos",
+        "icon": "fa-car",
+        "descricao": "Consulta veículos da frota municipal.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Máquinas e Equipamentos",
+        "icon": "fa-industry",
+        "descricao": "Consulta máquinas e equipamentos.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Demonstrativos",
+    "icon": "fa-chart-bar",
+    "descricao": "Relatórios e demonstrativos contábeis.",
+    "submenus": [
+      {
+        "titulo": "RREO",
+        "icon": "fa-chart-bar",
+        "descricao": "Relatório Resumido da Execução Orçamentária.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Essencial",
+        "comentario_criterio": "Nível da matriz: Essencial",
+        "criterio_matriz": "EXECUTIVO e CONSÓRCIOS | Planejamento e Prestação de contas | 11.6"
+      },
+      {
+        "titulo": "RGF",
+        "icon": "fa-chart-bar",
+        "descricao": "Relatório de Gestão Fiscal.",
+        "link": "#",
+        "blank": true,
+        "nivel_obrigatoriedade": "Essencial",
+        "comentario_criterio": "Nível da matriz: Essencial",
+        "criterio_matriz": "COMUM (EXCETO ESTATAIS) | Planejamento e Prestação de contas | 11.5"
+      },
+      {
+        "titulo": "Balancetes",
+        "icon": "fa-chart-bar",
+        "descricao": "Consulta balancetes mensais.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Balanços",
+        "icon": "fa-chart-bar",
+        "descricao": "Consulta balanços anuais.",
+        "link": "#",
+        "blank": true,
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Licitações",
+    "icon": "fa-gavel",
+    "descricao": "Consulta de processos licitatórios.",
+    "submenus": [
+      {
+        "titulo": "Licitações Abertas",
+        "icon": "fa-gavel",
+        "descricao": "Consulta licitações abertas.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Licitações Concluídas",
+        "icon": "fa-gavel",
+        "descricao": "Consulta licitações concluídas.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Editais",
+        "icon": "fa-file",
+        "descricao": "Consulta editais publicados.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Editais Completos",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta o conteúdo completo dos editais publicados e seus documentos vinculados.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Licitações | 8.2",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Resultados",
+        "icon": "fa-file",
+        "descricao": "Consulta resultados das licitações.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Relação de Licitações",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta os processos licitatórios do município, com objeto, modalidade, valores e situação.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Licitações | 8.1",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Documentos das Licitações",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta documentos completos relacionados aos processos licitatórios e seus trâmites.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Licitações | 8.3",
+        "origem_sincronizacao": "ia",
+        "submenus": [
+          {
+            "titulo": "Atas de Adesão",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta as atas de adesão publicadas pelo município.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Licitações | 8.5",
+            "origem_sincronizacao": "ia"
+          }
+        ]
+      },
+      {
+        "titulo": "Regulamento Interno de Licitações e Contratos",
+        "icon": "fa-circle-info",
+        "descricao": "Acesso ao regulamento interno que orienta os procedimentos de licitações e contratos do município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "ESTATAIS | Licitações | 8.8",
+        "origem_sincronizacao": "ia"
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Compras",
+    "icon": "fa-shopping-cart",
+    "descricao": "Informações sobre compras públicas.",
+    "submenus": [
+      {
+        "titulo": "Compras Diretas",
+        "icon": "fa-shopping-cart",
+        "descricao": "Consulta compras diretas.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Dispensas",
+        "icon": "fa-shopping-cart",
+        "descricao": "Consulta dispensas de licitação.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Inexigibilidades",
+        "icon": "fa-shopping-cart",
+        "descricao": "Consulta inexigibilidades.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Documentos das Dispensas e Inexigibilidades",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta os documentos principais dos processos de dispensa e inexigibilidade do município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Licitações | 8.4",
+        "origem_sincronizacao": "ia"
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Contratos",
+    "icon": "fa-file-contract",
+    "descricao": "Contratos firmados pela administração pública.",
+    "submenus": [
+      {
+        "titulo": "Contratos Ativos",
+        "icon": "fa-file-contract",
+        "descricao": "Consulta contratos ativos.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Contratos Encerrados",
+        "icon": "fa-file-contract",
+        "descricao": "Consulta contratos encerrados.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Aditivos",
+        "icon": "fa-file-contract",
+        "descricao": "Consulta aditivos contratuais.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Relação de Contratos",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta os contratos firmados pelo município, com resumo dos dados principais, valores, prazos e aditivos publicados.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Contratos | 9.1",
+        "origem_sincronizacao": "ia",
+        "submenus": [
+          {
+            "titulo": "Fiscais dos Contratos",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os fiscais responsáveis pelos contratos vigentes e encerrados do município.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Contratos | 9.3",
+            "origem_sincronizacao": "ia"
+          }
+        ]
+      },
+      {
+        "titulo": "Documentos dos Contratos",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta contratos publicados e seus aditivos vinculados.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Contratos | 9.2",
+        "origem_sincronizacao": "ia"
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Pessoal",
+    "icon": "fa-users",
+    "descricao": "Informações sobre servidores públicos.",
+    "submenus": [
+      {
+        "titulo": "Servidores",
+        "icon": "fa-users",
+        "descricao": "Consulta servidores municipais.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Relação de Servidores",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os servidores e autoridades vinculados ao órgão, com cargos, lotação e informações funcionais.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Recursos Humanos | 6.1",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Folha de Pagamento",
+        "icon": "fa-users",
+        "descricao": "Consulta folha de pagamento.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Remuneração Nominal",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os valores de remuneração individual pagos a servidores, autoridades e membros do órgão.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Recursos Humanos | 6.2",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Remuneração de Dirigentes e Conselho Fiscal",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os valores individuais pagos aos dirigentes e aos membros do conselho fiscal.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.24",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Cargos",
+        "icon": "fa-users",
+        "descricao": "Consulta cargos públicos.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Tabela Remuneratória",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os valores e referências salariais dos cargos e funções do município.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Recursos Humanos | 6.3",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Estagiários",
+        "icon": "fa-users",
+        "descricao": "Consulta estagiários.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Concursos e Seleções",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta aos editais completos de concursos e processos seletivos realizados pelo município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Recursos Humanos | 6.6",
+        "origem_sincronizacao": "ia",
+        "submenus": [
+          {
+            "titulo": "Resultados e Nomeações",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os resultados finais dos concursos e processos seletivos, com lista de aprovados, classificações e nomeações publicadas.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Recursos Humanos | 6.7",
+            "origem_sincronizacao": "ia"
+          }
+        ]
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Obras",
+    "icon": "fa-hard-hat",
+    "descricao": "Acompanhamento de obras públicas.",
+    "submenus": [
+      {
+        "titulo": "Obras em Andamento",
+        "icon": "fa-hard-hat",
+        "descricao": "Consulta obras em andamento.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Obras Concluídas",
+        "icon": "fa-hard-hat",
+        "descricao": "Consulta obras concluídas.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Obras Paralisadas",
+        "icon": "fa-hard-hat",
+        "descricao": "Consulta obras paralisadas.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Detalhamento das Obras Paralisadas",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta obras interrompidas no município, com justificativa, responsável pela paralisação e previsão de retomada.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM (EXCETO ESTATAIS) | Obras | 10.4",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Custos da Obra",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta valores contratados, quantidades previstas e preços de cada item da obra.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Obras | 10.2",
+        "origem_sincronizacao": "ia",
+        "submenus": [
+          {
+            "titulo": "Quantitativos e Pagamentos da Obra",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os quantitativos apurados na execução da obra e os valores pagos em cada etapa.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM (EXCETO ESTATAIS) | Obras | 10.3",
+            "origem_sincronizacao": "ia"
+          }
+        ]
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Contas Públicas",
+    "icon": "fa-balance-scale",
+    "descricao": "Prestação de contas do município.",
+    "submenus": [
+      {
+        "titulo": "Prestação de Contas",
+        "icon": "fa-balance-scale",
+        "descricao": "Consulta prestação de contas.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Balanço Geral",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta ao balanço anual e aos documentos da prestação de contas do município.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM (EXCETO ESTATAIS) | Planejamento e Prestação de contas | 11.1",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Demonstrações Contábeis",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta às demonstrações contábeis auditadas do município.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "ESTATAIS | Planejamento e Prestação de contas | 11.15",
+            "origem_sincronizacao": "ia",
+            "submenus": [
+              {
+                "titulo": "Remuneração Máxima e Mínima",
+                "icon": "fa-circle-info",
+                "descricao": "Consulta anual com os valores de remuneração mais altos e mais baixos informados nas demonstrações contábeis.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.25",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Remuneração Média",
+                "icon": "fa-circle-info",
+                "descricao": "Consulta os valores médios de remuneração informados nas demonstrações contábeis, incluindo empregados, administradores e membros dos conselhos.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.26",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Benefícios aos Empregados",
+                "icon": "fa-circle-info",
+                "descricao": "Consulta os benefícios médios concedidos aos empregados nas demonstrações contábeis anuais.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.27",
+                "origem_sincronizacao": "ia"
+              }
+            ]
+          },
+          {
+            "titulo": "Relatório do Comitê de Auditoria",
+            "icon": "fa-file-lines",
+            "descricao": "Acesso ao relatório anual com principais atividades, resultados e recomendações da auditoria estatutária.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "ESTATAIS | Planejamento e Prestação de contas | 11.16",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Atas do Comitê de Auditoria",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta as atas das reuniões do comitê de auditoria da entidade.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "ESTATAIS | Planejamento e Prestação de contas | 11.17",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Atas do Comitê de Pessoas",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta as atas das reuniões do comitê responsável por elegibilidade, sucessão e remuneração, com publicações disponíveis desde 2022.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "ESTATAIS | Planejamento e Prestação de contas | 11.18",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Relatório Integrado e de Sustentabilidade",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os relatórios anuais de gestão e sustentabilidade do município.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "ESTATAIS | Planejamento e Prestação de contas | 11.19",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Política de Distribuição de Dividendos",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta as diretrizes adotadas pela entidade para a distribuição de dividendos aos acionistas.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.13",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Política de Transações com Partes Relacionadas",
+            "icon": "fa-circle-info",
+            "descricao": "Diretrizes adotadas pela entidade para operações com partes relacionadas e suas revisões periódicas.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.14",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Carta Anual",
+            "icon": "fa-circle-info",
+            "descricao": "Documento anual com os compromissos assumidos pela administração da estatal e suas subsidiárias em favor do interesse público.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.15",
+            "origem_sincronizacao": "ia",
+            "submenus": [
+              {
+                "titulo": "Impactos Econômico-Financeiros",
+                "icon": "fa-circle-info",
+                "descricao": "Informações sobre os efeitos das metas e ações da estatal nos resultados financeiros e nos indicadores que acompanham esses resultados.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.17",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Atividades Desenvolvidas",
+                "icon": "fa-circle-info",
+                "descricao": "Resumo das principais atividades desenvolvidas pela instituição ao longo do ano.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.18",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Estrutura de Controle",
+                "icon": "fa-circle-info",
+                "descricao": "Informações sobre como a instituição é organizada e quem compõe sua estrutura de direção e controle.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.19",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Fatores de Risco",
+                "icon": "fa-circle-info",
+                "descricao": "Informações sobre riscos que podem afetar a atuação e os resultados da estatal.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.20",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Dados Econômico-Financeiros",
+                "icon": "fa-circle-info",
+                "descricao": "Consulta aos principais indicadores e resultados econômico-financeiros da instituição.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.21",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Comentários da Administração",
+                "icon": "fa-circle-info",
+                "descricao": "Visão anual da administração sobre os resultados, desafios e desempenho da instituição.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.22",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Governança Corporativa",
+                "icon": "fa-circle-info",
+                "descricao": "Informações sobre políticas, diretrizes e práticas de governança adotadas pela instituição.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.23",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Contratos, Convênios e Ajustes",
+                "icon": "fa-circle-info",
+                "descricao": "Consulta contratos, convênios e ajustes publicados pela instituição.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.28",
+                "origem_sincronizacao": "ia"
+              }
+            ]
+          },
+          {
+            "titulo": "Carta Anual",
+            "icon": "fa-circle-info",
+            "descricao": "Documento anual com os compromissos, diretrizes e prioridades da administração da estatal.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.16",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Parecer do Tribunal",
+        "icon": "fa-balance-scale",
+        "descricao": "Consulta parecer do tribunal.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Parecer do Tribunal",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta ao parecer e à decisão do Tribunal de Contas sobre as contas anuais do município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Planejamento e Prestação de contas | 11.3",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Julgamento das Contas",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta a decisão final sobre as contas anuais do chefe do Executivo municipal.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "EXECUTIVO | Planejamento e Prestação de contas | 11.4",
+        "origem_sincronizacao": "ia",
+        "submenus": [
+          {
+            "titulo": "Decreto de Julgamento",
+            "icon": "fa-circle-info",
+            "descricao": "Acesso ao decreto e ao resumo da sessão que tratou das contas anuais do chefe do Executivo.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "PODER LEGISLATIVO | Atividades Finalísticas - PL | 20.8",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Atas das Sessões de Julgamento",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta as atas e registros das sessões em que as contas são apreciadas e julgadas.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "PODER JUDICIÁRIO | Atividades Finalísticas - PJ | 21.3",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Decisões",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta às decisões publicadas e aos registros disponíveis.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "TRIBUNAL DE CONTAS | Atividades Finalísticas | 22.4",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Atas das Sessões Deliberativas",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os registros das sessões em que as contas do município são analisadas e deliberadas.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "TRIBUNAL DE CONTAS | Atividades Finalísticas | 22.3",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Processos Julgados",
+            "icon": "fa-circle-info",
+            "descricao": "Acesso aos processos de julgamento já encerrados, com documentos e decisões disponíveis.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "TRIBUNAL DE CONTAS | Atividades Finalísticas | 22.6",
+            "origem_sincronizacao": "ia"
+          }
+        ]
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Educação",
+    "icon": "fa-school",
+    "descricao": "Informações da educação municipal.",
+    "submenus": [
+      {
+        "titulo": "Escolas",
+        "icon": "fa-school",
+        "descricao": "Consulta escolas municipais.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Creches Municipais",
+            "icon": "fa-circle-info",
+            "descricao": "Informações sobre vagas e atendimento nas creches municipais, com orientações para as famílias.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "EXECUTIVO | Educação e Assistência Social | 19.2",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Professores",
+        "icon": "fa-school",
+        "descricao": "Consulta professores.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Transporte Escolar",
+        "icon": "fa-school",
+        "descricao": "Consulta transporte escolar.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Conselho do Fundeb",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta a composição, as reuniões e as publicações do Conselho do Fundeb.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "EXECUTIVO | Educação e Assistência Social | 19.3",
+        "origem_sincronizacao": "ia"
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Saúde",
+    "icon": "fa-hospital",
+    "descricao": "Informações da saúde pública.",
+    "submenus": [
+      {
+        "titulo": "Unidades de Saúde",
+        "icon": "fa-hospital",
+        "descricao": "Consulta unidades de saúde.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Atendimento em Saúde",
+            "icon": "fa-circle-info",
+            "descricao": "Confira onde são realizados os atendimentos de saúde, com horários, equipes, especialidades e locais de atendimento.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "EXECUTIVO | Saúde | 18.2",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Medicamentos",
+        "icon": "fa-hospital",
+        "descricao": "Consulta medicamentos disponíveis.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Estoque de Medicamentos",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os medicamentos disponíveis nas farmácias públicas e a situação dos estoques.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "EXECUTIVO | Saúde | 18.5",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Fila de Espera",
+        "icon": "fa-hospital",
+        "descricao": "Consulta fila de espera.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Planejamento e Gestão da Saúde",
+        "icon": "fa-circle-info",
+        "descricao": "Documentos e informações sobre o planejamento e a gestão da saúde no município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "EXECUTIVO | Saúde | 18.1",
+        "origem_sincronizacao": "ia"
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Documentos Oficiais",
+    "icon": "fa-file-alt",
+    "descricao": "Documentos oficiais do município.",
+    "submenus": [
+      {
+        "titulo": "Decretos",
+        "icon": "fa-file-alt",
+        "descricao": "Consulta decretos municipais.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Portarias",
+        "icon": "fa-file-alt",
+        "descricao": "Consulta portarias.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Atas",
+        "icon": "fa-file-alt",
+        "descricao": "Consulta atas.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Procedimentos Preparatórios",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta aos procedimentos publicados e às atualizações registradas ao longo da tramitação.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "MINISTÉRIO PÚBLICO | Atividades Finalísticas | 23.2",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Procedimentos de Investigação",
+        "icon": "fa-circle-info",
+        "descricao": "Acompanhe as apurações publicadas e suas atualizações de andamento.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "MINISTÉRIO PÚBLICO | Atividades Finalísticas | 23.3",
+        "origem_sincronizacao": "ia",
+        "submenus": [
+          {
+            "titulo": "Inquéritos Civis",
+            "icon": "fa-circle-info",
+            "descricao": "Veja os inquéritos civis publicados e acompanhe suas atualizações de andamento.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "MINISTÉRIO PÚBLICO | Atividades Finalísticas | 23.4",
+            "origem_sincronizacao": "ia"
+          }
+        ]
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Convênios",
+    "icon": "fa-handshake",
+    "descricao": "Convênios firmados pelo município.",
+    "submenus": [
+      {
+        "titulo": "Convênios Ativos",
+        "icon": "fa-handshake",
+        "descricao": "Consulta convênios ativos.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Convênios Encerrados",
+        "icon": "fa-handshake",
+        "descricao": "Consulta convênios encerrados.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Transferências por Convênios",
+        "icon": "fa-circle-info",
+        "descricao": "Veja os repasses recebidos por convênios e acordos, com valores, prazos, origem e documento completo.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Convênios e Transferências | 5.1",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Transferências por Convênios",
+        "icon": "fa-circle-info",
+        "descricao": "Consulte repasses vinculados a convênios, com dados do beneficiário, objeto, prazo, valores e instrumento completo.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Convênios e Transferências | 5.2",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Acordos e Ajustes",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta acordos, termos e ajustes firmados pelo município, com partes, prazo, objeto e documentos publicados.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Convênios e Transferências | 5.3",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Emendas Parlamentares",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta os repasses de emendas parlamentares federais recebidas pelo município, com valores, origem e destinação.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "EXECUTIVO | Emendas Parlamentares | 17.1",
+        "origem_sincronizacao": "ia",
+        "submenus": [
+          {
+            "titulo": "Emendas Parlamentares Estaduais e Municipais",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta os repasses de emendas parlamentares estaduais e municipais, com origem, tipo, autoria, valores e destinação.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "EXECUTIVO | Emendas Parlamentares | 17.2",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Execução das Emendas Parlamentares",
+            "icon": "fa-circle-info",
+            "descricao": "Acompanhe a aplicação dos recursos recebidos por emendas parlamentares e sua execução financeira no município.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "EXECUTIVO | Emendas Parlamentares | 17.3",
+            "origem_sincronizacao": "ia"
+          }
+        ]
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Legislação",
+    "icon": "fa-book",
+    "descricao": "Leis e normas municipais.",
+    "submenus": [
+      {
+        "titulo": "Leis Municipais",
+        "icon": "fa-book",
+        "descricao": "Consulta leis municipais.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Decretos",
+        "icon": "fa-book",
+        "descricao": "Consulta decretos.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Portarias",
+        "icon": "fa-book",
+        "descricao": "Consulta portarias.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Atos Normativos",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta atos normativos publicados pelo município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Informações Institucionais | 2.6",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Plano Plurianual",
+        "icon": "fa-circle-info",
+        "descricao": "Acesso ao planejamento plurianual do município, com metas e documentos complementares.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Essencial",
+        "comentario_criterio": "Nível da matriz: Essencial",
+        "criterio_matriz": "EXECUTIVO | Planejamento e Prestação de contas | 11.8",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Lei de Diretrizes Orçamentárias",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta à lei anual que orienta o orçamento municipal e aos documentos relacionados.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Essencial",
+        "comentario_criterio": "Nível da matriz: Essencial",
+        "criterio_matriz": "EXECUTIVO | Planejamento e Prestação de contas | 11.9",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Lei Orçamentária Anual",
+        "icon": "fa-circle-info",
+        "descricao": "Acesso à lei que define o orçamento anual do município e aos documentos anexos.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "ESTATAIS INDEPENDENTES | Planejamento e Prestação de contas | 11.14",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Orçamento do Consórcio Público",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta o orçamento anual do consórcio, com previsão de receitas e fixação de despesas do exercício.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "CONSÓRCIOS | Planejamento e Prestação de contas | 11.11",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Leis e Atos Normativos",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta às leis, resoluções, decretos e demais normas produzidas e publicadas pelo Legislativo.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "PODER LEGISLATIVO | Atividades Finalísticas - PL | 20.2",
+        "origem_sincronizacao": "ia",
+        "submenus": [
+          {
+            "titulo": "Projetos de Lei e Tramitação",
+            "icon": "fa-circle-info",
+            "descricao": "Acompanhe projetos de lei e demais propostas do Legislativo, com documentos, andamento e situação de cada item.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "PODER LEGISLATIVO | Atividades Finalísticas - PL | 20.3",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Pauta das Sessões",
+            "icon": "fa-circle-info",
+            "descricao": "Confira a programação e os assuntos previstos nas sessões do Legislativo.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "TRIBUNAL DE CONTAS | Atividades Finalísticas | 22.2",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Pauta das Comissões",
+            "icon": "fa-circle-info",
+            "descricao": "Confira a pauta e os assuntos em análise nas comissões do Legislativo.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "PODER LEGISLATIVO | Atividades Finalísticas - PL | 20.5",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Atas das Sessões",
+            "icon": "fa-circle-info",
+            "descricao": "Consulta as atas das sessões do Legislativo, com registro de presença dos parlamentares e demais informações da reunião.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "PODER LEGISLATIVO | Atividades Finalísticas - PL | 20.6",
+            "origem_sincronizacao": "ia"
+          }
+        ]
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Carta de Serviços",
+    "icon": "fa-id-card",
+    "descricao": "Carta de serviços ao cidadão.",
+    "submenus": [
+      {
+        "titulo": "Serviços Municipais",
+        "icon": "fa-id-card",
+        "descricao": "Consulta serviços municipais.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Acesso Digital aos Serviços",
+            "icon": "fa-circle-info",
+            "descricao": "Canal para solicitar e acessar serviços municipais de forma online, com atendimento mais rápido e prático.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Lei Geral de Proteção de Dados (LGPD) e Governo Digital | 15.3",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Pesquisa de Satisfação",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta resultados das avaliações de satisfação dos serviços municipais.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Lei Geral de Proteção de Dados (LGPD) e Governo Digital | 15.6",
+        "origem_sincronizacao": "ia"
+      }
+    ],
+    "nivel_obrigatoriedade": "Obrigatória",
+    "comentario_criterio": "Nível da matriz: Obrigatória",
+    "criterio_matriz": "COMUM | Ouvidorias | 14.3"
+  },
+  {
+    "titulo": "Institucional",
+    "icon": "fa-sitemap",
+    "descricao": "Informações institucionais.",
+    "submenus": [
+      {
+        "titulo": "Estrutura Organizacional",
+        "icon": "fa-sitemap",
+        "descricao": "Consulta estrutura organizacional.",
+        "link": "#",
+        "submenus": [
+          {
+            "titulo": "Norma da Estrutura Organizacional",
+            "icon": "fa-circle-info",
+            "descricao": "Veja a organização interna da administração e os atos que formalizam sua estrutura.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Informações Institucionais | 2.1",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Competências e Atribuições",
+            "icon": "fa-circle-info",
+            "descricao": "Informações sobre funções e responsabilidades dos órgãos da administração municipal.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Informações Institucionais | 2.2",
+            "origem_sincronizacao": "ia"
+          }
+        ],
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Secretarias",
+        "icon": "fa-sitemap",
+        "descricao": "Consulta secretarias municipais.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Portal Oficial",
+        "icon": "fa-circle-info",
+        "descricao": "Acesso ao portal institucional oficial do município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Essencial",
+        "comentario_criterio": "Nível da matriz: Essencial",
+        "criterio_matriz": "COMUM | Informações Prioritárias | 1.1",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Portal da Transparência",
+        "icon": "fa-circle-info",
+        "descricao": "Acesso ao portal com informações públicas e dados de transparência do município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Essencial",
+        "comentario_criterio": "Nível da matriz: Essencial",
+        "criterio_matriz": "COMUM | Informações Prioritárias | 1.2",
+        "origem_sincronizacao": "ia",
+        "submenus": [
+          {
+            "titulo": "Pesquisa",
+            "icon": "fa-magnifying-glass",
+            "descricao": "Localize informações e documentos no portal com mais facilidade.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Informações Prioritárias | 1.4",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Acessibilidade",
+            "icon": "fa-circle-info",
+            "descricao": "Acesso aos recursos de acessibilidade do portal e do site oficial.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Acessibilidade | 13.1",
+            "origem_sincronizacao": "ia",
+            "submenus": [
+              {
+                "titulo": "Trilha de Navegação",
+                "icon": "fa-circle-info",
+                "descricao": "Visualize a trilha de navegação para retornar com facilidade às páginas anteriores.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "COMUM | Acessibilidade | 13.2",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Alto Contraste",
+                "icon": "fa-circle-info",
+                "descricao": "Ative o modo de alto contraste para facilitar a leitura no portal e no site.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "COMUM | Acessibilidade | 13.3",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Redimensionamento de Texto",
+                "icon": "fa-circle-info",
+                "descricao": "Ajuste o tamanho do texto para facilitar a leitura no portal e no site.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "COMUM | Acessibilidade | 13.4",
+                "origem_sincronizacao": "ia"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "titulo": "Portal da Transparência",
+        "icon": "fa-circle-info",
+        "descricao": "Atalho para consultar informações públicas e transparência do município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Informações Prioritárias | 1.3",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Autoridades",
+        "icon": "fa-user-tie",
+        "descricao": "Veja quem responde pela gestão atual do município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Informações Institucionais | 2.3",
+        "origem_sincronizacao": "ia",
+        "submenus": [
+          {
+            "titulo": "Vereadores",
+            "icon": "fa-circle-info",
+            "descricao": "Veja quem integra a Casa Legislativa, com perfil dos parlamentares e dados de atuação.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "PODER LEGISLATIVO | Atividades Finalísticas - PL | 20.1",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Diretoria Executiva",
+            "icon": "fa-circle-info",
+            "descricao": "Conheça os membros da diretoria executiva e as informações sobre sua remuneração.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.7",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Currículos Profissionais",
+            "icon": "fa-circle-info",
+            "descricao": "Perfis profissionais dos integrantes da diretoria e dos conselhos da entidade.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.29",
+            "origem_sincronizacao": "ia"
+          }
+        ]
+      },
+      {
+        "titulo": "Endereços e Contatos",
+        "icon": "fa-circle-info",
+        "descricao": "Informações de contato e localização dos órgãos e unidades municipais.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Informações Institucionais | 2.4",
+        "origem_sincronizacao": "ia",
+        "submenus": [
+          {
+            "titulo": "Horário de Atendimento",
+            "icon": "fa-circle-info",
+            "descricao": "Consulte os horários de atendimento dos órgãos e unidades municipais.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Informações Institucionais | 2.5",
+            "origem_sincronizacao": "ia"
+          },
+          {
+            "titulo": "Serviço de Informação ao Cidadão",
+            "icon": "fa-circle-info",
+            "descricao": "Canal para solicitações de informação e orientação sobre a unidade responsável pelo atendimento ao cidadão.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Serviço de Informação ao Cidadão - SIC | 12.1",
+            "origem_sincronizacao": "ia",
+            "submenus": [
+              {
+                "titulo": "Contato e atendimento do SIC",
+                "icon": "fa-circle-info",
+                "descricao": "Veja onde fica o SIC, como falar com a equipe e quando o atendimento acontece.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "COMUM | Serviço de Informação ao Cidadão - SIC | 12.2",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "e-SIC",
+                "icon": "fa-circle-info",
+                "descricao": "Canal digital para encaminhar pedidos de informação ao município.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "COMUM | Serviço de Informação ao Cidadão - SIC | 12.3",
+                "origem_sincronizacao": "ia",
+                "submenus": [
+                  {
+                    "titulo": "Pedido no e-SIC",
+                    "icon": "fa-circle-info",
+                    "descricao": "Canal digital para solicitar informações ao município de forma rápida e acessível.",
+                    "link": "#",
+                    "blank": false,
+                    "nivel_obrigatoriedade": "Obrigatória",
+                    "comentario_criterio": "Nível da matriz: Obrigatória",
+                    "criterio_matriz": "COMUM | Serviço de Informação ao Cidadão - SIC | 12.4",
+                    "origem_sincronizacao": "ia"
+                  }
+                ]
+              },
+              {
+                "titulo": "Regulamentação da LAI",
+                "icon": "fa-circle-info",
+                "descricao": "Acesso ao ato normativo que orienta a aplicação da Lei de Acesso à Informação no município.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Recomendada",
+                "comentario_criterio": "Nível da matriz: Recomendada",
+                "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.2",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Relatório Anual do SIC",
+                "icon": "fa-circle-info",
+                "descricao": "Veja o relatório anual do SIC com dados consolidados sobre pedidos de informação e seus resultados.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "COMUM | Serviço de Informação ao Cidadão - SIC | 12.7",
+                "origem_sincronizacao": "ia"
+              },
+              {
+                "titulo": "Documentos Classificados",
+                "icon": "fa-circle-info",
+                "descricao": "Consulta aos documentos com classificação de sigilo publicada pelo município.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "COMUM | Serviço de Informação ao Cidadão - SIC | 12.8",
+                "origem_sincronizacao": "ia",
+                "submenus": [
+                  {
+                    "titulo": "Informações Desclassificadas",
+                    "icon": "fa-circle-info",
+                    "descricao": "Consulta às informações que deixaram de ser sigilosas no período mais recente.",
+                    "link": "#",
+                    "blank": false,
+                    "nivel_obrigatoriedade": "Obrigatória",
+                    "comentario_criterio": "Nível da matriz: Obrigatória",
+                    "criterio_matriz": "COMUM | Serviço de Informação ao Cidadão - SIC | 12.9",
+                    "origem_sincronizacao": "ia"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Ouvidoria",
+            "icon": "fa-circle-info",
+            "descricao": "Veja onde fica a Ouvidoria, como falar com a equipe e o horário de atendimento.",
+            "link": "#",
+            "blank": false,
+            "nivel_obrigatoriedade": "Obrigatória",
+            "comentario_criterio": "Nível da matriz: Obrigatória",
+            "criterio_matriz": "COMUM | Ouvidorias | 14.1",
+            "origem_sincronizacao": "ia",
+            "submenus": [
+              {
+                "titulo": "Ouvidoria Digital",
+                "icon": "fa-circle-info",
+                "descricao": "Acesso ao canal digital da Ouvidoria para registrar manifestações e acompanhar atendimentos.",
+                "link": "#",
+                "blank": false,
+                "nivel_obrigatoriedade": "Obrigatória",
+                "comentario_criterio": "Nível da matriz: Obrigatória",
+                "criterio_matriz": "COMUM | Ouvidorias | 14.2.",
+                "origem_sincronizacao": "ia"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "titulo": "Perguntas Frequentes",
+        "icon": "fa-circle-question",
+        "descricao": "Respostas para dúvidas comuns sobre serviços, rotinas e informações do órgão.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Informações Institucionais | 2.7",
+        "origem_sincronizacao": "ia"
+      },
+      {
+        "titulo": "Código de Conduta e Integridade",
+        "icon": "fa-circle-info",
+        "descricao": "Documento com as diretrizes de conduta, integridade e boas práticas adotadas pelo município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.5",
+        "origem_sincronizacao": "ia"
+      }
+    ],
+    "nivel_obrigatoriedade": "Recomendada",
+    "comentario_criterio": "Nível da matriz: Recomendada",
+    "criterio_matriz": "COMUM | Acessibilidade | 13.5"
+  },
+  {
+    "titulo": "Veículos",
+    "icon": "fa-car",
+    "descricao": "Frota de veículos do município.",
+    "submenus": [
+      {
+        "titulo": "Frota Municipal",
+        "icon": "fa-car",
+        "descricao": "Consulta frota municipal.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Dados Abertos",
+    "icon": "fa-database",
+    "descricao": "Base de dados abertos.",
+    "submenus": [
+      {
+        "titulo": "Base de Dados",
+        "icon": "fa-database",
+        "descricao": "Consulta dados abertos.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Acesso Automatizado",
+        "icon": "fa-circle-info",
+        "descricao": "Consulta conjuntos de dados abertos em formato legível por máquina e as condições de uso.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Lei Geral de Proteção de Dados (LGPD) e Governo Digital | 15.4",
+        "origem_sincronizacao": "ia"
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Coleta de Lixo",
+    "icon": "fa-trash",
+    "descricao": "Informações sobre coleta de resíduos.",
+    "submenus": [
+      {
+        "titulo": "Roteiro de Coleta",
+        "icon": "fa-trash",
+        "descricao": "Consulta roteiro de coleta.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      }
+    ],
+    "nivel_obrigatoriedade": "Opcional",
+    "comentario_criterio": "Nível atribuído por validação final estática."
+  },
+  {
+    "titulo": "Privacidade e Proteção de Dados",
+    "icon": "fa-shield-alt",
+    "descricao": "Política de privacidade e proteção de dados.",
+    "submenus": [
+      {
+        "titulo": "Política de Privacidade",
+        "icon": "fa-shield-alt",
+        "descricao": "Consulta política de privacidade.",
+        "link": "#",
+        "nivel_obrigatoriedade": "Opcional",
+        "comentario_criterio": "Nível atribuído por validação final estática."
+      },
+      {
+        "titulo": "Encarregado de Dados",
+        "icon": "fa-circle-info",
+        "descricao": "Canal para falar sobre privacidade e proteção de dados no município.",
+        "link": "#",
+        "blank": false,
+        "nivel_obrigatoriedade": "Obrigatória",
+        "comentario_criterio": "Nível da matriz: Obrigatória",
+        "criterio_matriz": "COMUM | Lei Geral de Proteção de Dados (LGPD) e Governo Digital | 15.1",
+        "origem_sincronizacao": "ia"
+      }
+    ],
+    "nivel_obrigatoriedade": "Obrigatória",
+    "comentario_criterio": "Nível da matriz: Obrigatória",
+    "criterio_matriz": "ESTATAIS | Atividades Finalísticas | 26.12"
+  }
+]

@@ -642,6 +642,130 @@
       color: var(--ledger-green);
     }
 
+    .gap-toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(140px, 0.72fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .gap-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .gap-stat {
+      padding: 10px;
+      border: 1px solid rgba(216, 207, 182, 0.88);
+      border-radius: var(--radius-md);
+      background: rgba(255, 253, 247, 0.82);
+    }
+
+    .gap-stat strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+
+    .gap-stat span {
+      display: block;
+      margin-top: 5px;
+      color: var(--ledger-ink-soft);
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+    }
+
+    .gap-list {
+      display: grid;
+      gap: 8px;
+      max-height: 520px;
+      overflow: auto;
+      padding-right: 3px;
+    }
+
+    .gap-item {
+      padding: 11px;
+      border: 1px solid rgba(216, 207, 182, 0.88);
+      border-left: 4px solid var(--ledger-red);
+      border-radius: var(--radius-md);
+      background: rgba(255, 253, 247, 0.84);
+    }
+
+    .gap-item.possible { border-left-color: var(--ledger-gold); }
+    .gap-item.covered { border-left-color: var(--ledger-green); }
+
+    .gap-item-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .gap-check {
+      width: 1.05rem;
+      height: 1.05rem;
+      margin: 0 2px 0 0;
+      accent-color: var(--ledger-blue);
+    }
+
+    .gap-code {
+      color: var(--ledger-ink);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .gap-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(20, 33, 61, 0.08);
+      color: var(--ledger-ink-soft);
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+
+    .gap-item-title {
+      margin: 0;
+      color: var(--ledger-ink);
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .gap-item-match {
+      margin: 7px 0 0;
+      color: var(--ledger-ink-soft);
+      font-size: 0.72rem;
+    }
+
+    .gap-relation {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+      margin-top: 9px;
+    }
+
+    .gap-relation label {
+      margin: 0;
+      color: var(--ledger-ink-soft);
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .gap-relation .form-select {
+      min-width: 0;
+      padding-block: 0.38rem;
+      font-size: 0.72rem;
+    }
+
     .drop-target {
       border: 2px dashed rgba(29, 78, 216, 0.36) !important;
       background: rgba(219, 234, 254, 0.68) !important;
@@ -708,6 +832,7 @@
       .ledger-hero, .workspace { grid-template-columns: 1fr; }
       .hero-card { padding: 22px; }
       .stats-card { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .gap-toolbar { grid-template-columns: 1fr; }
       .editor-body { max-height: none; }
       .tree-panel { min-height: 520px; }
       .stamp-title { white-space: normal; }
@@ -744,6 +869,8 @@
       <div class="toolbar-actions">
         <label class="btn-ledger btn-ledger-primary" for="jsonFileInput"><i class="bi bi-folder2-open me-1" aria-hidden="true"></i> Carregar menu.json</label>
         <input id="jsonFileInput" class="hidden-input" type="file" accept=".json,application/json" />
+        <label class="btn-ledger" for="csvFileInput"><i class="bi bi-file-earmark-spreadsheet me-1" aria-hidden="true"></i> Comparar matriz CSV</label>
+        <input id="csvFileInput" class="hidden-input" type="file" accept=".csv,text/csv" multiple />
         <button class="btn-ledger" type="button" id="downloadJsonButton"><i class="bi bi-download me-1" aria-hidden="true"></i> Baixar JSON</button>
         <button class="btn-ledger" type="button" id="copyJsonButton"><i class="bi bi-clipboard me-1" aria-hidden="true"></i> Copiar JSON</button>
         <button class="btn-ledger" type="button" id="resetJsonButton"><i class="bi bi-arrow-counterclockwise me-1" aria-hidden="true"></i> Restaurar base</button>
@@ -801,10 +928,12 @@
             <button class="tab-button active" type="button" data-tab="preview" role="tab">Preview</button>
             <button class="tab-button" type="button" data-tab="json" role="tab">JSON bruto</button>
             <button class="tab-button" type="button" data-tab="validate" role="tab">Validação</button>
+            <button class="tab-button" type="button" data-tab="gaps" role="tab">Lacunas</button>
           </div>
           <div class="tab-panel active" id="previewPanel" role="tabpanel"></div>
           <div class="tab-panel" id="jsonPanel" role="tabpanel"></div>
           <div class="tab-panel" id="validatePanel" role="tabpanel"></div>
+          <div class="tab-panel" id="gapsPanel" role="tabpanel"></div>
         </div>
       </section>
     </main>
@@ -1172,6 +1301,20 @@
 
       const STORAGE_KEY = 'menu-json-editor-state-v1';
       const FALLBACK_ICON = 'fa-circle-dot';
+      const EXECUTIVE_MATRIXES = new Set([
+        'COMUM',
+        'COMUM EXCETO ESTATAIS',
+        'COMUM EXCETO ESTATAIS INDEPENDENTES',
+        'EXECUTIVO',
+        'EXECUTIVO E CONSORCIOS'
+      ]);
+      const MATCH_STOP_WORDS = new Set([
+        'a', 'ao', 'aos', 'as', 'com', 'como', 'da', 'das', 'de', 'do', 'dos', 'e',
+        'em', 'entre', 'no', 'nos', 'o', 'os', 'ou', 'para', 'por', 'que', 'se', 'seu',
+        'sua', 'suas', 'seus', 'um', 'uma', 'divulga', 'divulgar', 'publica', 'publicar',
+        'possui', 'apresenta', 'permite', 'possibilita', 'informacao', 'informacoes',
+        'dados', 'portal', 'site', 'poder', 'orgao'
+      ]);
       const ICON_LIBRARY = [
         'fa-coins', 'fa-money-bill', 'fa-building', 'fa-chart-bar', 'fa-gavel',
         'fa-shopping-cart', 'fa-file-contract', 'fa-users', 'fa-hard-hat', 'fa-hospital',
@@ -1191,6 +1334,7 @@
         fileNameBadge: document.getElementById('fileNameBadge'),
         saveStateBadge: document.getElementById('saveStateBadge'),
         fileInput: document.getElementById('jsonFileInput'),
+        csvFileInput: document.getElementById('csvFileInput'),
         downloadButton: document.getElementById('downloadJsonButton'),
         copyButton: document.getElementById('copyJsonButton'),
         resetButton: document.getElementById('resetJsonButton'),
@@ -1206,6 +1350,7 @@
         previewPanel: document.getElementById('previewPanel'),
         jsonPanel: document.getElementById('jsonPanel'),
         validatePanel: document.getElementById('validatePanel'),
+        gapsPanel: document.getElementById('gapsPanel'),
         toastStack: document.getElementById('toastStack'),
         dropZone: document.getElementById('dropZone')
       };
@@ -1218,7 +1363,16 @@
         searchTerm: '',
         activeTab: 'preview',
         sourceName: 'Base embutida',
-        dirty: false
+        dirty: false,
+        matrix: {
+          criteria: [],
+          sourceName: '',
+          scope: 'executive',
+          status: 'gaps',
+          searchTerm: '',
+          selectedCriteria: new Set(),
+          relationTargets: new Map()
+        }
       };
 
       /**
@@ -1280,6 +1434,7 @@
         const safeCategory = isPlainObject(category) ? category : {};
         const submenus = Array.isArray(safeCategory.submenus) ? safeCategory.submenus : [];
         return {
+          ...safeCategory,
           titulo: String(safeCategory.titulo ?? `Categoria ${index + 1}`),
           icon: String(safeCategory.icon ?? FALLBACK_ICON),
           descricao: String(safeCategory.descricao ?? ''),
@@ -1295,13 +1450,18 @@
        */
       function normalizeSubmenu(submenu, index) {
         const safeSubmenu = isPlainObject(submenu) ? submenu : {};
-        return {
+        const normalizedSubmenu = {
+          ...safeSubmenu,
           titulo: String(safeSubmenu.titulo ?? `Item ${index + 1}`),
           icon: String(safeSubmenu.icon ?? FALLBACK_ICON),
           descricao: String(safeSubmenu.descricao ?? ''),
           link: String(safeSubmenu.link ?? ''),
           blank: Boolean(safeSubmenu.blank)
         };
+        if (Array.isArray(safeSubmenu.submenus)) {
+          normalizedSubmenu.submenus = safeSubmenu.submenus.map(normalizeSubmenu);
+        }
+        return normalizedSubmenu;
       }
 
       /**
@@ -1404,6 +1564,7 @@
        */
       function bindEvents() {
         elements.fileInput.addEventListener('change', handleFileInputChange);
+        elements.csvFileInput.addEventListener('change', handleCsvFileInputChange);
         elements.downloadButton.addEventListener('click', downloadJsonFile);
         elements.copyButton.addEventListener('click', copyJsonToClipboard);
         elements.resetButton.addEventListener('click', resetToEmbeddedMenu);
@@ -1770,6 +1931,7 @@
         renderPreviewPanel();
         renderJsonPanel();
         renderValidationPanel();
+        renderGapsPanel();
       }
 
       /**
@@ -1792,7 +1954,7 @@
        * Throws: none.
        */
       function tabLabel(tab) {
-        const labels = { preview: 'Preview', json: 'JSON bruto', validate: 'Validação' };
+        const labels = { preview: 'Preview', json: 'JSON bruto', validate: 'Validação', gaps: 'Lacunas' };
         return labels[tab] || 'Preview';
       }
 
@@ -1917,6 +2079,481 @@
       }
 
       /**
+       * Purpose: Render matrix comparison controls and results.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function renderGapsPanel() {
+        if (!state.matrix.criteria.length) {
+          elements.gapsPanel.innerHTML = `
+            <div class="empty-state">
+              <div>
+                <i class="bi bi-file-earmark-diff" aria-hidden="true"></i>
+                <p class="mt-3 mb-1 fw-bold">Matriz ainda não carregada</p>
+                <p class="mb-3">Selecione “Matriz de Critérios 2026 (Final).CSV” para comparar com o menu atual.</p>
+                <label class="btn-ledger btn-ledger-primary" for="csvFileInput">Carregar matriz CSV</label>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        const comparison = compareMatrixToMenu();
+        const visibleResults = filterComparisonResults(comparison.results);
+        const menuNodes = flattenMenuNodes(state.menu);
+        const selectedCount = state.matrix.selectedCriteria.size;
+        const matrixOptions = [...new Set(state.matrix.criteria.map(item => item.matrix))]
+          .sort((left, right) => left.localeCompare(right, 'pt-BR'))
+          .map(matrix => `<option value="matrix:${escapeHtml(matrix)}" ${state.matrix.scope === `matrix:${matrix}` ? 'selected' : ''}>${escapeHtml(matrix)}</option>`)
+          .join('');
+
+        elements.gapsPanel.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mb-2">
+            <div>
+              <div class="panel-kicker">Fonte</div>
+              <div class="small fw-bold">${escapeHtml(state.matrix.sourceName)}</div>
+            </div>
+            <button class="btn-ledger" type="button" id="downloadGapReportButton"><i class="bi bi-download me-1" aria-hidden="true"></i> Relatório CSV</button>
+          </div>
+          <div class="gap-toolbar">
+            <select class="form-select" id="matrixScopeSelect" aria-label="Escopo da matriz">
+              <option value="executive" ${state.matrix.scope === 'executive' ? 'selected' : ''}>Prefeitura / Executivo</option>
+              <option value="all" ${state.matrix.scope === 'all' ? 'selected' : ''}>Todas as matrizes</option>
+              ${matrixOptions}
+            </select>
+            <select class="form-select" id="gapStatusSelect" aria-label="Status da comparação">
+              <option value="gaps" ${state.matrix.status === 'gaps' ? 'selected' : ''}>Só lacunas</option>
+              <option value="possible" ${state.matrix.status === 'possible' ? 'selected' : ''}>Revisar possíveis</option>
+              <option value="covered" ${state.matrix.status === 'covered' ? 'selected' : ''}>Só cobertos</option>
+              <option value="all" ${state.matrix.status === 'all' ? 'selected' : ''}>Todos</option>
+            </select>
+          </div>
+          <div class="mb-2">
+            <input class="form-control" id="gapSearchInput" type="search" value="${escapeHtml(state.matrix.searchTerm)}" placeholder="Filtrar por ID, dimensão ou critério" autocomplete="off" />
+          </div>
+          <div class="gap-summary">
+            <div class="gap-stat"><strong>${comparison.counts.gap}</strong><span>Lacunas</span></div>
+            <div class="gap-stat"><strong>${comparison.counts.possible}</strong><span>Possíveis</span></div>
+            <div class="gap-stat"><strong>${comparison.counts.covered}</strong><span>Cobertos</span></div>
+          </div>
+          <div class="d-flex gap-2 flex-wrap mb-2">
+            <button class="btn-ledger" type="button" id="selectVisibleCriteriaButton">Marcar visíveis</button>
+            <button class="btn-ledger btn-ledger-primary" type="button" id="relateCriteriaButton" ${selectedCount ? '' : 'disabled'}>
+              <i class="bi bi-link-45deg me-1" aria-hidden="true"></i> Relacionar marcados (${selectedCount})
+            </button>
+          </div>
+          <div class="gap-list">
+            ${visibleResults.length ? visibleResults.map(result => gapItemMarkup(result, menuNodes)).join('') : `
+              <div class="validation-item success"><i class="bi bi-check-circle" aria-hidden="true"></i><span>Nenhum item neste filtro.</span></div>
+            `}
+          </div>
+        `;
+
+        document.getElementById('matrixScopeSelect').addEventListener('change', event => {
+          state.matrix.scope = event.target.value;
+          state.matrix.selectedCriteria.clear();
+          renderGapsPanel();
+        });
+        document.getElementById('gapStatusSelect').addEventListener('change', event => {
+          state.matrix.status = event.target.value;
+          renderGapsPanel();
+        });
+        document.getElementById('gapSearchInput').addEventListener('input', event => {
+          state.matrix.searchTerm = event.target.value;
+          renderGapsPanel();
+          document.getElementById('gapSearchInput')?.focus();
+        });
+        document.getElementById('downloadGapReportButton').addEventListener('click', downloadGapReport);
+        document.getElementById('selectVisibleCriteriaButton').addEventListener('click', () => {
+          const visibleKeys = visibleResults.map(result => criterionKey(result.criterion.matrix, result.criterion.id));
+          const allSelected = visibleKeys.length && visibleKeys.every(key => state.matrix.selectedCriteria.has(key));
+          visibleKeys.forEach(key => {
+            if (allSelected) state.matrix.selectedCriteria.delete(key);
+            else state.matrix.selectedCriteria.add(key);
+          });
+          renderGapsPanel();
+        });
+        document.getElementById('relateCriteriaButton').addEventListener('click', relateSelectedCriteria);
+        elements.gapsPanel.querySelectorAll('[data-criterion-check]').forEach(checkbox => {
+          checkbox.addEventListener('change', event => {
+            const key = event.target.dataset.criterionCheck;
+            if (event.target.checked) state.matrix.selectedCriteria.add(key);
+            else state.matrix.selectedCriteria.delete(key);
+            renderGapsPanel();
+          });
+        });
+        elements.gapsPanel.querySelectorAll('[data-relation-target]').forEach(select => {
+          select.addEventListener('change', event => {
+            const key = event.target.dataset.relationTarget;
+            state.matrix.relationTargets.set(key, event.target.value);
+            if (event.target.value) state.matrix.selectedCriteria.add(key);
+            renderGapsPanel();
+          });
+        });
+      }
+
+      /**
+       * Purpose: Build one comparison result card.
+       * Parameters: result {Object} criterion comparison result; menuNodes {Array<Object>} target nodes.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function gapItemMarkup(result, menuNodes) {
+        const statusLabels = { gap: 'Lacuna', possible: 'Possível', covered: 'Coberto' };
+        const key = criterionKey(result.criterion.matrix, result.criterion.id);
+        const suggestedTarget = result.status === 'gap' ? '' : result.match?.nodeId || '';
+        const selectedTarget = state.matrix.relationTargets.get(key) || suggestedTarget;
+        const matchDescription = result.match
+          ? `${result.status === 'covered' ? 'Vínculo' : 'Sugestão'}: ${result.match.path} · ${Math.round(result.score * 100)}%`
+          : 'Nenhum item relacionado encontrado no menu.';
+        const targetOptions = menuNodes.map(node => `
+          <option value="${escapeHtml(node.nodeId)}" ${selectedTarget === node.nodeId ? 'selected' : ''}>${escapeHtml(node.path)}</option>
+        `).join('');
+        return `
+          <article class="gap-item ${result.status}">
+            <div class="gap-item-head">
+              <input class="gap-check" type="checkbox" aria-label="Selecionar critério ${escapeHtml(result.criterion.id)}" data-criterion-check="${escapeHtml(key)}" ${state.matrix.selectedCriteria.has(key) ? 'checked' : ''} />
+              <span class="gap-code">${escapeHtml(result.criterion.id)}</span>
+              <span class="gap-pill">${escapeHtml(result.criterion.classification || 'Sem classificação')}</span>
+              <span class="gap-pill">${statusLabels[result.status]}</span>
+            </div>
+            <p class="gap-item-title">${escapeHtml(result.criterion.criterion)}</p>
+            <p class="gap-item-match">${escapeHtml(result.criterion.matrix)} · ${escapeHtml(result.criterion.dimension)}<br>${escapeHtml(matchDescription)}</p>
+            <div class="gap-relation">
+              <label>Relacionar a</label>
+              <select class="form-select" data-relation-target="${escapeHtml(key)}" aria-label="Item do menu para o critério ${escapeHtml(result.criterion.id)}">
+                <option value="">Selecione item do menu</option>
+                ${targetOptions}
+              </select>
+            </div>
+          </article>
+        `;
+      }
+
+      /**
+       * Purpose: Compare applicable matrix criteria against current menu nodes.
+       * Parameters: none.
+       * Returns: {Object} results and status counts.
+       * Throws: none.
+       */
+      function compareMatrixToMenu() {
+        const criteria = criteriaForCurrentScope();
+        const menuNodes = flattenMenuNodes(state.menu);
+        const exactMatches = buildExactCriterionMatches(menuNodes);
+        const results = criteria.map(criterion => compareCriterion(criterion, menuNodes, exactMatches));
+        const counts = results.reduce((total, result) => {
+          total[result.status] += 1;
+          return total;
+        }, { gap: 0, possible: 0, covered: 0 });
+        return { results, counts };
+      }
+
+      /**
+       * Purpose: Select criteria included by active matrix scope.
+       * Parameters: none.
+       * Returns: {Array<Object>} scoped criteria.
+       * Throws: none.
+       */
+      function criteriaForCurrentScope() {
+        if (state.matrix.scope === 'all') {
+          return state.matrix.criteria;
+        }
+        if (state.matrix.scope.startsWith('matrix:')) {
+          const selectedMatrix = state.matrix.scope.slice(7);
+          return state.matrix.criteria.filter(item => item.matrix === selectedMatrix);
+        }
+        return state.matrix.criteria.filter(item => EXECUTIVE_MATRIXES.has(normalizeComparisonText(item.matrix).toUpperCase()));
+      }
+
+      /**
+       * Purpose: Convert menu tree into searchable nodes, including nested submenus.
+       * Parameters: menu {Array<Object>} current menu.
+       * Returns: {Array<Object>} flattened node descriptors.
+       * Throws: none.
+       */
+      function flattenMenuNodes(menu) {
+        const nodes = [];
+        function visit(item, parentPath, indexPath) {
+          if (!isPlainObject(item)) return;
+          const title = String(item.titulo ?? '').trim();
+          const path = [...parentPath, title || 'Sem título'];
+          nodes.push({
+            item,
+            nodeId: indexPath.join('.'),
+            title,
+            description: String(item.descricao ?? ''),
+            path: path.join(' / '),
+            criterionReferences: menuItemCriterionReferences(item)
+          });
+          if (Array.isArray(item.submenus)) {
+            item.submenus.forEach((child, childIndex) => visit(child, path, [...indexPath, childIndex]));
+          }
+        }
+        menu.forEach((item, index) => visit(item, [], [index]));
+        return nodes;
+      }
+
+      /**
+       * Purpose: Read legacy and multi-value criterion references from one menu item.
+       * Parameters: item {Object} menu item.
+       * Returns: {Array<string>} unique criterion references.
+       * Throws: none.
+       */
+      function menuItemCriterionReferences(item) {
+        const references = [];
+        if (typeof item.criterio_matriz === 'string' && item.criterio_matriz.trim()) {
+          references.push(item.criterio_matriz.trim());
+        }
+        if (Array.isArray(item.criterios_matriz)) {
+          item.criterios_matriz.forEach(reference => {
+            if (typeof reference === 'string' && reference.trim()) references.push(reference.trim());
+          });
+        }
+        return [...new Set(references)];
+      }
+
+      /**
+       * Purpose: Persist criterion references while keeping legacy scalar compatibility.
+       * Parameters: item {Object} menu item; references {Array<string>} desired references.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function setMenuItemCriterionReferences(item, references) {
+        const uniqueReferences = [...new Set(references.filter(Boolean))];
+        if (!uniqueReferences.length) {
+          delete item.criterio_matriz;
+          delete item.criterios_matriz;
+          return;
+        }
+        item.criterio_matriz = uniqueReferences[0];
+        if (uniqueReferences.length > 1) item.criterios_matriz = uniqueReferences;
+        else delete item.criterios_matriz;
+      }
+
+      /**
+       * Purpose: Relate checked matrix criteria to selected menu targets.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function relateSelectedCriteria() {
+        const selectedKeys = [...state.matrix.selectedCriteria];
+        if (!selectedKeys.length) return;
+
+        const menuNodes = flattenMenuNodes(state.menu);
+        const nodesById = new Map(menuNodes.map(node => [node.nodeId, node]));
+        const criteriaByKey = new Map(state.matrix.criteria.map(criterion => [criterionKey(criterion.matrix, criterion.id), criterion]));
+        const resultsByKey = new Map(compareMatrixToMenu().results.map(result => [criterionKey(result.criterion.matrix, result.criterion.id), result]));
+        let relatedCount = 0;
+        let skippedCount = 0;
+
+        selectedKeys.forEach(key => {
+          const criterion = criteriaByKey.get(key);
+          const result = resultsByKey.get(key);
+          const suggestedTarget = result?.status === 'gap' ? '' : result?.match?.nodeId || '';
+          const targetId = state.matrix.relationTargets.get(key) || suggestedTarget;
+          const targetNode = nodesById.get(targetId);
+          if (!criterion || !targetNode) {
+            skippedCount += 1;
+            return;
+          }
+
+          menuNodes.forEach(node => {
+            const remainingReferences = node.criterionReferences.filter(reference => {
+              const parsed = parseCriterionReference(reference);
+              return parsed.key !== key;
+            });
+            setMenuItemCriterionReferences(node.item, remainingReferences);
+            node.criterionReferences = remainingReferences;
+          });
+
+          const reference = `${criterion.matrix} | ${criterion.dimension} | ${criterion.id}`;
+          setMenuItemCriterionReferences(targetNode.item, [...menuItemCriterionReferences(targetNode.item), reference]);
+          targetNode.criterionReferences = menuItemCriterionReferences(targetNode.item);
+          relatedCount += 1;
+          state.matrix.relationTargets.delete(key);
+        });
+
+        state.matrix.selectedCriteria.clear();
+        if (!relatedCount) {
+          showToast('Selecione um item de menu para cada critério marcado.', 'error');
+          renderGapsPanel();
+          return;
+        }
+        markDirty(`${relatedCount} critério(s) relacionado(s).${skippedCount ? ` ${skippedCount} sem destino.` : ''}`);
+      }
+
+      /**
+       * Purpose: Index menu nodes carrying explicit matrix metadata.
+       * Parameters: menuNodes {Array<Object>} flattened menu.
+       * Returns: {Object} full-key and ID maps.
+       * Throws: none.
+       */
+      function buildExactCriterionMatches(menuNodes) {
+        const byKey = new Map();
+        const byId = new Map();
+        menuNodes.forEach(node => {
+          node.criterionReferences.forEach(value => {
+            const reference = parseCriterionReference(value);
+            if (!reference.id) return;
+            if (reference.key) byKey.set(reference.key, node);
+            if (!byId.has(reference.id)) byId.set(reference.id, node);
+          });
+        });
+        return { byKey, byId };
+      }
+
+      /**
+       * Purpose: Compare one criterion using metadata first and text similarity second.
+       * Parameters: criterion {Object}; menuNodes {Array<Object>}; exactMatches {Object}.
+       * Returns: {Object} comparison result.
+       * Throws: none.
+       */
+      function compareCriterion(criterion, menuNodes, exactMatches) {
+        const key = criterionKey(criterion.matrix, criterion.id);
+        const exactNode = exactMatches.byKey.get(key) || exactMatches.byId.get(normalizeCriterionId(criterion.id));
+        if (exactNode) {
+          return { criterion, status: 'covered', match: exactNode, score: 1 };
+        }
+
+        let bestMatch = null;
+        let bestScore = 0;
+        menuNodes.forEach(node => {
+          const score = criterionNodeScore(criterion, node);
+          if (score > bestScore) {
+            bestScore = score;
+            bestMatch = node;
+          }
+        });
+        return {
+          criterion,
+          status: bestScore >= 0.44 ? 'possible' : 'gap',
+          match: bestMatch,
+          score: bestScore
+        };
+      }
+
+      /**
+       * Purpose: Score semantic overlap between criterion and menu node.
+       * Parameters: criterion {Object}; node {Object}.
+       * Returns: {number} score from 0 to 1.
+       * Throws: none.
+       */
+      function criterionNodeScore(criterion, node) {
+        const criterionTokens = significantTokens(criterion.criterion);
+        const nodeTokens = significantTokens(`${node.title} ${node.description}`);
+        const dimensionTokens = significantTokens(criterion.dimension);
+        const pathTokens = significantTokens(node.path);
+        const contentScore = diceSimilarity(criterionTokens, nodeTokens);
+        const dimensionScore = diceSimilarity(dimensionTokens, pathTokens);
+        const normalizedCriterion = normalizeComparisonText(criterion.criterion);
+        const normalizedTitle = normalizeComparisonText(node.title);
+        const titleContained = normalizedTitle.length >= 6 && normalizedCriterion.includes(normalizedTitle) ? 0.78 : 0;
+        return Math.max(titleContained, (contentScore * 0.76) + (dimensionScore * 0.24));
+      }
+
+      /**
+       * Purpose: Produce significant normalized words for fuzzy comparison.
+       * Parameters: value {unknown} source text.
+       * Returns: {Set<string>} token set.
+       * Throws: none.
+       */
+      function significantTokens(value) {
+        return new Set(normalizeComparisonText(value)
+          .split(' ')
+          .filter(token => token.length >= 3 && !MATCH_STOP_WORDS.has(token)));
+      }
+
+      /**
+       * Purpose: Calculate Dice similarity for two token sets.
+       * Parameters: left {Set<string>}; right {Set<string>}.
+       * Returns: {number} score from 0 to 1.
+       * Throws: none.
+       */
+      function diceSimilarity(left, right) {
+        if (!left.size || !right.size) return 0;
+        let overlap = 0;
+        left.forEach(token => {
+          if (right.has(token)) overlap += 1;
+        });
+        return (2 * overlap) / (left.size + right.size);
+      }
+
+      /**
+       * Purpose: Normalize accents, punctuation, and spacing for comparison.
+       * Parameters: value {unknown} source text.
+       * Returns: {string} normalized text.
+       * Throws: none.
+       */
+      function normalizeComparisonText(value) {
+        return String(value ?? '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/\u00a0/g, ' ')
+          .toLocaleLowerCase('pt-BR')
+          .replace(/[^a-z0-9]+/g, ' ')
+          .trim()
+          .replace(/\s+/g, ' ');
+      }
+
+      /**
+       * Purpose: Parse "MATRIX | DIMENSION | ID" menu metadata.
+       * Parameters: value {unknown} metadata value.
+       * Returns: {Object} normalized matrix, ID, and key.
+       * Throws: none.
+       */
+      function parseCriterionReference(value) {
+        const parts = String(value ?? '').split('|').map(part => part.trim()).filter(Boolean);
+        const matrix = parts[0] || '';
+        const id = normalizeCriterionId(parts.at(-1) || '');
+        return { matrix, id, key: matrix && id ? criterionKey(matrix, id) : '' };
+      }
+
+      /**
+       * Purpose: Build stable matrix criterion key.
+       * Parameters: matrix {string}; id {string}.
+       * Returns: {string} normalized key.
+       * Throws: none.
+       */
+      function criterionKey(matrix, id) {
+        return `${normalizeComparisonText(matrix)}|${normalizeCriterionId(id)}`;
+      }
+
+      /**
+       * Purpose: Normalize criterion IDs with stray spaces and terminal punctuation.
+       * Parameters: value {unknown} criterion ID.
+       * Returns: {string} normalized ID.
+       * Throws: none.
+       */
+      function normalizeCriterionId(value) {
+        return String(value ?? '').replace(/\u00a0/g, ' ').trim().replace(/\.+$/, '').replace(/\s+/g, '');
+      }
+
+      /**
+       * Purpose: Filter comparison list by status and free-text query.
+       * Parameters: results {Array<Object>} comparison results.
+       * Returns: {Array<Object>} visible results.
+       * Throws: none.
+       */
+      function filterComparisonResults(results) {
+        const query = normalizeComparisonText(state.matrix.searchTerm);
+        return results.filter(result => {
+          if (state.matrix.status !== 'all' && result.status !== state.matrix.status.replace('gaps', 'gap')) return false;
+          if (!query) return true;
+          const searchable = normalizeComparisonText([
+            result.criterion.id,
+            result.criterion.matrix,
+            result.criterion.dimension,
+            result.criterion.classification,
+            result.criterion.criterion,
+            result.match?.path
+          ].join(' '));
+          return searchable.includes(query);
+        });
+      }
+
+      /**
        * Purpose: Validate menu shape and required business fields.
        * Parameters: menu {unknown} menu candidate.
        * Returns: {Object} validation result.
@@ -1992,6 +2629,137 @@
         }
         readJsonFile(file);
         event.target.value = '';
+      }
+
+      /**
+       * Purpose: Handle one or more matrix CSV files.
+       * Parameters: event {Event} file input event.
+       * Returns: {Promise<void>} matrix loading operation.
+       * Throws: none.
+       */
+      async function handleCsvFileInputChange(event) {
+        const files = [...(event.target.files || [])];
+        if (!files.length) return;
+        await readMatrixFiles(files);
+        event.target.value = '';
+      }
+
+      /**
+       * Purpose: Decode, parse, and merge selected matrix CSV files.
+       * Parameters: files {Array<File>} selected CSV files.
+       * Returns: {Promise<void>} matrix loading operation.
+       * Throws: none.
+       */
+      async function readMatrixFiles(files) {
+        try {
+          const parsedFiles = await Promise.all(files.map(async file => {
+            const buffer = await file.arrayBuffer();
+            return parseMatrixCsv(decodeCsvBuffer(buffer));
+          }));
+          const uniqueCriteria = new Map();
+          parsedFiles.flat().forEach(criterion => uniqueCriteria.set(criterionKey(criterion.matrix, criterion.id), criterion));
+          state.matrix.criteria = [...uniqueCriteria.values()];
+          state.matrix.sourceName = files.map(file => file.name).join(', ');
+          state.matrix.status = 'gaps';
+          state.matrix.searchTerm = '';
+          state.matrix.selectedCriteria.clear();
+          state.matrix.relationTargets.clear();
+          state.activeTab = 'gaps';
+          renderInspector();
+          showToast(`${state.matrix.criteria.length} critérios carregados para comparação.`, 'success');
+        } catch (csvError) {
+          showToast(`CSV inválido: ${csvError.message}`, 'error');
+        }
+      }
+
+      /**
+       * Purpose: Decode UTF-8 or Windows-1252 matrix bytes.
+       * Parameters: buffer {ArrayBuffer} file bytes.
+       * Returns: {string} decoded CSV text.
+       * Throws: none.
+       */
+      function decodeCsvBuffer(buffer) {
+        try {
+          return new TextDecoder('utf-8', { fatal: true }).decode(buffer);
+        } catch (utf8Error) {
+          return new TextDecoder('windows-1252').decode(buffer);
+        }
+      }
+
+      /**
+       * Purpose: Parse matrix CSV into normalized criteria.
+       * Parameters: csvText {string} decoded CSV.
+       * Returns: {Array<Object>} criteria.
+       * Throws: Error when expected columns are absent.
+       */
+      function parseMatrixCsv(csvText) {
+        const rows = parseDelimitedRows(csvText, ';');
+        if (!rows.length) throw new Error('arquivo vazio.');
+        const headers = rows[0].map(normalizeComparisonText);
+        const columns = {
+          matrix: headers.findIndex(header => header === 'matriz'),
+          dimension: headers.findIndex(header => header === 'dimensao'),
+          id: headers.findIndex(header => header === 'id'),
+          criterion: headers.findIndex(header => header === 'criterio'),
+          classification: headers.findIndex(header => header.startsWith('classificacao'))
+        };
+        if (Object.values(columns).some(index => index < 0)) {
+          throw new Error('colunas MATRIZ, DIMENSÃO, ID, CRITÉRIO e CLASSIFICAÇÃO são obrigatórias.');
+        }
+
+        return rows.slice(1).map(row => ({
+          matrix: String(row[columns.matrix] ?? '').trim(),
+          dimension: String(row[columns.dimension] ?? '').trim(),
+          id: normalizeCriterionId(row[columns.id]),
+          criterion: String(row[columns.criterion] ?? '').trim().replace(/\s+/g, ' '),
+          classification: String(row[columns.classification] ?? '').trim()
+        })).filter(item => item.matrix && item.dimension && item.id && item.criterion);
+      }
+
+      /**
+       * Purpose: Parse delimited text with quoted delimiters, escaped quotes, and multiline fields.
+       * Parameters: text {string}; delimiter {string}.
+       * Returns: {Array<Array<string>>} parsed rows.
+       * Throws: Error for unclosed quoted field.
+       */
+      function parseDelimitedRows(text, delimiter) {
+        const rows = [];
+        let row = [];
+        let field = '';
+        let quoted = false;
+
+        for (let index = 0; index < text.length; index += 1) {
+          const character = text[index];
+          if (character === '"') {
+            if (quoted && text[index + 1] === '"') {
+              field += '"';
+              index += 1;
+            } else {
+              quoted = !quoted;
+            }
+            continue;
+          }
+          if (!quoted && character === delimiter) {
+            row.push(field);
+            field = '';
+            continue;
+          }
+          if (!quoted && (character === '\n' || character === '\r')) {
+            if (character === '\r' && text[index + 1] === '\n') index += 1;
+            row.push(field);
+            if (row.some(value => value.trim())) rows.push(row);
+            row = [];
+            field = '';
+            continue;
+          }
+          field += character;
+        }
+
+        if (quoted) throw new Error('campo entre aspas não foi fechado.');
+        row.push(field);
+        if (row.some(value => value.trim())) rows.push(row);
+        if (rows[0]?.[0]) rows[0][0] = rows[0][0].replace(/^\uFEFF/, '');
+        return rows;
       }
 
       /**
@@ -2499,6 +3267,48 @@
       }
 
       /**
+       * Purpose: Download scoped matrix comparison as CSV.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function downloadGapReport() {
+        const results = compareMatrixToMenu().results;
+        const header = ['STATUS', 'MATRIZ', 'DIMENSÃO', 'ID', 'CLASSIFICAÇÃO', 'CRITÉRIO', 'CORRESPONDÊNCIA', 'CONFIANÇA'];
+        const lines = [
+          header,
+          ...results.map(result => [
+            result.status === 'gap' ? 'LACUNA' : result.status === 'possible' ? 'POSSÍVEL' : 'COBERTO',
+            result.criterion.matrix,
+            result.criterion.dimension,
+            result.criterion.id,
+            result.criterion.classification,
+            result.criterion.criterion,
+            result.match?.path || '',
+            `${Math.round(result.score * 100)}%`
+          ])
+        ].map(row => row.map(csvField).join(';'));
+        const blob = new Blob([`\uFEFF${lines.join('\r\n')}`], { type: 'text/csv;charset=utf-8' });
+        const objectUrl = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = objectUrl;
+        anchor.download = 'relatorio-lacunas-menu.csv';
+        anchor.click();
+        URL.revokeObjectURL(objectUrl);
+        showToast('Relatório de lacunas gerado.', 'success');
+      }
+
+      /**
+       * Purpose: Escape one field for semicolon-delimited CSV.
+       * Parameters: value {unknown} field value.
+       * Returns: {string} quoted CSV field.
+       * Throws: none.
+       */
+      function csvField(value) {
+        return `"${String(value ?? '').replaceAll('"', '""')}"`;
+      }
+
+      /**
        * Purpose: Copy current JSON to clipboard.
        * Parameters: none.
        * Returns: {Promise<void>} clipboard operation.
@@ -2552,7 +3362,7 @@
       }
 
       /**
-       * Purpose: Load dropped JSON file.
+       * Purpose: Load dropped JSON or matrix CSV files.
        * Parameters: event {DragEvent} drop event.
        * Returns: {void}.
        * Throws: none.
@@ -2560,11 +3370,14 @@
       function handleFileDrop(event) {
         event.preventDefault();
         elements.dropZone.classList.remove('drop-target');
-        const file = event.dataTransfer.files?.[0];
-        if (!file) {
+        const files = [...(event.dataTransfer.files || [])];
+        if (!files.length) return;
+        const csvFiles = files.filter(file => file.name.toLocaleLowerCase('pt-BR').endsWith('.csv'));
+        if (csvFiles.length) {
+          readMatrixFiles(csvFiles);
           return;
         }
-        readJsonFile(file);
+        readJsonFile(files[0]);
       }
 
       /**
