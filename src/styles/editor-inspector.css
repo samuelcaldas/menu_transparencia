@@ -103,6 +103,20 @@
       color: var(--ledger-blue);
     }
 
+    .metadata-switches {
+      display: grid;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid rgba(216, 207, 182, 0.78);
+      border-radius: var(--radius-md);
+      background: rgba(255, 253, 247, 0.7);
+    }
+
+    .metadata-switches .form-text {
+      color: var(--ledger-ink-soft);
+      font-size: 0.76rem;
+    }
+
     .editor-actions {
       display: flex;
       flex-wrap: wrap;
@@ -142,11 +156,18 @@
     .tab-panel {
       display: none;
       flex: 1;
+      min-height: 0;
       overflow: hidden;
       padding: 14px;
     }
 
     .tab-panel.active { display: block; }
+
+    #jsonPanel.active {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
 
     .preview-grid {
       display: grid;
@@ -227,8 +248,10 @@
     }
 
     .json-textarea {
+      flex: 1 1 auto;
       width: 100%;
-      min-height: 562px;
+      min-height: clamp(360px, 56vh, 680px);
+      max-height: calc(100vh - 260px);
       resize: vertical;
       font-family: var(--font-mono);
       font-size: 0.78rem;

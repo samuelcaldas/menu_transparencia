@@ -41,6 +41,8 @@ function normalizeCategory(category, index, fallbackIcon = 'fa-circle-dot') {
     descricao: String(safeCategory.descricao ?? ''),
     link: String(safeCategory.link ?? ''),
     blank: Boolean(safeCategory.blank),
+    iframe: Boolean(safeCategory.iframe),
+    visible: safeCategory.visible === undefined ? true : Boolean(safeCategory.visible),
     submenus: submenus.map((submenu, subIndex) => normalizeSubmenu(submenu, subIndex, fallbackIcon))
   };
 }
@@ -53,7 +55,9 @@ function normalizeSubmenu(submenu, index, fallbackIcon = 'fa-circle-dot') {
     icon: String(safeSubmenu.icon ?? fallbackIcon),
     descricao: String(safeSubmenu.descricao ?? ''),
     link: String(safeSubmenu.link ?? ''),
-    blank: Boolean(safeSubmenu.blank)
+    blank: Boolean(safeSubmenu.blank),
+    iframe: Boolean(safeSubmenu.iframe),
+    visible: safeSubmenu.visible === undefined ? true : Boolean(safeSubmenu.visible)
   };
   if (Array.isArray(safeSubmenu.submenus)) {
     normalizedSubmenu.submenus = safeSubmenu.submenus.map((child, childIndex) => normalizeSubmenu(child, childIndex, fallbackIcon));

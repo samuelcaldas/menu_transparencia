@@ -35,9 +35,33 @@ test('app smoke flow', async ({ page }) => {
 
   await page.locator('[data-tab="json"]').click();
   await expect(page.locator('#rawJsonTextarea')).toContainText('Receitas');
+  expect(await page.locator('#rawJsonTextarea').evaluate(element => element.clientHeight)).toBeGreaterThan(340);
   await page.getByRole('button', { name: 'Formatar' }).click();
   await page.getByRole('button', { name: 'Aplicar JSON' }).click();
   await expect(page.getByText('JSON aplicado.')).toBeVisible();
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('edits iframe and visible metadata', async ({ page }) => {
+  const consoleErrors = collectConsoleErrors(page);
+  await page.goto('/');
+
+  const firstCategory = page.locator('#treeContainer [data-action="select-category"]').first();
+  const categoryTitle = (await firstCategory.locator('.tree-row-label').textContent())?.trim() || '';
+  await firstCategory.click();
+
+  await expect(page.getByLabel('Visível no preview')).toBeChecked();
+  await page.getByLabel('Visível no preview').setChecked(false);
+  await page.getByLabel('Abrir em iframe').setChecked(true);
+
+  await page.locator('[data-tab="preview"]').click();
+  await expect(page.locator('#previewPanel')).not.toContainText(categoryTitle);
+
+  await page.locator('[data-tab="json"]').click();
+  await expect(page.locator('#rawJsonTextarea')).toContainText('"visible": false');
+  await expect(page.locator('#rawJsonTextarea')).toContainText('"iframe": true');
+  await expect(page.locator('#treeContainer')).toContainText(categoryTitle);
 
   expect(consoleErrors).toEqual([]);
 });

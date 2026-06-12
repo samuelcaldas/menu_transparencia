@@ -29,20 +29,26 @@ describe('normalize helpers', () => {
         descricao: '',
         link: '',
         blank: false,
+        iframe: false,
+        visible: true,
         submenus: [
           {
             titulo: '  Item 1  ',
             icon: 'fa-circle-dot',
             descricao: '',
             link: 'https://example.com',
-            blank: true
+            blank: true,
+            iframe: false,
+            visible: true
           },
           {
             titulo: 'Item 2',
             icon: 'fa-circle-dot',
             descricao: '',
             link: '',
-            blank: false
+            blank: false,
+            iframe: false,
+            visible: true
           }
         ]
       },
@@ -52,6 +58,8 @@ describe('normalize helpers', () => {
         descricao: '',
         link: '',
         blank: false,
+        iframe: false,
+        visible: true,
         submenus: []
       }
     ]);
@@ -65,8 +73,26 @@ describe('normalize helpers', () => {
       descricao: '',
       link: '',
       blank: false,
-      submenus: [{ titulo: 'Item 1', link: '123', blank: false }]
+      iframe: false,
+      visible: true,
+      submenus: [{ titulo: 'Item 1', link: '123', blank: false, iframe: false, visible: true }]
     });
+  });
+
+  it('preserves explicit iframe and visible booleans', () => {
+    const menu = normalizeMenu([
+      {
+        titulo: 'Oculta',
+        iframe: true,
+        visible: false,
+        submenus: [
+          { titulo: 'Sub oculto', iframe: 1, visible: false }
+        ]
+      }
+    ]);
+
+    expect(menu[0]).toMatchObject({ iframe: true, visible: false });
+    expect(menu[0].submenus[0]).toMatchObject({ iframe: true, visible: false });
   });
 
   it('rejects non-array root', () => {

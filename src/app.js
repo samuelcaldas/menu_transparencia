@@ -1,12 +1,14 @@
 /**
  * @file app.js
  * @purpose Boot and run the menu JSON editor application after the static shell loads.
- * @dependencies Browser DOM APIs, localStorage, File API, Font Awesome metadata CDN, embedded menu JSON.
+ * @dependencies Browser DOM APIs, localStorage, File API, Font Awesome REST API, embedded menu JSON.
  * @usage Imported once by src/main.js.
  */
 import embeddedMenu from './data/embedded-menu.json';
 
 const STORAGE_KEY = 'menu-json-editor-state-v1';
+const FONT_AWESOME_API = 'https://api.fontawesome.com';
+const FONT_AWESOME_VERSION = '7.2.0';
       const FALLBACK_ICON = 'fa-circle-dot';
       const EXECUTIVE_MATRIXES = new Set([
         'COMUM',
@@ -148,6 +150,8 @@ const STORAGE_KEY = 'menu-json-editor-state-v1';
           descricao: String(safeCategory.descricao ?? ''),
           link: String(safeCategory.link ?? ''),
           blank: Boolean(safeCategory.blank),
+          iframe: Boolean(safeCategory.iframe),
+          visible: safeCategory.visible === undefined ? true : Boolean(safeCategory.visible),
           submenus: submenus.map(normalizeSubmenu)
         };
       }
@@ -166,7 +170,9 @@ const STORAGE_KEY = 'menu-json-editor-state-v1';
           icon: String(safeSubmenu.icon ?? FALLBACK_ICON),
           descricao: String(safeSubmenu.descricao ?? ''),
           link: String(safeSubmenu.link ?? ''),
-          blank: Boolean(safeSubmenu.blank)
+          blank: Boolean(safeSubmenu.blank),
+          iframe: Boolean(safeSubmenu.iframe),
+          visible: safeSubmenu.visible === undefined ? true : Boolean(safeSubmenu.visible)
         };
         if (Array.isArray(safeSubmenu.submenus)) {
           normalizedSubmenu.submenus = safeSubmenu.submenus.map(normalizeSubmenu);
@@ -603,11 +609,34 @@ const STORAGE_KEY = 'menu-json-editor-state-v1';
           </div>
 
           ${selection.kind === 'submenu' ? submenuFieldsMarkup(item) : (Array.isArray(item.submenus) && item.submenus.length ? '' : standaloneLinkFieldsMarkup(item))}
+          ${itemMetadataFieldsMarkup(item)}
 
           <div class="editor-actions">
             <button class="btn-ledger" type="button" data-editor-action="duplicate"><i class="bi bi-copy me-1" aria-hidden="true"></i> Duplicar</button>
             ${hasSubmenus ? '<button class="btn-ledger" type="button" data-editor-action="add-child"><i class="bi bi-node-plus me-1" aria-hidden="true"></i> Novo submenu</button>' : ''}
             <button class="btn-ledger btn-ledger-danger" type="button" data-editor-action="delete"><i class="bi bi-trash3 me-1" aria-hidden="true"></i> Remover</button>
+          </div>
+        `;
+      }
+
+      /**
+       * Purpose: Build shared metadata switches.
+       * Parameters: item {Object} selected menu item.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function itemMetadataFieldsMarkup(item) {
+        return `
+          <div class="metadata-switches mb-4">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="visibleInput" data-field="visible" ${item.visible !== false ? 'checked' : ''} />
+              <label class="form-check-label" for="visibleInput">Visível no preview</label>
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="iframeInput" data-field="iframe" ${item.iframe ? 'checked' : ''} />
+              <label class="form-check-label" for="iframeInput">Abrir em iframe</label>
+              <div class="form-text">Campo salvo no JSON; preview mantém link para evitar bloqueios de iframe.</div>
+            </div>
           </div>
         `;
       }
@@ -734,11 +763,12 @@ const STORAGE_KEY = 'menu-json-editor-state-v1';
        * Throws: none.
        */
       function renderPreviewPanel() {
-        if (!state.menu.length) {
-          elements.previewPanel.innerHTML = emptyPreviewMarkup();
+        const visibleCategories = state.menu.filter(item => item.visible !== false);
+        if (!visibleCategories.length) {
+          elements.previewPanel.innerHTML = emptyPreviewMarkup(state.menu.length ? 'Todos os itens estão ocultos no preview.' : 'Adicione categorias para visualizar o portal.');
           return;
         }
-        elements.previewPanel.innerHTML = `<div class="preview-grid">${state.menu.map(previewCategoryMarkup).join('')}</div>`;
+        elements.previewPanel.innerHTML = `<div class="preview-grid">${visibleCategories.map(previewCategoryMarkup).join('')}</div>`;
       }
 
       /**
@@ -747,13 +777,13 @@ const STORAGE_KEY = 'menu-json-editor-state-v1';
        * Returns: {string} HTML markup.
        * Throws: none.
        */
-      function emptyPreviewMarkup() {
+      function emptyPreviewMarkup(message = 'Adicione categorias para visualizar o portal.') {
         return `
           <div class="empty-state">
             <div>
               <i class="bi bi-window-sidebar" aria-hidden="true"></i>
               <p class="mt-3 mb-1 fw-bold">Preview vazio</p>
-              <p class="mb-0">Adicione categorias para visualizar o portal.</p>
+              <p class="mb-0">${escapeHtml(message)}</p>
             </div>
           </div>
         `;
@@ -767,7 +797,9 @@ const STORAGE_KEY = 'menu-json-editor-state-v1';
        */
       function previewCategoryMarkup(category) {
         const hasLink = Boolean(category.link);
-        const hasSubmenus = category.submenus.length > 0;
+        const visibleSubmenus = category.submenus.filter(item => item.visible !== false);
+        const hasSubmenus = visibleSubmenus.length > 0;
+        const emptySubmenuMessage = category.submenus.length ? 'Submenus ocultos no preview.' : 'Sem submenu. Link direto na categoria.';
         return `
           <article class="preview-card">
             <header class="preview-card-header">
@@ -778,7 +810,7 @@ const STORAGE_KEY = 'menu-json-editor-state-v1';
               </div>
             </header>
             ${hasLink ? previewCategoryLinkMarkup(category) : ''}
-            ${hasSubmenus ? `<ul class="preview-list">${category.submenus.map(previewSubmenuMarkup).join('')}</ul>` : '<div class="p-3 small text-muted">Sem submenu. Link direto na categoria.</div>'}
+            ${hasSubmenus ? `<ul class="preview-list">${visibleSubmenus.map(previewSubmenuMarkup).join('')}</ul>` : `<div class="p-3 small text-muted">${escapeHtml(emptySubmenuMessage)}</div>`}
           </article>
         `;
       }
@@ -1660,7 +1692,7 @@ const STORAGE_KEY = 'menu-json-editor-state-v1';
        */
       function handleEditorInput(event) {
         const target = event.target;
-        if (!target.matches('[data-field]')) {
+        if (!target.matches('[data-field]') || target.type === 'checkbox') {
           return;
         }
         updateSelectedField(target.dataset.field, target.value, { skipEditorRender: true });
@@ -1674,8 +1706,8 @@ const STORAGE_KEY = 'menu-json-editor-state-v1';
        */
       function handleEditorChange(event) {
         const target = event.target;
-        if (target.dataset.field === 'blank') {
-          updateSelectedField('blank', target.checked);
+        if (['blank', 'iframe', 'visible'].includes(target.dataset.field)) {
+          updateSelectedField(target.dataset.field, target.checked);
           return;
         }
         const actionTarget = event.target.closest('[data-editor-action]');
@@ -1750,7 +1782,7 @@ const STORAGE_KEY = 'menu-json-editor-state-v1';
        */
       function addCategory() {
         const categoryIndex = state.menu.length;
-        state.menu.push({ titulo: 'Nova categoria', icon: 'fa-landmark', descricao: '', link: '', blank: false, submenus: [] });
+        state.menu.push({ titulo: 'Nova categoria', icon: 'fa-landmark', descricao: '', link: '', blank: false, iframe: false, visible: true, submenus: [] });
         state.selected = { categoryIndex };
         state.openCategories.add(categoryIndex);
         markDirty('Categoria criada.');
@@ -1774,7 +1806,7 @@ const STORAGE_KEY = 'menu-json-editor-state-v1';
           return;
         }
         const submenuIndex = category.submenus.length;
-        category.submenus.push({ titulo: 'Novo submenu', icon: 'fa-file-alt', descricao: '', link: '', blank: true });
+        category.submenus.push({ titulo: 'Novo submenu', icon: 'fa-file-alt', descricao: '', link: '', blank: true, iframe: false, visible: true });
         state.selected = { categoryIndex, submenuIndex };
         state.openCategories.add(categoryIndex);
         markDirty('Submenu criado.');
@@ -2235,17 +2267,55 @@ const STORAGE_KEY = 'menu-json-editor-state-v1';
           return faFreeSolid;
         }
         try {
-          const res = await fetch('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/metadata/icons.json');
+          const version = await loadFontAwesomeVersion();
+          const res = await fetch(`${FONT_AWESOME_API}/releases/${version}/icons-minimal?license=free&page_size=2000`);
+          if (!res.ok) throw new Error(`Font Awesome REST API retornou ${res.status}.`);
           const data = await res.json();
-          faFreeSolid = Object.entries(data)
-            .filter(([, v]) => Array.isArray(v.styles) && v.styles.includes('solid'))
-            .map(([name]) => 'fa-' + name)
-            .sort();
+          const icons = extractFaSolidIconNames(data);
+          if (!icons.length) throw new Error('Lista de ícones vazia.');
+          faFreeSolid = icons;
         } catch {
           faFreeSolid = [...ICON_LIBRARY];
           showToast('Não foi possível carregar ícones — usando lista reduzida.', 'error');
         }
         return faFreeSolid;
+      }
+
+      async function loadFontAwesomeVersion() {
+        try {
+          const res = await fetch(`${FONT_AWESOME_API}/releases`);
+          if (!res.ok) return FONT_AWESOME_VERSION;
+          const data = await res.json();
+          const releases = Array.isArray(data) ? data : (data.data || data.releases || []);
+          const latest = releases.find(release => release.isLatest) || releases[0];
+          return latest?.version || FONT_AWESOME_VERSION;
+        } catch {
+          return FONT_AWESOME_VERSION;
+        }
+      }
+
+      function extractFaSolidIconNames(payload) {
+        const source = payload?.data || payload?.icons || payload?.iconPacks || payload;
+        const entries = Array.isArray(source) ? source.map(item => [item.id || item.name, item]) : Object.entries(source || {});
+        return entries
+          .filter(([, metadata]) => isFreeSolidIcon(metadata))
+          .map(([name, metadata]) => normalizeFaIconName(metadata.id || metadata.name || name))
+          .filter(Boolean)
+          .sort();
+      }
+
+      function isFreeSolidIcon(metadata) {
+        if (!metadata || typeof metadata !== 'object') return true;
+        const descriptor = JSON.stringify(metadata).toLocaleLowerCase('en-US');
+        const hasStyleInfo = descriptor.includes('style') || descriptor.includes('prefix') || descriptor.includes('family');
+        const hasFreeInfo = !descriptor.includes('license') || descriptor.includes('free');
+        return hasFreeInfo && (!hasStyleInfo || descriptor.includes('solid') || descriptor.includes('fas'));
+      }
+
+      function normalizeFaIconName(name) {
+        const value = String(name || '').trim();
+        if (!value) return '';
+        return value.startsWith('fa-') ? value : `fa-${value}`;
       }
 
       async function openIconPicker() {
