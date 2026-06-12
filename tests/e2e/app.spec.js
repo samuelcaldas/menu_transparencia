@@ -66,6 +66,28 @@ test('edits iframe and visible metadata', async ({ page }) => {
   expect(consoleErrors).toEqual([]);
 });
 
+test('loads online icon library from consolidated picker', async ({ page }) => {
+  const consoleErrors = collectConsoleErrors(page);
+  await page.route('https://data.jsdelivr.com/v1/packages/npm/@fortawesome/free-solid-svg-icons', route => route.fulfill({
+    contentType: 'application/json',
+    body: JSON.stringify({ tags: { latest: '7.2.0' } })
+  }));
+  await page.route('https://cdn.jsdelivr.net/npm/@fortawesome/free-solid-svg-icons@7.2.0/index.mjs', route => route.fulfill({
+    contentType: 'application/javascript',
+    body: "var faHouse = { iconName: 'house' }; var faBuilding = { iconName: 'building' };"
+  }));
+  await page.goto('/');
+  await page.locator('#treeContainer [data-action="select-category"]').first().click();
+
+  await expect(page.locator('details.icon-library')).not.toHaveAttribute('open', '');
+  await page.locator('.icon-library summary').click();
+  await page.getByRole('button', { name: /Pesquisar biblioteca completa/ }).click();
+  await page.getByPlaceholder('Buscar ícone').fill('building');
+  await expect(page.locator('#iconPickerGrid [data-picker-icon="fa-building"]')).toBeVisible();
+
+  expect(consoleErrors).toEqual([]);
+});
+
 test('loads JSON and matrix fixtures without crashing', async ({ page }) => {
   const consoleErrors = collectConsoleErrors(page);
   await page.goto('/');

@@ -1,14 +1,15 @@
 /**
  * @file app.js
  * @purpose Boot and run the menu JSON editor application after the static shell loads.
- * @dependencies Browser DOM APIs, localStorage, File API, Font Awesome REST API, embedded menu JSON.
+ * @dependencies Browser DOM APIs, localStorage, File API, Font Awesome npm CDN metadata, embedded menu JSON.
  * @usage Imported once by src/main.js.
  */
 import embeddedMenu from './data/embedded-menu.json';
 
 const STORAGE_KEY = 'menu-json-editor-state-v1';
-const FONT_AWESOME_API = 'https://api.fontawesome.com';
 const FONT_AWESOME_VERSION = '7.2.0';
+const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
+const FONT_AWESOME_CDN_META = `https://data.jsdelivr.com/v1/packages/npm/${FONT_AWESOME_SOLID_PACKAGE}`;
       const FALLBACK_ICON = 'fa-circle-dot';
       const EXECUTIVE_MATRIXES = new Set([
         'COMUM',
@@ -600,13 +601,7 @@ const FONT_AWESOME_VERSION = '7.2.0';
             <input class="form-control font-monospace" id="iconInput" data-field="icon" value="${escapeHtml(item.icon)}" autocomplete="off" />
           </div>
 
-          <div class="mb-4">
-            <div class="field-label">Biblioteca rápida <span class="field-help">CDN Font Awesome</span></div>
-            <div class="icon-grid">${ICON_LIBRARY.map(iconPickMarkup).join('')}</div>
-            <button class="btn-ledger mt-2" type="button" data-editor-action="open-icon-picker">
-              <i class="bi bi-search me-1" aria-hidden="true"></i> Pesquisar todos…
-            </button>
-          </div>
+          ${iconLibraryMarkup()}
 
           ${selection.kind === 'submenu' ? submenuFieldsMarkup(item) : (Array.isArray(item.submenus) && item.submenus.length ? '' : standaloneLinkFieldsMarkup(item))}
           ${itemMetadataFieldsMarkup(item)}
@@ -616,6 +611,29 @@ const FONT_AWESOME_VERSION = '7.2.0';
             ${hasSubmenus ? '<button class="btn-ledger" type="button" data-editor-action="add-child"><i class="bi bi-node-plus me-1" aria-hidden="true"></i> Novo submenu</button>' : ''}
             <button class="btn-ledger btn-ledger-danger" type="button" data-editor-action="delete"><i class="bi bi-trash3 me-1" aria-hidden="true"></i> Remover</button>
           </div>
+        `;
+      }
+
+      /**
+       * Purpose: Build collapsed icon library entry point.
+       * Parameters: none.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function iconLibraryMarkup() {
+        return `
+          <details class="icon-library mb-4">
+            <summary>
+              <span>Biblioteca rápida</span>
+              <span class="field-help">Font Awesome online</span>
+            </summary>
+            <div class="icon-library-body">
+              <div class="icon-grid compact">${ICON_LIBRARY.map(iconPickMarkup).join('')}</div>
+              <button class="btn-ledger mt-2" type="button" data-editor-action="open-icon-picker">
+                <i class="bi bi-search me-1" aria-hidden="true"></i> Pesquisar biblioteca completa…
+              </button>
+            </div>
+          </details>
         `;
       }
 
@@ -2268,48 +2286,33 @@ const FONT_AWESOME_VERSION = '7.2.0';
         }
         try {
           const version = await loadFontAwesomeVersion();
-          const res = await fetch(`${FONT_AWESOME_API}/releases/${version}/icons-minimal?license=free&page_size=2000`);
-          if (!res.ok) throw new Error(`Font Awesome REST API retornou ${res.status}.`);
-          const data = await res.json();
-          const icons = extractFaSolidIconNames(data);
+          const icons = await loadFreeSolidIconsFromPackage(version);
           if (!icons.length) throw new Error('Lista de ícones vazia.');
           faFreeSolid = icons;
         } catch {
           faFreeSolid = [...ICON_LIBRARY];
-          showToast('Não foi possível carregar ícones — usando lista reduzida.', 'error');
+          showToast('Não foi possível carregar ícones online — usando lista reduzida.', 'error');
         }
         return faFreeSolid;
       }
 
       async function loadFontAwesomeVersion() {
         try {
-          const res = await fetch(`${FONT_AWESOME_API}/releases`);
+          const res = await fetch(FONT_AWESOME_CDN_META);
           if (!res.ok) return FONT_AWESOME_VERSION;
           const data = await res.json();
-          const releases = Array.isArray(data) ? data : (data.data || data.releases || []);
-          const latest = releases.find(release => release.isLatest) || releases[0];
-          return latest?.version || FONT_AWESOME_VERSION;
+          return data.tags?.latest || data.version || FONT_AWESOME_VERSION;
         } catch {
           return FONT_AWESOME_VERSION;
         }
       }
 
-      function extractFaSolidIconNames(payload) {
-        const source = payload?.data || payload?.icons || payload?.iconPacks || payload;
-        const entries = Array.isArray(source) ? source.map(item => [item.id || item.name, item]) : Object.entries(source || {});
-        return entries
-          .filter(([, metadata]) => isFreeSolidIcon(metadata))
-          .map(([name, metadata]) => normalizeFaIconName(metadata.id || metadata.name || name))
-          .filter(Boolean)
-          .sort();
-      }
-
-      function isFreeSolidIcon(metadata) {
-        if (!metadata || typeof metadata !== 'object') return true;
-        const descriptor = JSON.stringify(metadata).toLocaleLowerCase('en-US');
-        const hasStyleInfo = descriptor.includes('style') || descriptor.includes('prefix') || descriptor.includes('family');
-        const hasFreeInfo = !descriptor.includes('license') || descriptor.includes('free');
-        return hasFreeInfo && (!hasStyleInfo || descriptor.includes('solid') || descriptor.includes('fas'));
+      async function loadFreeSolidIconsFromPackage(version) {
+        const res = await fetch(`https://cdn.jsdelivr.net/npm/${FONT_AWESOME_SOLID_PACKAGE}@${version}/index.mjs`);
+        if (!res.ok) throw new Error(`Font Awesome CDN retornou ${res.status}.`);
+        const source = await res.text();
+        const matches = [...source.matchAll(/iconName:\s*['"]([^'"]+)['"]/g)];
+        return [...new Set(matches.map(match => normalizeFaIconName(match[1])).filter(Boolean))].sort();
       }
 
       function normalizeFaIconName(name) {
