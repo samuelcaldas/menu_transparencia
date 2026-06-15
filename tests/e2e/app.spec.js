@@ -7,6 +7,7 @@ const root = path.resolve(__dirname, '../..');
 const menuOriginal = path.join(root, 'menu_original.json');
 const menuPopulado = path.join(root, 'menu_populado.json');
 const matrixCsv = path.join(root, 'Matriz de Critérios 2026 (Final).CSV');
+const storageKey = 'menu-json-editor-state-v1';
 
 function collectConsoleErrors(page) {
   const messages = [];
@@ -168,6 +169,7 @@ test('supports editor add and matrix interactions', async ({ page }) => {
   await expect(page.locator('#editorContainer')).toContainText('Nova categoria');
 
   await page.locator('#csvFileInput').setInputFiles(matrixCsv);
+  await expect(page.getByText('Relatório CSV')).toBeVisible();
   await page.locator('[data-tab="gaps"]').click();
   await expect(page.locator('#gapsPanel')).toBeVisible();
   await expect(page.getByRole('button', { name: /Marcar visíveis/ })).toBeVisible();
@@ -176,6 +178,34 @@ test('supports editor add and matrix interactions', async ({ page }) => {
   await page.getByLabel('Escopo da matriz').selectOption('all');
   await page.getByLabel('Status da comparação').selectOption('all');
   await page.getByPlaceholder('Filtrar por ID, dimensão ou critério').fill('1.1');
+  await expect(page.locator('#gapsPanel')).toContainText('1.1');
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('restores matrix criteria from localStorage', async ({ page }) => {
+  const consoleErrors = collectConsoleErrors(page);
+  await page.goto('/');
+
+  await page.locator('#csvFileInput').setInputFiles(matrixCsv);
+  await expect(page.getByText('Relatório CSV')).toBeVisible();
+  await page.locator('[data-tab="gaps"]').click();
+  await page.getByLabel('Escopo da matriz').selectOption('all');
+  await page.getByLabel('Status da comparação').selectOption('all');
+  await page.getByPlaceholder('Filtrar por ID, dimensão ou critério').fill('1.1');
+
+  await expect.poll(async () => page.evaluate(key => {
+    const storedState = JSON.parse(localStorage.getItem(key) || '{}');
+    return storedState.matrix?.criteria?.length || 0;
+  }, storageKey)).toBeGreaterThan(0);
+
+  await page.reload();
+  await page.locator('[data-tab="gaps"]').click();
+
+  await expect(page.getByText('Matriz de Critérios 2026 (Final).CSV')).toBeVisible();
+  await expect(page.getByLabel('Escopo da matriz')).toHaveValue('all');
+  await expect(page.getByLabel('Status da comparação')).toHaveValue('all');
+  await expect(page.getByPlaceholder('Filtrar por ID, dimensão ou critério')).toHaveValue('1.1');
   await expect(page.locator('#gapsPanel')).toContainText('1.1');
 
   expect(consoleErrors).toEqual([]);

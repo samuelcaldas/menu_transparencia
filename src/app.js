@@ -227,11 +227,123 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
        */
       function persistState() {
         try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify({ menu: state.menu, sourceName: state.sourceName }));
+          pruneMatrixRelationTargets();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            menu: state.menu,
+            sourceName: state.sourceName,
+            matrix: serializeMatrixState()
+          }));
           elements.saveStateBadge.textContent = 'Autosave salvo';
         } catch (storageError) {
           elements.saveStateBadge.textContent = 'Autosave indisponível';
         }
+      }
+
+      /**
+       * Purpose: Serialize matrix comparison state into JSON-safe storage payload.
+       * Parameters: none.
+       * Returns: {Object} serializable matrix state.
+       * Throws: none.
+       */
+      function serializeMatrixState() {
+        return {
+          criteria: normalizeMatrixCriteria(state.matrix.criteria),
+          sourceName: String(state.matrix.sourceName ?? ''),
+          scope: String(state.matrix.scope ?? 'executive'),
+          status: String(state.matrix.status ?? 'gaps'),
+          searchTerm: String(state.matrix.searchTerm ?? ''),
+          selectedCriteria: [...state.matrix.selectedCriteria].map(String),
+          relationTargets: [...state.matrix.relationTargets.entries()]
+            .map(([key, target]) => [String(key), String(target)])
+            .filter(([key, target]) => key && target)
+        };
+      }
+
+      /**
+       * Purpose: Normalize persisted or parsed matrix criteria.
+       * Parameters: criteria {unknown} criteria candidates.
+       * Returns: {Array<Object>} normalized, deduplicated criteria.
+       * Throws: none.
+       */
+      function normalizeMatrixCriteria(criteria) {
+        if (!Array.isArray(criteria)) return [];
+        const uniqueCriteria = new Map();
+        criteria.forEach(criterion => {
+          if (!isPlainObject(criterion)) return;
+          const normalizedCriterion = {
+            matrix: String(criterion.matrix ?? '').trim(),
+            dimension: String(criterion.dimension ?? '').trim(),
+            id: normalizeCriterionId(criterion.id),
+            criterion: String(criterion.criterion ?? '').trim().replace(/\s+/g, ' '),
+            classification: String(criterion.classification ?? '').trim()
+          };
+          if (!normalizedCriterion.matrix || !normalizedCriterion.dimension || !normalizedCriterion.id || !normalizedCriterion.criterion) return;
+          uniqueCriteria.set(criterionKey(normalizedCriterion.matrix, normalizedCriterion.id), normalizedCriterion);
+        });
+        return [...uniqueCriteria.values()];
+      }
+
+      /**
+       * Purpose: Restore matrix state from autosave payload.
+       * Parameters: matrixState {unknown} stored matrix state.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function restoreMatrixState(matrixState) {
+        if (!isPlainObject(matrixState)) return;
+        const criteria = normalizeMatrixCriteria(matrixState.criteria);
+        if (!criteria.length) return;
+
+        const validKeys = new Set(criteria.map(criterion => criterionKey(criterion.matrix, criterion.id)));
+        const storedScope = String(matrixState.scope ?? 'executive');
+        const matrixScopes = new Set(criteria.map(criterion => `matrix:${criterion.matrix}`));
+        const storedStatus = String(matrixState.status ?? 'gaps');
+        const allowedStatuses = new Set(['gaps', 'possible', 'covered', 'all']);
+
+        state.matrix.criteria = criteria;
+        state.matrix.sourceName = String(matrixState.sourceName || 'Matriz em autosave');
+        state.matrix.scope = storedScope === 'all' || storedScope === 'executive' || matrixScopes.has(storedScope) ? storedScope : 'executive';
+        state.matrix.status = allowedStatuses.has(storedStatus) ? storedStatus : 'gaps';
+        state.matrix.searchTerm = String(matrixState.searchTerm ?? '');
+        state.matrix.selectedCriteria = new Set(Array.isArray(matrixState.selectedCriteria)
+          ? matrixState.selectedCriteria.map(String).filter(key => validKeys.has(key))
+          : []);
+        state.matrix.relationTargets = new Map(Array.isArray(matrixState.relationTargets)
+          ? matrixState.relationTargets
+            .filter(entry => Array.isArray(entry) && entry.length >= 2)
+            .map(([key, target]) => [String(key), String(target)])
+            .filter(([key, target]) => validKeys.has(key) && target)
+          : []);
+      }
+
+      /**
+       * Purpose: Reset matrix comparison state to an empty default.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function clearMatrixState() {
+        state.matrix.criteria = [];
+        state.matrix.sourceName = '';
+        state.matrix.scope = 'executive';
+        state.matrix.status = 'gaps';
+        state.matrix.searchTerm = '';
+        state.matrix.selectedCriteria.clear();
+        state.matrix.relationTargets.clear();
+      }
+
+      /**
+       * Purpose: Remove stored relation targets that no longer exist in current menu.
+       * Parameters: none.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function pruneMatrixRelationTargets() {
+        if (!state.matrix.relationTargets.size) return;
+        const nodeIds = new Set(flattenMenuNodes(state.menu).map(node => node.nodeId));
+        state.matrix.relationTargets.forEach((targetId, key) => {
+          if (!nodeIds.has(targetId)) state.matrix.relationTargets.delete(key);
+        });
       }
 
       /**
@@ -249,6 +361,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
           const parsedState = JSON.parse(storedState);
           state.menu = normalizeMenu(parsedState.menu);
           state.sourceName = parsedState.sourceName || 'Autosave local';
+          restoreMatrixState(parsedState.matrix);
           return true;
         } catch (restoreError) {
           localStorage.removeItem(STORAGE_KEY);
@@ -1021,14 +1134,17 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
         document.getElementById('matrixScopeSelect').addEventListener('change', event => {
           state.matrix.scope = event.target.value;
           state.matrix.selectedCriteria.clear();
+          persistState();
           renderGapsPanel();
         });
         document.getElementById('gapStatusSelect').addEventListener('change', event => {
           state.matrix.status = event.target.value;
+          persistState();
           renderGapsPanel();
         });
         document.getElementById('gapSearchInput').addEventListener('input', event => {
           state.matrix.searchTerm = event.target.value;
+          persistState();
           renderGapsPanel();
           document.getElementById('gapSearchInput')?.focus();
         });
@@ -1040,6 +1156,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
             if (allSelected) state.matrix.selectedCriteria.delete(key);
             else state.matrix.selectedCriteria.add(key);
           });
+          persistState();
           renderGapsPanel();
         });
         document.getElementById('relateCriteriaButton').addEventListener('click', relateSelectedCriteria);
@@ -1048,6 +1165,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
             const key = event.target.dataset.criterionCheck;
             if (event.target.checked) state.matrix.selectedCriteria.add(key);
             else state.matrix.selectedCriteria.delete(key);
+            persistState();
             renderGapsPanel();
           });
         });
@@ -1056,6 +1174,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
             const key = event.target.dataset.relationTarget;
             state.matrix.relationTargets.set(key, event.target.value);
             if (event.target.value) state.matrix.selectedCriteria.add(key);
+            persistState();
             renderGapsPanel();
           });
         });
@@ -1211,6 +1330,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
 
         const menuNodes = flattenMenuNodes(state.menu);
         const nodesById = new Map(menuNodes.map(node => [node.nodeId, node]));
+        const nodeReferenceSets = new Map(menuNodes.map(node => [node.nodeId, new Set(node.criterionReferences)]));
         const criteriaByKey = new Map(state.matrix.criteria.map(criterion => [criterionKey(criterion.matrix, criterion.id), criterion]));
         const resultsByKey = new Map(compareMatrixToMenu().results.map(result => [criterionKey(result.criterion.matrix, result.criterion.id), result]));
         let relatedCount = 0;
@@ -1227,18 +1347,14 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
             return;
           }
 
-          menuNodes.forEach(node => {
-            const remainingReferences = node.criterionReferences.filter(reference => {
+          nodeReferenceSets.forEach(references => {
+            [...references].forEach(reference => {
               const parsed = parseCriterionReference(reference);
-              return parsed.key !== key;
+              if (parsed.key === key) references.delete(reference);
             });
-            setMenuItemCriterionReferences(node.item, remainingReferences);
-            node.criterionReferences = remainingReferences;
           });
 
-          const reference = `${criterion.matrix} | ${criterion.dimension} | ${criterion.id}`;
-          setMenuItemCriterionReferences(targetNode.item, [...menuItemCriterionReferences(targetNode.item), reference]);
-          targetNode.criterionReferences = menuItemCriterionReferences(targetNode.item);
+          nodeReferenceSets.get(targetNode.nodeId)?.add(`${criterion.matrix} | ${criterion.dimension} | ${criterion.id}`);
           relatedCount += 1;
           state.matrix.relationTargets.delete(key);
         });
@@ -1249,6 +1365,10 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
           renderGapsPanel();
           return;
         }
+        menuNodes.forEach(node => {
+          setMenuItemCriterionReferences(node.item, [...(nodeReferenceSets.get(node.nodeId) || [])]);
+          node.criterionReferences = menuItemCriterionReferences(node.item);
+        });
         markDirty(`${relatedCount} critério(s) relacionado(s).${skippedCount ? ` ${skippedCount} sem destino.` : ''}`);
       }
 
@@ -1529,15 +1649,15 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
             const buffer = await file.arrayBuffer();
             return parseMatrixCsv(decodeCsvBuffer(buffer));
           }));
-          const uniqueCriteria = new Map();
-          parsedFiles.flat().forEach(criterion => uniqueCriteria.set(criterionKey(criterion.matrix, criterion.id), criterion));
-          state.matrix.criteria = [...uniqueCriteria.values()];
+          state.matrix.criteria = normalizeMatrixCriteria(parsedFiles.flat());
           state.matrix.sourceName = files.map(file => file.name).join(', ');
+          state.matrix.scope = 'executive';
           state.matrix.status = 'gaps';
           state.matrix.searchTerm = '';
           state.matrix.selectedCriteria.clear();
           state.matrix.relationTargets.clear();
           state.activeTab = 'gaps';
+          persistState();
           renderInspector();
           showToast(`${state.matrix.criteria.length} critérios carregados para comparação.`, 'success');
         } catch (csvError) {
@@ -2297,6 +2417,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
         state.sourceName = 'Base embutida';
         state.selected = state.menu.length ? { categoryIndex: 0 } : null;
         state.openCategories = new Set(state.menu.length ? [0] : []);
+        clearMatrixState();
         localStorage.removeItem(STORAGE_KEY);
         markDirty('Base restaurada.');
       }
