@@ -83,7 +83,17 @@ test('loads online icon library from consolidated picker', async ({ page }) => {
   await page.locator('.icon-library summary').click();
   await page.getByRole('button', { name: /Pesquisar biblioteca completa/ }).click();
   await page.getByPlaceholder('Buscar ícone').fill('building');
-  await expect(page.locator('#iconPickerGrid [data-picker-icon="fa-building"]')).toBeVisible();
+  await page.locator('#iconPickerGrid [data-picker-icon="fa-building"]').click();
+  await expect(page.locator('#iconPickerDialog')).not.toBeVisible();
+
+  await page.locator('.icon-library summary').click();
+  await page.getByRole('button', { name: /Pesquisar biblioteca completa/ }).click();
+  await page.getByRole('button', { name: 'Fechar' }).click();
+  await expect(page.locator('#iconPickerDialog')).not.toBeVisible();
+
+  await page.getByRole('button', { name: /Pesquisar biblioteca completa/ }).click();
+  await page.mouse.click(10, 10);
+  await expect(page.locator('#iconPickerDialog')).not.toBeVisible();
 
   expect(consoleErrors).toEqual([]);
 });

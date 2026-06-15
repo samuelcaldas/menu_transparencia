@@ -9,9 +9,11 @@
       width: 90vw;
       max-height: 80vh;
       overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    }
+    .icon-picker-dialog[open] {
       display: flex;
       flex-direction: column;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
     }
     .icon-picker-dialog::backdrop {
       background: rgba(20, 33, 61, 0.45);
