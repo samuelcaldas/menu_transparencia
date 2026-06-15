@@ -43,6 +43,41 @@ test('app smoke flow', async ({ page }) => {
   expect(consoleErrors).toEqual([]);
 });
 
+test('renders simple HTML descriptions safely', async ({ page }) => {
+  const consoleErrors = collectConsoleErrors(page);
+  await page.goto('/');
+  await page.locator('#treeContainer [data-action="select-category"]').first().click();
+
+  const description = '<strong>Texto forte</strong> <a href="javascript:alert(1)" onclick="bad()">ruim</a> <a href="https://example.com">bom</a>';
+  await page.locator('#descriptionInput').fill(description);
+
+  await page.locator('[data-tab="preview"]').click();
+  await expect(page.locator('#previewPanel strong')).toContainText('Texto forte');
+  await expect(page.locator('#previewPanel a[href="https://example.com"]')).toContainText('bom');
+  await expect(page.locator('#previewPanel a[href="https://example.com"]')).toHaveAttribute('rel', 'noopener noreferrer');
+  await expect(page.locator('#previewPanel a[href^="javascript"]')).toHaveCount(0);
+
+  await page.locator('[data-tab="json"]').click();
+  await expect(page.locator('#rawJsonTextarea')).toContainText('<strong>Texto forte</strong>');
+  await expect(page.locator('#rawJsonTextarea')).toContainText('javascript:alert(1)');
+
+  await page.locator('[data-tab="preview"]').click();
+  await page.locator('#treeContainer [data-action="select-category"]').first().click();
+  await page.locator('#descriptionInput').fill('Texto alvo');
+  await page.locator('#descriptionInput').evaluate(element => element.setSelectionRange(6, 10));
+  await page.getByRole('button', { name: 'Negrito' }).click();
+  await expect(page.locator('#descriptionInput')).toHaveValue('Texto <strong>alvo</strong>');
+
+  await page.getByRole('button', { name: /^Categoria$/ }).click();
+  await page.locator('#titleInput').fill('Link inseguro');
+  await page.locator('#descriptionInput').fill('Descrição segura');
+  await page.locator('#categoryLinkInput').fill('javascript:alert(1)');
+  await page.locator('[data-tab="preview"]').click();
+  await expect(page.locator('#previewPanel a[href^="javascript"]')).toHaveCount(0);
+
+  expect(consoleErrors).toEqual([]);
+});
+
 test('edits iframe and visible metadata', async ({ page }) => {
   const consoleErrors = collectConsoleErrors(page);
   await page.goto('/');

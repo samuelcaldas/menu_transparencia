@@ -5,6 +5,7 @@
  * @usage Imported once by src/main.js.
  */
 import embeddedMenu from './data/embedded-menu.json';
+import { applyDescriptionFormat, extractDescriptionText, safeDescriptionHref, sanitizeDescriptionHtml } from './description-html.js';
 
 const STORAGE_KEY = 'menu-json-editor-state-v1';
 const FONT_AWESOME_VERSION = '5.15.4';
@@ -99,6 +100,11 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
           .replaceAll('>', '&gt;')
           .replaceAll('"', '&quot;')
           .replaceAll("'", '&#039;');
+      }
+
+      function descriptionHtml(value, fallback = 'Sem descrição') {
+        const sanitized = sanitizeDescriptionHtml(value);
+        return extractDescriptionText(sanitized) ? sanitized : escapeHtml(fallback);
       }
 
       /**
@@ -306,6 +312,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
         elements.tree.addEventListener('click', handleTreeClick);
         elements.editor.addEventListener('input', handleEditorInput);
         elements.editor.addEventListener('change', handleEditorChange);
+        elements.editor.addEventListener('mousedown', handleEditorMouseDown);
         document.querySelectorAll('.tab-button').forEach(button => button.addEventListener('click', handleTabClick));
         elements.dropZone.addEventListener('dragover', handleDragOver);
         elements.dropZone.addEventListener('dragleave', handleDragLeave);
@@ -517,10 +524,10 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
        * Throws: none.
        */
       function categoryMatchesSearch(category) {
-        if (textMatches(category.titulo) || textMatches(category.descricao) || textMatches(category.icon) || textMatches(category.link)) {
+        if (textMatches(category.titulo) || textMatches(extractDescriptionText(category.descricao)) || textMatches(category.icon) || textMatches(category.link)) {
           return true;
         }
-        return category.submenus.some(submenu => textMatches(submenu.titulo) || textMatches(submenu.descricao) || textMatches(submenu.link) || textMatches(submenu.icon));
+        return category.submenus.some(submenu => textMatches(submenu.titulo) || textMatches(extractDescriptionText(submenu.descricao)) || textMatches(submenu.link) || textMatches(submenu.icon));
       }
 
       /**
@@ -581,7 +588,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
             <div class="min-w-0">
               <div class="stamp-path">${escapeHtml(selection.path)}</div>
               <h3 class="stamp-title">${escapeHtml(item.titulo || 'Sem título')}</h3>
-              <p class="stamp-description">${escapeHtml(item.descricao || 'Sem descrição')}</p>
+              <p class="stamp-description formatted-description">${descriptionHtml(item.descricao)}</p>
             </div>
           </div>
 
@@ -591,7 +598,8 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
           </div>
 
           <div class="mb-3">
-            <label class="field-label" for="descriptionInput">Descrição <span class="field-help">Texto curto exibido no portal</span></label>
+            <label class="field-label" for="descriptionInput">Descrição <span class="field-help">HTML simples permitido</span></label>
+            ${descriptionToolbarMarkup()}
             <textarea class="form-control" id="descriptionInput" data-field="descricao" rows="4">${escapeHtml(item.descricao)}</textarea>
           </div>
 
@@ -609,6 +617,27 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
             <button class="btn-ledger" type="button" data-editor-action="duplicate"><i class="bi bi-copy me-1" aria-hidden="true"></i> Duplicar</button>
             ${hasSubmenus ? '<button class="btn-ledger" type="button" data-editor-action="add-child"><i class="bi bi-node-plus me-1" aria-hidden="true"></i> Novo submenu</button>' : ''}
             <button class="btn-ledger btn-ledger-danger" type="button" data-editor-action="delete"><i class="bi bi-trash3 me-1" aria-hidden="true"></i> Remover</button>
+          </div>
+        `;
+      }
+
+      /**
+       * Purpose: Build description formatting controls.
+       * Parameters: none.
+       * Returns: {string} HTML markup.
+       * Throws: none.
+       */
+      function descriptionToolbarMarkup() {
+        return `
+          <div class="description-toolbar" role="toolbar" aria-label="Formatação da descrição">
+            <button class="description-format-button" type="button" data-description-format="bold" aria-label="Negrito" title="Negrito"><strong>B</strong></button>
+            <button class="description-format-button" type="button" data-description-format="italic" aria-label="Itálico" title="Itálico"><em>I</em></button>
+            <button class="description-format-button" type="button" data-description-format="underline" aria-label="Sublinhado" title="Sublinhado"><u>U</u></button>
+            <button class="description-format-button" type="button" data-description-format="line-break" aria-label="Quebra de linha" title="Quebra de linha">br</button>
+            <button class="description-format-button" type="button" data-description-format="unordered-list" aria-label="Lista com marcadores" title="Lista com marcadores"><i class="bi bi-list-ul" aria-hidden="true"></i></button>
+            <button class="description-format-button" type="button" data-description-format="ordered-list" aria-label="Lista numerada" title="Lista numerada"><i class="bi bi-list-ol" aria-hidden="true"></i></button>
+            <button class="description-format-button" type="button" data-description-format="link" aria-label="Link" title="Link"><i class="bi bi-link-45deg" aria-hidden="true"></i></button>
+            <button class="description-format-button" type="button" data-description-format="clear" aria-label="Limpar HTML" title="Limpar HTML"><i class="bi bi-eraser" aria-hidden="true"></i></button>
           </div>
         `;
       }
@@ -823,7 +852,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
               <span class="preview-card-icon"><i class="fas ${escapeHtml(category.icon)} fa-fw" aria-hidden="true"></i></span>
               <div class="min-w-0">
                 <h3 class="preview-card-title">${escapeHtml(category.titulo)}</h3>
-                <p class="preview-card-copy">${escapeHtml(category.descricao)}</p>
+                <p class="preview-card-copy formatted-description">${descriptionHtml(category.descricao, '')}</p>
               </div>
             </header>
             ${hasLink ? previewCategoryLinkMarkup(category) : ''}
@@ -839,7 +868,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
        * Throws: none.
        */
       function previewCategoryLinkMarkup(category) {
-        const safeUrl = escapeHtml(category.link || '#');
+        const safeUrl = escapeHtml(safeDescriptionHref(category.link) || '#');
         return `
           <div class="p-3 border-top border-bottom bg-body-tertiary">
             <a class="d-flex align-items-center gap-2 text-decoration-none fw-semibold" href="${safeUrl}" target="${category.blank ? '_blank' : '_self'}" rel="noopener noreferrer">
@@ -857,7 +886,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
        * Throws: none.
        */
       function previewSubmenuMarkup(submenu) {
-        const safeUrl = escapeHtml(submenu.link || '#');
+        const safeUrl = escapeHtml(safeDescriptionHref(submenu.link) || '#');
         return `
           <li>
             <a href="${safeUrl}" target="${submenu.blank ? '_blank' : '_self'}" rel="noopener noreferrer">
@@ -1121,7 +1150,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
             item,
             nodeId: indexPath.join('.'),
             title,
-            description: String(item.descricao ?? ''),
+            description: extractDescriptionText(item.descricao),
             path: path.join(' / '),
             criterionReferences: menuItemCriterionReferences(item)
           });
@@ -1415,7 +1444,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
         const label = `Categoria ${categoryIndex + 1}`;
         if (!category.titulo.trim()) errors.push(`${label} sem título.`);
         if (!category.icon.trim()) errors.push(`${label} sem ícone.`);
-        if (!category.descricao.trim()) errors.push(`${label} sem descrição.`);
+        if (!extractDescriptionText(category.descricao)) errors.push(`${label} sem descrição.`);
         if (!Array.isArray(category.submenus)) {
           errors.push(`${label} precisa conter submenus como array.`);
           return;
@@ -1439,7 +1468,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
         const label = `Categoria ${categoryIndex + 1}, submenu ${submenuIndex + 1}`;
         if (!submenu.titulo.trim()) errors.push(`${label} sem título.`);
         if (!submenu.icon.trim()) errors.push(`${label} sem ícone.`);
-        if (!submenu.descricao.trim()) errors.push(`${label} sem descrição.`);
+        if (!extractDescriptionText(submenu.descricao)) errors.push(`${label} sem descrição.`);
         const submenuLink = String(submenu.link ?? '').trim();
         if (!submenuLink) errors.push(`${label} sem link.`);
         if (submenuLink && !isProbablyValidUrl(submenuLink)) errors.push(`${label} com link possivelmente inválido.`);
@@ -1734,18 +1763,47 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
       }
 
       /**
+       * Purpose: Preserve textarea selection when clicking formatting toolbar.
+       * Parameters: event {MouseEvent} delegated event.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function handleEditorMouseDown(event) {
+        if (event.target.closest('[data-description-format]')) {
+          event.preventDefault();
+        }
+      }
+
+      /**
        * Purpose: Delegate editor button actions.
        * Parameters: event {MouseEvent} delegated event.
        * Returns: {void}.
        * Throws: none.
        */
       elements.editor.addEventListener('click', event => {
-        const actionTarget = event.target.closest('[data-editor-action]');
+        const actionTarget = event.target.closest('[data-editor-action], [data-description-format]');
         if (!actionTarget) {
           return;
         }
         runEditorAction(actionTarget);
       });
+
+      /**
+       * Purpose: Apply simple HTML formatting to description textarea.
+       * Parameters: command {string} formatting action.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function formatDescription(command) {
+        const textarea = document.getElementById('descriptionInput');
+        if (!textarea) return;
+        const href = command === 'link' ? window.prompt('URL do link') : undefined;
+        const result = applyDescriptionFormat(textarea.value, textarea.selectionStart, textarea.selectionEnd, command, { href });
+        textarea.value = result.value;
+        textarea.focus();
+        textarea.setSelectionRange(result.selectionStart, result.selectionEnd);
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+      }
 
       /**
        * Purpose: Execute editor action from button.
@@ -1754,6 +1812,11 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
        * Throws: none.
        */
       function runEditorAction(actionTarget) {
+        const descriptionFormat = actionTarget.dataset.descriptionFormat;
+        if (descriptionFormat) {
+          formatDescription(descriptionFormat);
+          return;
+        }
         const action = actionTarget.dataset.editorAction;
         if (action === 'pick-icon') {
           updateSelectedField('icon', actionTarget.dataset.icon);

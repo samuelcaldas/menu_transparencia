@@ -79,6 +79,49 @@
       letter-spacing: 0;
     }
 
+    .description-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: -2px 0 8px;
+    }
+
+    .description-format-button {
+      min-width: 34px;
+      min-height: 30px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid rgba(20, 33, 61, 0.14);
+      border-radius: 10px;
+      background: rgba(255, 253, 247, 0.86);
+      color: var(--ledger-ink-soft);
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .description-format-button:hover,
+    .description-format-button:focus-visible {
+      border-color: rgba(29, 78, 216, 0.42);
+      background: var(--ledger-blue-soft);
+      color: var(--ledger-blue);
+      outline: none;
+    }
+
+    .formatted-description :where(strong, em, u, a) {
+      color: inherit;
+    }
+
+    .formatted-description :where(ul, ol) {
+      margin: 0.35rem 0 0.35rem 1.15rem;
+      padding: 0;
+    }
+
+    .formatted-description :where(a) {
+      color: var(--ledger-blue);
+      font-weight: 700;
+    }
+
     .icon-library {
       border: 1px solid rgba(216, 207, 182, 0.78);
       border-radius: var(--radius-md);

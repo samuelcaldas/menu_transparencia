@@ -4,6 +4,8 @@
  * @dependencies Standard JavaScript APIs only.
  * @usage Imported by unit tests and available for future app-level extraction.
  */
+import { extractDescriptionText, hasRenderableDescription } from './description-html.js';
+
 const EXECUTIVE_MATRIXES = new Set([
   'COMUM',
   'COMUM EXCETO ESTATAIS',
@@ -189,7 +191,7 @@ function validateCategory(category, categoryIndex, errors) {
   const label = `Categoria ${categoryIndex + 1}`;
   if (!category.titulo.trim()) errors.push(`${label} sem título.`);
   if (!category.icon.trim()) errors.push(`${label} sem ícone.`);
-  if (!category.descricao.trim()) errors.push(`${label} sem descrição.`);
+  if (!extractDescriptionText(category.descricao)) errors.push(`${label} sem descrição.`);
   if (!Array.isArray(category.submenus)) {
     errors.push(`${label} precisa conter submenus como array.`);
     return;
@@ -207,7 +209,7 @@ function validateSubmenu(submenu, categoryIndex, submenuIndex, errors) {
   const label = `Categoria ${categoryIndex + 1}, submenu ${submenuIndex + 1}`;
   if (!submenu.titulo.trim()) errors.push(`${label} sem título.`);
   if (!submenu.icon.trim()) errors.push(`${label} sem ícone.`);
-  if (!submenu.descricao.trim()) errors.push(`${label} sem descrição.`);
+  if (!extractDescriptionText(submenu.descricao)) errors.push(`${label} sem descrição.`);
   const submenuLink = String(submenu.link ?? '').trim();
   if (!submenuLink) errors.push(`${label} sem link.`);
   if (submenuLink && !isProbablyValidUrl(submenuLink)) errors.push(`${label} com link possivelmente inválido.`);
@@ -232,7 +234,7 @@ function flattenMenuNodes(menu) {
       item,
       nodeId: indexPath.join('.'),
       title,
-      description: String(item.descricao ?? ''),
+      description: extractDescriptionText(item.descricao),
       path: path.join(' / '),
       criterionReferences: menuItemCriterionReferences(item)
     });
@@ -337,6 +339,7 @@ export {
   criteriaForScope,
   diceSimilarity,
   flattenMenuNodes,
+  hasRenderableDescription,
   isPlainObject,
   isProbablyValidUrl,
   menuItemCriterionReferences,
