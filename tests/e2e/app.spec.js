@@ -70,9 +70,9 @@ test('loads online icon library from consolidated picker', async ({ page }) => {
   const consoleErrors = collectConsoleErrors(page);
   await page.route('https://data.jsdelivr.com/v1/packages/npm/@fortawesome/free-solid-svg-icons', route => route.fulfill({
     contentType: 'application/json',
-    body: JSON.stringify({ tags: { latest: '7.2.0' } })
+    body: JSON.stringify({ tags: { latest: '5.15.4' } })
   }));
-  await page.route('https://cdn.jsdelivr.net/npm/@fortawesome/free-solid-svg-icons@7.2.0/index.mjs', route => route.fulfill({
+  await page.route('https://cdn.jsdelivr.net/npm/@fortawesome/free-solid-svg-icons@5.15.4/index.mjs', route => route.fulfill({
     contentType: 'application/javascript',
     body: "var faHouse = { iconName: 'house' }; var faBuilding = { iconName: 'building' };"
   }));

@@ -7,9 +7,8 @@
 import embeddedMenu from './data/embedded-menu.json';
 
 const STORAGE_KEY = 'menu-json-editor-state-v1';
-const FONT_AWESOME_VERSION = '7.2.0';
+const FONT_AWESOME_VERSION = '5.15.4';
 const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
-const FONT_AWESOME_CDN_META = `https://data.jsdelivr.com/v1/packages/npm/${FONT_AWESOME_SOLID_PACKAGE}`;
       const FALLBACK_ICON = 'fa-circle-dot';
       const EXECUTIVE_MATRIXES = new Set([
         'COMUM',
@@ -470,7 +469,7 @@ const FONT_AWESOME_CDN_META = `https://data.jsdelivr.com/v1/packages/npm/${FONT_
         return `
           <button class="tree-row ${isActive ? 'active' : ''}" type="button" data-action="select-category" data-category-index="${categoryIndex}" role="treeitem" aria-expanded="${Boolean(isOpen)}">
             <i class="bi ${hasSubmenus ? (isOpen ? 'bi-chevron-down' : 'bi-chevron-right') : 'bi-box-arrow-up-right'}" aria-hidden="true"></i>
-            <i class="fa-solid ${escapeHtml(category.icon)} fa-fw" aria-hidden="true"></i>
+            <i class="fas ${escapeHtml(category.icon)} fa-fw" aria-hidden="true"></i>
             <span class="tree-row-label">${escapeHtml(category.titulo)}</span>
             <span class="tree-count">${linkBadge}</span>
           </button>
@@ -489,7 +488,7 @@ const FONT_AWESOME_CDN_META = `https://data.jsdelivr.com/v1/packages/npm/${FONT_
         const isActive = state.selected?.categoryIndex === categoryIndex && state.selected?.submenuIndex === submenuIndex;
         return `
           <button class="tree-row submenu ${isActive ? 'active' : ''}" type="button" data-action="select-submenu" data-category-index="${categoryIndex}" data-submenu-index="${submenuIndex}" role="treeitem">
-            <i class="fa-solid ${escapeHtml(submenu.icon)} fa-fw" aria-hidden="true"></i>
+            <i class="fas ${escapeHtml(submenu.icon)} fa-fw" aria-hidden="true"></i>
             <span class="tree-row-label">${escapeHtml(submenu.titulo)}</span>
             <span class="tree-count">${submenu.blank ? '↗' : '→'}</span>
           </button>
@@ -578,7 +577,7 @@ const FONT_AWESOME_CDN_META = `https://data.jsdelivr.com/v1/packages/npm/${FONT_
         const hasSubmenus = Array.isArray(item.submenus);
         return `
           <div class="selection-stamp">
-            <div class="stamp-icon"><i class="fa-solid ${escapeHtml(item.icon || FALLBACK_ICON)} fa-fw" aria-hidden="true"></i></div>
+            <div class="stamp-icon"><i class="fas ${escapeHtml(item.icon || FALLBACK_ICON)} fa-fw" aria-hidden="true"></i></div>
             <div class="min-w-0">
               <div class="stamp-path">${escapeHtml(selection.path)}</div>
               <h3 class="stamp-title">${escapeHtml(item.titulo || 'Sem título')}</h3>
@@ -707,7 +706,7 @@ const FONT_AWESOME_CDN_META = `https://data.jsdelivr.com/v1/packages/npm/${FONT_
         const currentIcon = selectedItem()?.item.icon;
         return `
           <button class="icon-pick ${currentIcon === icon ? 'active' : ''}" type="button" title="${escapeHtml(icon)}" data-editor-action="pick-icon" data-icon="${escapeHtml(icon)}">
-            <i class="fa-solid ${escapeHtml(icon)} fa-fw" aria-hidden="true"></i>
+            <i class="fas ${escapeHtml(icon)} fa-fw" aria-hidden="true"></i>
           </button>
         `;
       }
@@ -821,7 +820,7 @@ const FONT_AWESOME_CDN_META = `https://data.jsdelivr.com/v1/packages/npm/${FONT_
         return `
           <article class="preview-card">
             <header class="preview-card-header">
-              <span class="preview-card-icon"><i class="fa-solid ${escapeHtml(category.icon)} fa-fw" aria-hidden="true"></i></span>
+              <span class="preview-card-icon"><i class="fas ${escapeHtml(category.icon)} fa-fw" aria-hidden="true"></i></span>
               <div class="min-w-0">
                 <h3 class="preview-card-title">${escapeHtml(category.titulo)}</h3>
                 <p class="preview-card-copy">${escapeHtml(category.descricao)}</p>
@@ -862,7 +861,7 @@ const FONT_AWESOME_CDN_META = `https://data.jsdelivr.com/v1/packages/npm/${FONT_
         return `
           <li>
             <a href="${safeUrl}" target="${submenu.blank ? '_blank' : '_self'}" rel="noopener noreferrer">
-              <i class="fa-solid ${escapeHtml(submenu.icon)} fa-fw" aria-hidden="true"></i>
+              <i class="fas ${escapeHtml(submenu.icon)} fa-fw" aria-hidden="true"></i>
               <span class="text-truncate">${escapeHtml(submenu.titulo)}</span>
               <i class="bi ${submenu.blank ? 'bi-box-arrow-up-right' : 'bi-arrow-right'}" aria-hidden="true"></i>
             </a>
@@ -2297,14 +2296,7 @@ const FONT_AWESOME_CDN_META = `https://data.jsdelivr.com/v1/packages/npm/${FONT_
       }
 
       async function loadFontAwesomeVersion() {
-        try {
-          const res = await fetch(FONT_AWESOME_CDN_META);
-          if (!res.ok) return FONT_AWESOME_VERSION;
-          const data = await res.json();
-          return data.tags?.latest || data.version || FONT_AWESOME_VERSION;
-        } catch {
-          return FONT_AWESOME_VERSION;
-        }
+        return FONT_AWESOME_VERSION;
       }
 
       async function loadFreeSolidIconsFromPackage(version) {
@@ -2344,7 +2336,7 @@ const FONT_AWESOME_CDN_META = `https://data.jsdelivr.com/v1/packages/npm/${FONT_
           <button class="icon-pick ${currentIcon === icon ? 'active' : ''}"
                   type="button" title="${escapeHtml(icon)}"
                   data-picker-icon="${escapeHtml(icon)}">
-            <i class="fa-solid ${escapeHtml(icon)} fa-fw" aria-hidden="true"></i>
+            <i class="fas ${escapeHtml(icon)} fa-fw" aria-hidden="true"></i>
           </button>`).join('');
         if (matches.length > 300) {
           grid.insertAdjacentHTML('beforeend',

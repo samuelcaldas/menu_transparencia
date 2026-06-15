@@ -13,8 +13,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -31,12 +31,10 @@ jobs:
         run: npm ci
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
-      - name: Run unit tests
-        run: npm run test:unit
-      - name: Build
-        run: npm run build
-      - name: Run e2e tests
-        run: npm run test:e2e
+      - name: Run verification
+        run: npm run verify
+      - name: Verify Pages artifact
+        run: test -f dist/index.html
       - name: Upload Playwright report
         if: failure()
         uses: actions/upload-artifact@v4
