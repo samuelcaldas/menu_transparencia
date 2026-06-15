@@ -2300,7 +2300,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
       }
 
       async function loadFreeSolidIconsFromPackage(version) {
-        const res = await fetch(`https://cdn.jsdelivr.net/npm/${FONT_AWESOME_SOLID_PACKAGE}@${version}/index.mjs`);
+        const res = await fetch(`https://cdn.jsdelivr.net/npm/${FONT_AWESOME_SOLID_PACKAGE}@${version}/index.es.js`);
         if (!res.ok) throw new Error(`Font Awesome CDN retornou ${res.status}.`);
         const source = await res.text();
         const matches = [...source.matchAll(/iconName:\s*['"]([^'"]+)['"]/g)];

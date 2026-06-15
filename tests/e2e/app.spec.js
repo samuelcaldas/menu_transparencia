@@ -72,7 +72,7 @@ test('loads online icon library from consolidated picker', async ({ page }) => {
     contentType: 'application/json',
     body: JSON.stringify({ tags: { latest: '5.15.4' } })
   }));
-  await page.route('https://cdn.jsdelivr.net/npm/@fortawesome/free-solid-svg-icons@5.15.4/index.mjs', route => route.fulfill({
+  await page.route('https://cdn.jsdelivr.net/npm/@fortawesome/free-solid-svg-icons@5.15.4/index.es.js', route => route.fulfill({
     contentType: 'application/javascript',
     body: "var faHouse = { iconName: 'house' }; var faBuilding = { iconName: 'building' };"
   }));
