@@ -50,6 +50,8 @@ test('renders simple HTML descriptions safely', async ({ page }) => {
 
   const description = '<strong>Texto forte</strong> <a href="javascript:alert(1)" onclick="bad()">ruim</a> <a href="https://example.com">bom</a>';
   await page.locator('#descriptionInput').fill(description);
+  await expect(page.locator('#editorContainer .stamp-description strong')).toContainText('Texto forte');
+  await expect(page.locator('#editorContainer .stamp-description a[href="https://example.com"]')).toContainText('bom');
 
   await page.locator('[data-tab="preview"]').click();
   await expect(page.locator('#previewPanel strong')).toContainText('Texto forte');
@@ -67,6 +69,7 @@ test('renders simple HTML descriptions safely', async ({ page }) => {
   await page.locator('#descriptionInput').evaluate(element => element.setSelectionRange(6, 10));
   await page.getByRole('button', { name: 'Negrito' }).click();
   await expect(page.locator('#descriptionInput')).toHaveValue('Texto <strong>alvo</strong>');
+  await expect(page.locator('#editorContainer .stamp-description strong')).toContainText('alvo');
 
   await page.getByRole('button', { name: /^Categoria$/ }).click();
   await page.locator('#titleInput').fill('Link inseguro');

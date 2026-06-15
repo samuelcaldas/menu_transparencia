@@ -588,7 +588,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
             <div class="min-w-0">
               <div class="stamp-path">${escapeHtml(selection.path)}</div>
               <h3 class="stamp-title">${escapeHtml(item.titulo || 'Sem título')}</h3>
-              <p class="stamp-description formatted-description">${descriptionHtml(item.descricao)}</p>
+              <div class="stamp-description formatted-description">${descriptionHtml(item.descricao)}</div>
             </div>
           </div>
 
@@ -852,7 +852,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
               <span class="preview-card-icon"><i class="fas ${escapeHtml(category.icon)} fa-fw" aria-hidden="true"></i></span>
               <div class="min-w-0">
                 <h3 class="preview-card-title">${escapeHtml(category.titulo)}</h3>
-                <p class="preview-card-copy formatted-description">${descriptionHtml(category.descricao, '')}</p>
+                <div class="preview-card-copy formatted-description">${descriptionHtml(category.descricao, '')}</div>
               </div>
             </header>
             ${hasLink ? previewCategoryLinkMarkup(category) : ''}
@@ -1742,6 +1742,22 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
           return;
         }
         updateSelectedField(target.dataset.field, target.value, { skipEditorRender: true });
+        if (target.dataset.field === 'descricao') {
+          renderSelectionStampDescription(target.value);
+        }
+      }
+
+      /**
+       * Purpose: Render live selected description without replacing textarea.
+       * Parameters: value {unknown} raw description HTML.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function renderSelectionStampDescription(value) {
+        const description = elements.editor.querySelector('.stamp-description');
+        if (description) {
+          description.innerHTML = descriptionHtml(value);
+        }
       }
 
       /**
