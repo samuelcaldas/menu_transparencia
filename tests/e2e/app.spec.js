@@ -29,6 +29,11 @@ test('app smoke flow', async ({ page }) => {
   await expect(page.getByText('Item selecionado')).toBeVisible();
   await expect(page.getByText('Preview e JSON')).toBeVisible();
   await expect(page.locator('#treeContainer [data-action="select-category"]').first()).toBeVisible();
+  await page.locator('#expandAllButton').click();
+  await expect.poll(async () => page.locator('#treeContainer').evaluate(element => ({
+    scrollable: element.scrollHeight > element.clientHeight,
+    overflowY: getComputedStyle(element).overflowY
+  }))).toEqual({ scrollable: true, overflowY: 'auto' });
 
   await page.locator('#treeContainer [data-action="select-category"]').first().click();
   await expect(page.locator('#editorContainer')).toContainText('Categoria');

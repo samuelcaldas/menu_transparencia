@@ -18,7 +18,11 @@
       letter-spacing: -0.035em;
     }
 
-    .tree-panel { display: flex; flex-direction: column; }
+    .tree-panel {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
 
     .search-box {
       padding: 14px 14px 0;
@@ -41,9 +45,29 @@
     }
 
     .tree {
-      flex: 1;
-      overflow: auto;
+      flex: 1 1 auto;
+      min-height: 0;
+      max-height: clamp(360px, calc(100vh - 360px), 620px);
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
       padding: 12px;
+    }
+
+    .tree::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .tree::-webkit-scrollbar-track {
+      background: rgba(216, 207, 182, 0.28);
+      border-radius: 999px;
+    }
+
+    .tree::-webkit-scrollbar-thumb {
+      border: 2px solid rgba(255, 253, 247, 0.82);
+      border-radius: 999px;
+      background: rgba(50, 67, 95, 0.42);
     }
 
     .tree-row {
