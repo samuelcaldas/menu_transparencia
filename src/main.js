@@ -7,7 +7,15 @@
 import './styles/main.css';
 import './app.js';
 
+const BUILD_ID = typeof __BUILD_ID__ === 'string' ? __BUILD_ID__ : 'dev';
 let reloadAfterPwaUpdate = false;
+
+function renderBuildIdentifier() {
+  const buildIdentifier = document.getElementById('buildIdentifier');
+  if (!buildIdentifier) return;
+  buildIdentifier.textContent = BUILD_ID;
+  buildIdentifier.title = BUILD_ID;
+}
 
 function promptForPwaUpdate(worker) {
   if (!window.confirm('Nova versão disponível. Recarregar agora?')) return;
@@ -20,7 +28,7 @@ function registerServiceWorker() {
 
   window.addEventListener('load', async () => {
     try {
-      const registration = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+      const registration = await navigator.serviceWorker.register(`./sw.js?build=${encodeURIComponent(BUILD_ID)}`, { scope: './' });
       if (registration.waiting && navigator.serviceWorker.controller) {
         promptForPwaUpdate(registration.waiting);
       }
@@ -43,4 +51,5 @@ function registerServiceWorker() {
   });
 }
 
+renderBuildIdentifier();
 registerServiceWorker();

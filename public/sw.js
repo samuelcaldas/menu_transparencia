@@ -1,4 +1,5 @@
-const CACHE_NAME = 'menu-json-editor-v1';
+const BUILD_ID = new URL(self.location.href).searchParams.get('build') || 'dev';
+const CACHE_NAME = `menu-json-editor-${BUILD_ID}`;
 const SHELL_ASSETS = ['./', './index.html', './favicon.svg', './manifest.webmanifest'];
 
 self.addEventListener('install', event => {

@@ -25,6 +25,7 @@ test('app smoke flow', async ({ page }) => {
 
   await expect(page).toHaveTitle(/Editor de menu JSON/);
   await expect(page.getByRole('heading', { name: 'Editor de menu cívico' })).toBeVisible();
+  await expect(page.locator('#buildIdentifier')).toContainText(/^(ci|local)-/);
   await expect(page.locator('#categoryCountMetric')).not.toHaveText('0');
   await expect(page.getByText('Árvore do menu')).toBeVisible();
   await expect(page.getByText('Item selecionado')).toBeVisible();
@@ -69,6 +70,10 @@ test('exposes pwa manifest and service worker', async ({ page }) => {
     if (!('serviceWorker' in navigator)) return false;
     const registration = await navigator.serviceWorker.getRegistration('./');
     return Boolean(registration?.active || registration?.installing || registration?.waiting);
+  })).toBe(true);
+  await expect.poll(async () => page.evaluate(async () => {
+    const cacheNames = await caches.keys();
+    return cacheNames.some(name => name.startsWith('menu-json-editor-'));
   })).toBe(true);
 
   expect(consoleErrors).toEqual([]);
