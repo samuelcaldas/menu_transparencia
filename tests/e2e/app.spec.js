@@ -49,6 +49,31 @@ test('app smoke flow', async ({ page }) => {
   expect(consoleErrors).toEqual([]);
 });
 
+test('exposes pwa manifest and service worker', async ({ page }) => {
+  const consoleErrors = collectConsoleErrors(page);
+  await page.goto('/');
+
+  await expect(page.locator('link[rel="manifest"]')).toHaveAttribute('href', './manifest.webmanifest');
+
+  const manifestResponse = await page.request.get('/manifest.webmanifest');
+  expect(manifestResponse.ok()).toBe(true);
+  const manifest = await manifestResponse.json();
+  expect(manifest.display).toBe('standalone');
+  expect(manifest.start_url).toBe('./');
+  expect(manifest.scope).toBe('./');
+  expect(manifest.icons[0].src).toBe('./favicon.svg');
+
+  const serviceWorkerResponse = await page.request.get('/sw.js');
+  expect(serviceWorkerResponse.ok()).toBe(true);
+  await expect.poll(async () => page.evaluate(async () => {
+    if (!('serviceWorker' in navigator)) return false;
+    const registration = await navigator.serviceWorker.getRegistration('./');
+    return Boolean(registration?.active || registration?.installing || registration?.waiting);
+  })).toBe(true);
+
+  expect(consoleErrors).toEqual([]);
+});
+
 test('renders simple HTML descriptions safely', async ({ page }) => {
   const consoleErrors = collectConsoleErrors(page);
   await page.goto('/');
