@@ -32,16 +32,44 @@
     .form-select {
       width: 100%;
       box-sizing: border-box;
-      border: 1px solid rgba(20, 33, 61, 0.16);
+      border: 1px solid var(--ledger-ink-rule);
       border-radius: var(--radius-sm);
-      background-color: rgba(255, 253, 247, 0.82);
+      background-color: var(--ledger-surface);
       color: var(--ledger-ink);
     }
 
+    .form-control::placeholder {
+      color: rgba(50, 67, 95, 0.74);
+      opacity: 1;
+    }
+
+    .form-control:hover,
+    .form-select:hover {
+      border-color: rgba(20, 33, 61, 0.32);
+    }
+
     .form-control:focus,
-    .form-select:focus {
+    .form-select:focus,
+    .form-control:focus-visible,
+    .form-select:focus-visible {
       border-color: var(--ledger-blue);
-      box-shadow: 0 0 0 0.22rem rgba(29, 78, 216, 0.14);
+      outline: 3px solid rgba(29, 78, 216, 0.24);
+      outline-offset: 2px;
+      box-shadow: none;
+    }
+
+    .form-control:disabled,
+    .form-select:disabled {
+      cursor: not-allowed;
+      opacity: 0.68;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    summary:focus-visible,
+    [role="button"]:focus-visible {
+      outline: 3px solid var(--ledger-focus);
+      outline-offset: 3px;
     }
 
     .tree {
@@ -61,12 +89,12 @@
 
     .tree::-webkit-scrollbar-track {
       background: rgba(216, 207, 182, 0.28);
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
     }
 
     .tree::-webkit-scrollbar-thumb {
-      border: 2px solid rgba(255, 253, 247, 0.82);
-      border-radius: 999px;
+      border: 2px solid var(--ledger-surface);
+      border-radius: var(--radius-pill);
       background: rgba(50, 67, 95, 0.42);
     }
 
@@ -120,7 +148,7 @@
     .tree-count {
       min-width: 26px;
       padding: 2px 7px;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       background: rgba(20, 33, 61, 0.08);
       color: var(--ledger-ink-soft);
       font-family: var(--font-mono);
@@ -142,7 +170,7 @@
       width: 34px;
       height: 34px;
       border: 1px solid rgba(20, 33, 61, 0.14);
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       background: rgba(255, 253, 247, 0.86);
       color: var(--ledger-ink-soft);
     }

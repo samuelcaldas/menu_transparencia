@@ -790,6 +790,9 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
       function selectedEditorMarkup(selection) {
         const item = selection.item;
         const hasSubmenus = Array.isArray(item.submenus);
+        const titleMissing = !String(item.titulo ?? '').trim();
+        const descriptionMissing = !extractDescriptionText(item.descricao);
+        const iconMissing = !String(item.icon ?? '').trim();
         return `
           <div class="selection-stamp">
             <div class="stamp-icon"><i class="fas ${escapeHtml(item.icon || FALLBACK_ICON)} fa-fw" aria-hidden="true"></i></div>
@@ -802,18 +805,21 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
 
           <div class="mb-3">
             <label class="field-label" for="titleInput">Título <span class="field-help">Obrigatório</span></label>
-            <input class="form-control" id="titleInput" data-field="titulo" value="${escapeHtml(item.titulo)}" autocomplete="off" />
+            <input class="form-control" id="titleInput" data-field="titulo" value="${escapeHtml(item.titulo)}" autocomplete="off" required aria-required="true" aria-invalid="${titleMissing}" aria-describedby="titleInputError" />
+            <div class="field-error" id="titleInputError" data-error-for="titulo" role="alert" ${titleMissing ? '' : 'hidden'}><i class="bi bi-exclamation-circle" aria-hidden="true"></i><span>Informe um título para identificar este item.</span></div>
           </div>
 
           <div class="mb-3">
             <label class="field-label" for="descriptionInput">Descrição <span class="field-help">HTML simples permitido</span></label>
             ${descriptionToolbarMarkup()}
-            <textarea class="form-control" id="descriptionInput" data-field="descricao" rows="4">${escapeHtml(item.descricao)}</textarea>
+            <textarea class="form-control" id="descriptionInput" data-field="descricao" rows="4" required aria-required="true" aria-invalid="${descriptionMissing}" aria-describedby="descriptionInputError">${escapeHtml(item.descricao)}</textarea>
+            <div class="field-error" id="descriptionInputError" data-error-for="descricao" role="alert" ${descriptionMissing ? '' : 'hidden'}><i class="bi bi-exclamation-circle" aria-hidden="true"></i><span>Adicione uma descrição com conteúdo legível.</span></div>
           </div>
 
           <div class="mb-3">
             <label class="field-label" for="iconInput">Ícone Font Awesome <span class="field-help">Ex.: fa-coins</span></label>
-            <input class="form-control font-monospace" id="iconInput" data-field="icon" value="${escapeHtml(item.icon)}" autocomplete="off" />
+            <input class="form-control font-monospace" id="iconInput" data-field="icon" value="${escapeHtml(item.icon)}" autocomplete="off" required aria-required="true" aria-invalid="${iconMissing}" aria-describedby="iconInputError" />
+            <div class="field-error" id="iconInputError" data-error-for="icon" role="alert" ${iconMissing ? '' : 'hidden'}><i class="bi bi-exclamation-circle" aria-hidden="true"></i><span>Informe uma classe de ícone Font Awesome, como fa-coins.</span></div>
           </div>
 
           ${iconLibraryMarkup()}
@@ -902,10 +908,13 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
        * Throws: none.
        */
       function standaloneLinkFieldsMarkup(item) {
+        const link = String(item.link ?? '').trim();
+        const linkInvalid = !link || !isProbablyValidUrl(link);
         return `
           <div class="mb-3">
             <label class="field-label" for="categoryLinkInput">Link da categoria <span class="field-help">Usado quando categoria não tem submenu</span></label>
-            <input class="form-control font-monospace" id="categoryLinkInput" data-field="link" value="${escapeHtml(item.link)}" placeholder="https://" autocomplete="off" />
+            <input class="form-control font-monospace" id="categoryLinkInput" data-field="link" value="${escapeHtml(item.link)}" placeholder="https://" autocomplete="off" required aria-required="true" aria-invalid="${linkInvalid}" aria-describedby="categoryLinkInputError" inputmode="url" />
+            <div class="field-error" id="categoryLinkInputError" data-error-for="link" role="alert" ${linkInvalid ? '' : 'hidden'}><i class="bi bi-exclamation-circle" aria-hidden="true"></i><span>${link ? 'Use uma URL completa com protocolo permitido.' : 'Informe o link direto desta categoria.'}</span></div>
           </div>
           <div class="form-check form-switch mb-4">
             <input class="form-check-input" type="checkbox" role="switch" id="categoryBlankInput" data-field="blank" ${item.blank ? 'checked' : ''} />
@@ -921,10 +930,13 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
        * Throws: none.
        */
       function submenuFieldsMarkup(item) {
+        const link = String(item.link ?? '').trim();
+        const linkInvalid = !link || !isProbablyValidUrl(link);
         return `
           <div class="mb-3">
             <label class="field-label" for="linkInput">Link <span class="field-help">URL de destino</span></label>
-            <input class="form-control font-monospace" id="linkInput" data-field="link" value="${escapeHtml(item.link)}" placeholder="https://" autocomplete="off" />
+            <input class="form-control font-monospace" id="linkInput" data-field="link" value="${escapeHtml(item.link)}" placeholder="https://" autocomplete="off" required aria-required="true" aria-invalid="${linkInvalid}" aria-describedby="linkInputError" inputmode="url" />
+            <div class="field-error" id="linkInputError" data-error-for="link" role="alert" ${linkInvalid ? '' : 'hidden'}><i class="bi bi-exclamation-circle" aria-hidden="true"></i><span>${link ? 'Use uma URL completa com protocolo permitido.' : 'Informe a URL de destino deste submenu.'}</span></div>
           </div>
           <div class="form-check form-switch mb-4">
             <input class="form-check-input" type="checkbox" role="switch" id="blankInput" data-field="blank" ${item.blank ? 'checked' : ''} />
@@ -1657,8 +1669,12 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
        */
       function validateCategory(category, categoryIndex, errors) {
         const label = `Categoria ${categoryIndex + 1}`;
-        if (!category.titulo.trim()) errors.push(`${label} sem título.`);
-        if (!category.icon.trim()) errors.push(`${label} sem ícone.`);
+        if (!isPlainObject(category)) {
+          errors.push(`${label} precisa ser um objeto.`);
+          return;
+        }
+        if (!String(category.titulo ?? '').trim()) errors.push(`${label} sem título.`);
+        if (!String(category.icon ?? '').trim()) errors.push(`${label} sem ícone.`);
         if (!extractDescriptionText(category.descricao)) errors.push(`${label} sem descrição.`);
         if (!Array.isArray(category.submenus)) {
           errors.push(`${label} precisa conter submenus como array.`);
@@ -1681,8 +1697,12 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
        */
       function validateSubmenu(submenu, categoryIndex, submenuIndex, errors) {
         const label = `Categoria ${categoryIndex + 1}, submenu ${submenuIndex + 1}`;
-        if (!submenu.titulo.trim()) errors.push(`${label} sem título.`);
-        if (!submenu.icon.trim()) errors.push(`${label} sem ícone.`);
+        if (!isPlainObject(submenu)) {
+          errors.push(`${label} precisa ser um objeto.`);
+          return;
+        }
+        if (!String(submenu.titulo ?? '').trim()) errors.push(`${label} sem título.`);
+        if (!String(submenu.icon ?? '').trim()) errors.push(`${label} sem ícone.`);
         if (!extractDescriptionText(submenu.descricao)) errors.push(`${label} sem descrição.`);
         const submenuLink = String(submenu.link ?? '').trim();
         if (!submenuLink) errors.push(`${label} sem link.`);
@@ -1966,9 +1986,31 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
           return;
         }
         updateSelectedField(target.dataset.field, target.value, { skipEditorRender: true });
+        updateFieldValidity(target);
         if (target.dataset.field === 'descricao') {
           renderSelectionStampDescription(target.value);
         }
+      }
+
+      /**
+       * Purpose: Update inline required-field state without replacing the active control.
+       * Parameters: target {HTMLInputElement|HTMLTextAreaElement} edited control.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function updateFieldValidity(target) {
+        const field = target.dataset.field;
+        const value = target.value.trim();
+        const invalid = field === 'descricao'
+          ? !extractDescriptionText(target.value)
+          : field === 'link' ? !value || !isProbablyValidUrl(value) : !value;
+        target.setAttribute('aria-invalid', String(invalid));
+        const error = elements.editor.querySelector(`[data-error-for="${field}"]`);
+        if (!error) return;
+        error.hidden = !invalid;
+        if (field !== 'link' || !invalid) return;
+        const message = error.querySelector('span');
+        if (message) message.textContent = value ? 'Use uma URL completa com protocolo permitido.' : 'Informe uma URL de destino.';
       }
 
       /**

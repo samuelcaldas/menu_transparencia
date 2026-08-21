@@ -189,8 +189,12 @@ function validateMenu(menu) {
 
 function validateCategory(category, categoryIndex, errors) {
   const label = `Categoria ${categoryIndex + 1}`;
-  if (!category.titulo.trim()) errors.push(`${label} sem título.`);
-  if (!category.icon.trim()) errors.push(`${label} sem ícone.`);
+  if (!isPlainObject(category)) {
+    errors.push(`${label} precisa ser um objeto.`);
+    return;
+  }
+  if (!String(category.titulo ?? '').trim()) errors.push(`${label} sem título.`);
+  if (!String(category.icon ?? '').trim()) errors.push(`${label} sem ícone.`);
   if (!extractDescriptionText(category.descricao)) errors.push(`${label} sem descrição.`);
   if (!Array.isArray(category.submenus)) {
     errors.push(`${label} precisa conter submenus como array.`);
@@ -207,8 +211,12 @@ function validateCategory(category, categoryIndex, errors) {
 
 function validateSubmenu(submenu, categoryIndex, submenuIndex, errors) {
   const label = `Categoria ${categoryIndex + 1}, submenu ${submenuIndex + 1}`;
-  if (!submenu.titulo.trim()) errors.push(`${label} sem título.`);
-  if (!submenu.icon.trim()) errors.push(`${label} sem ícone.`);
+  if (!isPlainObject(submenu)) {
+    errors.push(`${label} precisa ser um objeto.`);
+    return;
+  }
+  if (!String(submenu.titulo ?? '').trim()) errors.push(`${label} sem título.`);
+  if (!String(submenu.icon ?? '').trim()) errors.push(`${label} sem ícone.`);
   if (!extractDescriptionText(submenu.descricao)) errors.push(`${label} sem descrição.`);
   const submenuLink = String(submenu.link ?? '').trim();
   if (!submenuLink) errors.push(`${label} sem link.`);

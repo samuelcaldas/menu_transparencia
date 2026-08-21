@@ -19,7 +19,7 @@
       padding: 10px;
       border: 1px solid rgba(216, 207, 182, 0.88);
       border-radius: var(--radius-md);
-      background: rgba(255, 253, 247, 0.82);
+      background: var(--ledger-surface);
     }
 
     .gap-stat strong {
@@ -48,14 +48,13 @@
 
     .gap-item {
       padding: 11px;
-      border: 1px solid rgba(216, 207, 182, 0.88);
-      border-left: 4px solid var(--ledger-red);
+      border: 1px solid color-mix(in srgb, var(--ledger-red) 44%, var(--ledger-line));
       border-radius: var(--radius-md);
       background: rgba(255, 253, 247, 0.84);
     }
 
-    .gap-item.possible { border-left-color: var(--ledger-gold); }
-    .gap-item.covered { border-left-color: var(--ledger-green); }
+    .gap-item.possible { border-color: color-mix(in srgb, var(--ledger-gold) 44%, var(--ledger-line)); }
+    .gap-item.covered { border-color: color-mix(in srgb, var(--ledger-green) 44%, var(--ledger-line)); }
 
     .gap-item-head {
       display: flex;
@@ -81,11 +80,14 @@
 
     .gap-pill {
       padding: 2px 7px;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       background: rgba(20, 33, 61, 0.08);
       color: var(--ledger-ink-soft);
+      font-family: var(--font-mono);
       font-size: 0.65rem;
       font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.025em;
     }
 
     .gap-item-title {
@@ -146,12 +148,33 @@
       gap: 10px;
       align-items: start;
       padding: 12px 14px;
-      border: 1px solid rgba(216, 207, 182, 0.95);
+      border: 1px solid var(--ledger-line-strong);
       border-radius: var(--radius-md);
-      background: rgba(255, 253, 247, 0.96);
-      box-shadow: 0 16px 36px rgba(20, 33, 61, 0.16);
+      background: var(--ledger-surface-strong);
+      box-shadow: var(--shadow-toast);
       color: var(--ledger-ink);
       font-size: 0.86rem;
+      overflow-wrap: anywhere;
+    }
+
+    .app-toast[role="alert"] {
+      border-color: rgba(180, 35, 24, 0.5);
+    }
+
+    @media (forced-colors: active) {
+      .gap-item,
+      .gap-item.possible,
+      .gap-item.covered,
+      .app-toast,
+      .drop-target {
+        border-color: CanvasText !important;
+      }
+
+      .gap-check,
+      .form-select,
+      .form-control {
+        forced-color-adjust: auto;
+      }
     }
 
     .empty-state {

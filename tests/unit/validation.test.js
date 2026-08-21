@@ -65,6 +65,25 @@ describe('validation helpers', () => {
     ])).toEqual({ errors: ['Categoria 1 sem link direto.'] });
   });
 
+  it('reports malformed and missing fields without throwing', () => {
+    expect(validateMenu([null, {
+      titulo: null,
+      submenus: [null, {}]
+    }])).toEqual({
+      errors: [
+        'Categoria 1 precisa ser um objeto.',
+        'Categoria 2 sem título.',
+        'Categoria 2 sem ícone.',
+        'Categoria 2 sem descrição.',
+        'Categoria 2, submenu 1 precisa ser um objeto.',
+        'Categoria 2, submenu 2 sem título.',
+        'Categoria 2, submenu 2 sem ícone.',
+        'Categoria 2, submenu 2 sem descrição.',
+        'Categoria 2, submenu 2 sem link.'
+      ]
+    });
+  });
+
   it('checks likely URLs', () => {
     expect(isProbablyValidUrl('https://example.com')).toBe(true);
     expect(isProbablyValidUrl('mailto:contato@example.com')).toBe(true);
