@@ -46,17 +46,33 @@
 
     <nav class="toolbar" aria-label="Ações do arquivo JSON">
       <div class="toolbar-actions">
-        <label class="btn-ledger btn-ledger-primary" for="jsonFileInput"><i class="bi bi-folder2-open me-1" aria-hidden="true"></i> Carregar menu.json</label>
+        <button class="btn-ledger btn-ledger-primary" type="button" id="openJsonButton" title="Abrir menu.json diretamente do disco ou selecionar arquivo">
+          <i class="bi bi-folder2-open me-1" aria-hidden="true"></i> Abrir menu.json
+        </button>
         <input id="jsonFileInput" class="hidden-input" type="file" accept=".json,application/json" />
-        <label class="btn-ledger" for="csvFileInput"><i class="bi bi-file-earmark-spreadsheet me-1" aria-hidden="true"></i> Comparar matriz CSV</label>
+        <button class="btn-ledger" type="button" id="saveJsonButton" title="Salvar diretamente no arquivo aberto (Ctrl+S / Cmd+S)">
+          <i class="bi bi-floppy me-1" aria-hidden="true"></i> Salvar <span class="badge text-bg-light border ms-1 d-none d-sm-inline font-monospace">Ctrl+S</span>
+        </button>
+        <button class="btn-ledger" type="button" id="saveAsJsonButton" title="Salvar cópia do JSON escolhendo local no disco">
+          <i class="bi bi-file-earmark-plus me-1" aria-hidden="true"></i> Salvar como…
+        </button>
+        <label class="btn-ledger" for="csvFileInput" title="Comparar menu com critérios de transparência via CSV">
+          <i class="bi bi-file-earmark-spreadsheet me-1" aria-hidden="true"></i> Matriz CSV
+        </label>
         <input id="csvFileInput" class="hidden-input" type="file" accept=".csv,text/csv" multiple />
-        <button class="btn-ledger" type="button" id="downloadJsonButton"><i class="bi bi-download me-1" aria-hidden="true"></i> Baixar JSON</button>
-        <button class="btn-ledger" type="button" id="copyJsonButton"><i class="bi bi-clipboard me-1" aria-hidden="true"></i> Copiar JSON</button>
-        <button class="btn-ledger" type="button" id="resetJsonButton"><i class="bi bi-arrow-counterclockwise me-1" aria-hidden="true"></i> Restaurar base</button>
+        <button class="btn-ledger" type="button" id="downloadJsonButton" title="Baixar cópia menu.json via download convencional">
+          <i class="bi bi-download me-1" aria-hidden="true"></i> Baixar cópia
+        </button>
+        <button class="btn-ledger" type="button" id="copyJsonButton" title="Copiar código JSON para a área de transferência">
+          <i class="bi bi-clipboard me-1" aria-hidden="true"></i> Copiar
+        </button>
+        <button class="btn-ledger" type="button" id="resetJsonButton" title="Restaurar a base original do Portal da Transparência">
+          <i class="bi bi-arrow-counterclockwise me-1" aria-hidden="true"></i> Restaurar base
+        </button>
       </div>
       <div class="toolbar-meta">
-        <span class="badge rounded-pill text-bg-light border" id="fileNameBadge">Base embutida</span>
-        <span class="badge rounded-pill text-bg-light border" id="saveStateBadge">Autosave ativo</span>
+        <span class="badge rounded-pill text-bg-light border" id="fileNameBadge" title="Origem do arquivo de menu em edição">Base embutida</span>
+        <span class="badge rounded-pill text-bg-light border" id="saveStateBadge" title="Status de sincronização com o disco e autosave local">Autosave ativo</span>
       </div>
     </nav>
 

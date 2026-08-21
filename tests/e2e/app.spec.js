@@ -177,7 +177,7 @@ test('loads JSON and matrix fixtures without crashing', async ({ page }) => {
   await page.goto('/');
 
   await page.locator('#jsonFileInput').setInputFiles(menuPopulado);
-  await expect(page.getByText('menu_populado.json')).toBeVisible();
+  await expect(page.locator('#fileNameBadge')).toContainText('menu_populado.json');
   await expect(page.getByText('Receitas').first()).toBeVisible();
 
   await page.locator('#csvFileInput').setInputFiles(matrixCsv);
@@ -186,7 +186,7 @@ test('loads JSON and matrix fixtures without crashing', async ({ page }) => {
   await expect(page.getByText('Relatório CSV')).toBeVisible();
 
   await page.locator('#jsonFileInput').setInputFiles(menuOriginal);
-  await expect(page.getByText('menu_original.json')).toBeVisible();
+  await expect(page.locator('#fileNameBadge')).toContainText('menu_original.json');
 
   expect(consoleErrors).toEqual([]);
 });

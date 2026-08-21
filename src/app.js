@@ -6,6 +6,12 @@
  */
 import embeddedMenu from './data/embedded-menu.json';
 import { applyDescriptionFormat, extractDescriptionText, safeDescriptionHref, sanitizeDescriptionHtml } from './description-html.js';
+import {
+  canUseFileSystemAccess,
+  openJsonFileWithPicker,
+  saveJsonToFileHandle,
+  saveJsonWithPicker
+} from './fileAccess.js';
 
 const STORAGE_KEY = 'menu-json-editor-state-v1';
 const FONT_AWESOME_VERSION = '5.15.4';
@@ -45,6 +51,9 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
         validationMetric: document.getElementById('validationCountMetric'),
         fileNameBadge: document.getElementById('fileNameBadge'),
         saveStateBadge: document.getElementById('saveStateBadge'),
+        openJsonButton: document.getElementById('openJsonButton'),
+        saveJsonButton: document.getElementById('saveJsonButton'),
+        saveAsJsonButton: document.getElementById('saveAsJsonButton'),
         fileInput: document.getElementById('jsonFileInput'),
         csvFileInput: document.getElementById('csvFileInput'),
         downloadButton: document.getElementById('downloadJsonButton'),
@@ -75,6 +84,10 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
         searchTerm: '',
         activeTab: 'preview',
         sourceName: 'Base embutida',
+        fileHandle: null,
+        fileAccessMode: 'fallback', // 'direct' | 'fallback'
+        lastSavedJson: null,
+        isSaving: false,
         dirty: false,
         matrix: {
           criteria: [],
@@ -220,7 +233,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
       }
 
       /**
-       * Purpose: Persist current state to localStorage.
+       * Purpose: Persist current state to localStorage for session recovery.
        * Parameters: none.
        * Returns: {void}.
        * Throws: none.
@@ -233,9 +246,8 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
             sourceName: state.sourceName,
             matrix: serializeMatrixState()
           }));
-          elements.saveStateBadge.textContent = 'Autosave salvo';
         } catch (storageError) {
-          elements.saveStateBadge.textContent = 'Autosave indisponível';
+          console.warn('Falha ao salvar autosave no localStorage:', storageError);
         }
       }
 
@@ -405,12 +417,35 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
       }
 
       /**
+       * Purpose: Handle global keyboard shortcuts (Ctrl+S / Cmd+S for direct saving).
+       * Parameters: event {KeyboardEvent} key event.
+       * Returns: {void}.
+       * Throws: none.
+       */
+      function handleGlobalKeyDown(event) {
+        const isSave = (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's';
+        if (isSave) {
+          event.preventDefault();
+          handleSaveJson();
+        }
+      }
+
+      /**
        * Purpose: Attach browser event handlers.
        * Parameters: none.
        * Returns: {void}.
        * Throws: none.
        */
       function bindEvents() {
+        if (elements.openJsonButton) {
+          elements.openJsonButton.addEventListener('click', handleOpenJson);
+        }
+        if (elements.saveJsonButton) {
+          elements.saveJsonButton.addEventListener('click', handleSaveJson);
+        }
+        if (elements.saveAsJsonButton) {
+          elements.saveAsJsonButton.addEventListener('click', handleSaveAsJson);
+        }
         elements.fileInput.addEventListener('change', handleFileInputChange);
         elements.csvFileInput.addEventListener('change', handleCsvFileInputChange);
         elements.downloadButton.addEventListener('click', downloadJsonFile);
@@ -430,6 +465,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
         elements.dropZone.addEventListener('dragover', handleDragOver);
         elements.dropZone.addEventListener('dragleave', handleDragLeave);
         elements.dropZone.addEventListener('drop', handleFileDrop);
+        window.addEventListener('keydown', handleGlobalKeyDown);
 
         const iconDialog = document.getElementById('iconPickerDialog');
         const iconSearch = document.getElementById('iconPickerSearch');
@@ -482,6 +518,65 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
       }
 
       /**
+       * Purpose: Check if in-memory menu has unsaved changes relative to last disk save.
+       * Parameters: none.
+       * Returns: {boolean}.
+       */
+      function isDocumentDirty() {
+        if (!state.lastSavedJson) {
+          // If no disk baseline exists (e.g. from embedded or recovery), consider clean only if matching initial
+          return state.sourceName !== 'Base embutida';
+        }
+        return currentJson() !== state.lastSavedJson;
+      }
+
+      /**
+       * Purpose: Render file connection badge and save status badge.
+       * Parameters: none.
+       * Returns: {void}.
+       */
+      function renderSaveState() {
+        // 1. File origin & access mode badge
+        const modeLabel = state.fileAccessMode === 'direct' ? ' · Acesso Direto' : '';
+        elements.fileNameBadge.textContent = `${state.sourceName}${modeLabel}`;
+        elements.fileNameBadge.title = state.fileAccessMode === 'direct'
+          ? `Arquivo em disco vinculado (${state.sourceName}). Gravação direta ativa via Ctrl+S.`
+          : `Arquivo carregado (${state.sourceName}).`;
+
+        // 2. Save status badge
+        elements.saveStateBadge.className = 'badge rounded-pill border';
+
+        if (state.isSaving) {
+          elements.saveStateBadge.classList.add('status-badge-saving');
+          elements.saveStateBadge.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Salvando no disco…';
+          return;
+        }
+
+        const dirty = isDocumentDirty();
+        if (state.fileAccessMode === 'direct') {
+          if (dirty) {
+            elements.saveStateBadge.classList.add('status-badge-pending');
+            elements.saveStateBadge.innerHTML = '<i class="bi bi-circle-fill text-warning me-1" style="font-size: 0.6rem;"></i> Alterações pendentes (Ctrl+S)';
+            elements.saveStateBadge.title = 'Há edições não salvas no arquivo do disco.';
+          } else {
+            elements.saveStateBadge.classList.add('status-badge-saved');
+            elements.saveStateBadge.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> Salvo no disco';
+            elements.saveStateBadge.title = 'O arquivo no disco está sincronizado com o editor.';
+          }
+        } else {
+          if (dirty) {
+            elements.saveStateBadge.classList.add('status-badge-pending');
+            elements.saveStateBadge.innerHTML = '<i class="bi bi-circle-fill text-warning me-1" style="font-size: 0.6rem;"></i> Alterações não salvas';
+            elements.saveStateBadge.title = 'Edições salvas no autosave do navegador. Use "Salvar como" ou "Baixar cópia".';
+          } else {
+            elements.saveStateBadge.classList.add('text-bg-light');
+            elements.saveStateBadge.textContent = 'Autosave ativo';
+            elements.saveStateBadge.title = 'Recuperação automática do navegador ativa.';
+          }
+        }
+      }
+
+      /**
        * Purpose: Render all application regions.
        * Parameters: none.
        * Returns: {void}.
@@ -494,7 +589,7 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
           renderEditor();
         }
         renderInspector();
-        elements.fileNameBadge.textContent = state.sourceName;
+        renderSaveState();
         const activeCategory = categoryExists(activeCategoryIndex()) ? state.menu[activeCategoryIndex()] : null;
         elements.addSubmenuButton.disabled = !activeCategory || isStandaloneLinkCategory(activeCategory);
         elements.moveUpButton.disabled = !state.selected;
@@ -1756,32 +1851,41 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
       }
 
       /**
-       * Purpose: Read and apply JSON file from File API.
+       * Purpose: Read and apply JSON file from File API fallback.
        * Parameters: file {File} selected file.
        * Returns: {void}.
        * Throws: none.
        */
       function readJsonFile(file) {
         const reader = new FileReader();
-        reader.addEventListener('load', () => applyLoadedJson(String(reader.result ?? ''), file.name));
+        reader.addEventListener('load', () => applyLoadedJson(String(reader.result ?? ''), file.name, {
+          fileHandle: null,
+          fileAccessMode: 'fallback'
+        }));
         reader.addEventListener('error', () => showToast('Não foi possível ler o arquivo selecionado.', 'error'));
         reader.readAsText(file, 'utf-8');
       }
 
       /**
        * Purpose: Parse and apply loaded JSON string.
-       * Parameters: rawJson {string} file content; sourceName {string} filename label.
+       * Parameters: rawJson {string} file content; sourceName {string} filename label; options {Object}.
        * Returns: {void}.
        * Throws: none.
        */
-      function applyLoadedJson(rawJson, sourceName) {
+      function applyLoadedJson(rawJson, sourceName, options = {}) {
         try {
           const parsedJson = JSON.parse(rawJson);
           state.menu = normalizeMenu(parsedJson);
           state.sourceName = sourceName;
+          state.fileHandle = options.fileHandle || null;
+          state.fileAccessMode = options.fileAccessMode || (options.fileHandle ? 'direct' : 'fallback');
+          state.lastSavedJson = currentJson();
+          state.dirty = false;
           state.selected = state.menu.length ? { categoryIndex: 0 } : null;
           state.openCategories = new Set(state.menu.length ? [0] : []);
-          markDirty('Arquivo carregado.');
+          persistState();
+          renderApplication();
+          showToast(options.toastMessage || `Arquivo ${sourceName} carregado com sucesso.`, 'success');
         } catch (parseError) {
           showToast(`JSON inválido: ${parseError.message}`, 'error');
         }
@@ -2333,7 +2437,115 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
       }
 
       /**
-       * Purpose: Download current JSON as menu.json.
+       * Purpose: Handle direct file opening via File System Access API or fallback.
+       * Parameters: none.
+       * Returns: {Promise<void>}.
+       */
+      async function handleOpenJson() {
+        if (!canUseFileSystemAccess()) {
+          elements.fileInput.click();
+          return;
+        }
+
+        try {
+          const result = await openJsonFileWithPicker();
+          if (!result) {
+            return; // Canceled by user
+          }
+
+          applyLoadedJson(result.content, result.filename, {
+            fileHandle: result.handle,
+            fileAccessMode: 'direct',
+            toastMessage: `${result.filename} aberto com acesso direto.`
+          });
+        } catch (error) {
+          console.warn('Fallback para input após falha no picker:', error);
+          elements.fileInput.click();
+        }
+      }
+
+      /**
+       * Purpose: Save changes directly to currently opened file handle or trigger Save As / download.
+       * Parameters: none.
+       * Returns: {Promise<void>}.
+       */
+      async function handleSaveJson() {
+        if (state.isSaving) return;
+
+        if (!canUseFileSystemAccess()) {
+          downloadJsonFile();
+          return;
+        }
+
+        if (!state.fileHandle) {
+          await handleSaveAsJson();
+          return;
+        }
+
+        try {
+          state.isSaving = true;
+          renderSaveState();
+
+          const jsonContent = currentJson();
+          await saveJsonToFileHandle(state.fileHandle, jsonContent);
+
+          state.lastSavedJson = jsonContent;
+          state.dirty = false;
+          persistState();
+          renderSaveState();
+          showToast(`Alterações salvas com sucesso em ${state.fileHandle.name || state.sourceName}.`, 'success');
+        } catch (error) {
+          showToast(`Erro ao salvar no disco: ${error.message}`, 'error');
+        } finally {
+          state.isSaving = false;
+          renderSaveState();
+        }
+      }
+
+      /**
+       * Purpose: Save JSON by prompting the user for a new file location on disk.
+       * Parameters: none.
+       * Returns: {Promise<void>}.
+       */
+      async function handleSaveAsJson() {
+        if (state.isSaving) return;
+
+        if (!canUseFileSystemAccess()) {
+          downloadJsonFile();
+          return;
+        }
+
+        try {
+          state.isSaving = true;
+          renderSaveState();
+
+          const jsonContent = currentJson();
+          const suggestedName = state.fileHandle?.name || (state.sourceName.endsWith('.json') ? state.sourceName : 'menu.json');
+          const result = await saveJsonWithPicker(suggestedName, jsonContent);
+
+          if (!result) {
+            return; // Canceled by user
+          }
+
+          state.fileHandle = result.handle;
+          state.sourceName = result.filename;
+          state.fileAccessMode = 'direct';
+          state.lastSavedJson = jsonContent;
+          state.dirty = false;
+
+          persistState();
+          renderApplication();
+          showToast(`Arquivo salvo como ${result.filename} com sucesso.`, 'success');
+        } catch (error) {
+          showToast(`Erro ao salvar arquivo: ${error.message}`, 'error');
+        } finally {
+          state.isSaving = false;
+          renderSaveState();
+        }
+      }
+
+      /**
+       * Purpose: Download current JSON as menu.json (universal export).
        * Parameters: none.
        * Returns: {void}.
        * Throws: none.
@@ -2343,10 +2555,10 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
         const objectUrl = URL.createObjectURL(blob);
         const anchor = document.createElement('a');
         anchor.href = objectUrl;
-        anchor.download = 'menu.json';
+        anchor.download = state.sourceName.endsWith('.json') ? state.sourceName : 'menu.json';
         anchor.click();
         URL.revokeObjectURL(objectUrl);
-        showToast('Download de menu.json iniciado.', 'success');
+        showToast(`Cópia baixada (${anchor.download}).`, 'success');
       }
 
       /**
@@ -2415,6 +2627,10 @@ const FONT_AWESOME_SOLID_PACKAGE = '@fortawesome/free-solid-svg-icons';
       function resetToEmbeddedMenu() {
         state.menu = cloneJson(state.initialMenu);
         state.sourceName = 'Base embutida';
+        state.fileHandle = null;
+        state.fileAccessMode = 'fallback';
+        state.lastSavedJson = null;
+        state.dirty = false;
         state.selected = state.menu.length ? { categoryIndex: 0 } : null;
         state.openCategories = new Set(state.menu.length ? [0] : []);
         clearMatrixState();

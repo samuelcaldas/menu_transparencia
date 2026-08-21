@@ -150,7 +150,43 @@
       color: #ffffff;
     }
 
+    .btn-ledger-success {
+      border-color: transparent;
+      background: var(--ledger-green);
+      color: #ffffff;
+    }
+
+    .btn-ledger-success:hover,
+    .btn-ledger-success:focus-visible {
+      background: #094e48;
+      color: #ffffff;
+    }
+
     .btn-ledger-danger { color: var(--ledger-red); }
+
+    .status-badge-saved {
+      background-color: #e0faf7 !important;
+      color: var(--ledger-green) !important;
+      border-color: rgba(15, 118, 110, 0.3) !important;
+    }
+
+    .status-badge-pending {
+      background-color: #fef7e9 !important;
+      color: var(--ledger-gold) !important;
+      border-color: rgba(199, 139, 25, 0.35) !important;
+    }
+
+    .status-badge-saving {
+      background-color: var(--ledger-blue-soft) !important;
+      color: var(--ledger-blue) !important;
+      border-color: rgba(29, 78, 216, 0.35) !important;
+    }
+
+    .status-badge-error {
+      background-color: #fee4e2 !important;
+      color: var(--ledger-red) !important;
+      border-color: rgba(180, 35, 24, 0.35) !important;
+    }
 
     .hidden-input {
       position: absolute;
